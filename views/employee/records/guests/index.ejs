@@ -1,0 +1,40 @@
+<%- include('../../../partials/header') %>
+
+<h2 class="display-6 mb-3 text-center">Guest Records</h2>
+
+<div class="container">
+
+    <table class="table table-striped table-hover">
+    <thead>
+        <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">Breed</th>
+        <th scope="col">Client</th>
+        <th scope="col">Current Guest</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <% for(let guest of guests) { %>
+
+        <tr>
+        <td><a href="/guest-records/<%= guest._id %>"><%= guest.name %></a></td>
+        <td><%= guest.type %></td>
+        <td><%= guest.breed %></td>
+        <td></td>
+        <td><%= guest.current %></td>
+        </tr>
+
+        <% } %>
+
+    </tbody>
+    </table>
+
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <a href="/guest-records/new" class="btn btn-primary">Add new record</a>
+    </div>
+
+</div>
+
+<%- include('../../../partials/footer') %>
