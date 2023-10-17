@@ -1,5 +1,7 @@
 <%- include('../../../partials/header') %>
 
+
+
 <h2 class="display-6 mb-3 text-center">Guest Records</h2>
 
     <h1 class="display-3 text-center mb-3">Edit guest record</h1>
@@ -7,56 +9,149 @@
 
     <div class="container">
 
-        <form class="align-items-center" action="/guest-records/<%=guest._id%>?_method=PUT" method="POST">
-            <div class="row mb-3">
+        <form class="validated-form align-items-center" action="/guest-records/<%=guest._id%>?_method=PUT" method="POST" novalidate>
+
+            <!-- NAME and TYPE -->
+            <div class="row">
                 <div class="col-2"></div>
                 <div class="col-4">
-                    <input type="text" class="form-control" name="name" placeholder="Name" aria-label="Name" value="<%= guest.name %>">
+                    <label for="nameInput" class="form-label">Name</label>
+                    <input type="text" class="form-control" name="guest[name]" placeholder="Name" aria-label="Name" value="<%= guest.name %>" required>
                 </div>
 
-                <div class="col-1 mt-2 form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="type" id="guestTypeOption1" value="cat" 
+                <div class="col-1"></div>
+
+                <div class="col-4 mb-3">
+                    <label for="guestType" class="form-label">Type</label>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption1" value="cat" 
                         <% if (guest.type === 'cat') {  %>
                             checked
-                        <% } %> >
-                    <label class="form-check-label" for="guestTypeCat">cat</label>   
+                        <% } %> required>
+                    <label class="form-check-label" for="guestTypeCat">cat</label>
+                    </div>   
+                
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption1" value="dog"
+                            <% if (guest.type === 'dog') {  %>
+                                checked
+                            <% } %> required>
+                        <label class="form-check-label" for="guestTypeDog">dog</label>    
+                        <div id="validationServerTypeFeedback" class="invalid-feedback">
+                            Guest type is required.
+                        </div>
+                    </div>
                 </div>
-                <div class="col-1 mt-2 form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="type" id="guestTypeOption1" value="dog"
-                        <% if (guest.type === 'dog') {  %>
-                            checked
-                        <% } %> >
-                    <label class="form-check-label" for="guestTypeDog">dog</label>   
+            </div>
+
+            <div class="row mb-3">
+                <!-- BREED and AGE -->
+                <div class="col-2"></div>
+                <div class="col-4">
+                    <label for="breedInput" class="form-label">Breed</label>
+                    <input type="text" class="form-control" id="breedInput" name="guest[breed]" placeholder="Domestic Shorthair" aria-label="Breed" value="<%= guest.breed %>" required>
+                    <div id="validationServerBreedFeedback" class="invalid-feedback">
+                        Guest breed is required.
+                    </div>
+                </div>
+
+                <div class="col-1"></div>
+
+                <div class="col-3">
+                    <label for="ageInput" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="ageInput" name="guest[age]" placeholder="0" aria-label="Age" value="<%= guest.age %>">
                 </div>
 
             </div>
 
             <div class="row mb-3">
-
+                <!-- OWNER and WEIGHT -->
                 <div class="col-2"></div>
                 <div class="col-4">
-                    <input type="text" class="form-control" name="breed" placeholder="Breed" aria-label="Breed" value="<%= guest.breed %>">
+                    <label for="ownerInput" class="form-label">Owner</label>
+
+                    <select class="form-select" aria-label="Owner" id="ownerInput" name="guest[owner]" required>
+                        <option disabled value="">Select existing client...</option>
+                            <% for (i = 0; i < allClients.length; i++) { %>
+                                <!-- option for each Client in db; 'selected' if matches existing record owner-->
+                                <option 
+                                <% if (guest.owner.fullName === allClients[i].fullName) { %> 
+                                    selected
+                                <% } %>
+                                value="<%=allClients[i]._id%>"><%= allClients[i].fullName %></option>
+                            <% } %>
+                    </select>
+                    <div id="ownerInputFeedback" class="invalid-feedback">
+                        Guest's owner is required. If the guest's owner is not listed, please add a new Client record for them before adding this guest.
+                    </div>
                 </div>
 
+                <div class="col-1"></div>
+
                 <div class="col-3">
-                    <input type="number" class="form-control" name="age" placeholder="Age" aria-label="Age" value="<%= guest.age %>">
+                    <label for="weightInput" class="form-label">Weight (lbs)</label>
+                    <input type="number" class="form-control" id="weightInput" name="guest[weight]" placeholder="0" aria-label="Weight" value="<%= guest.weight %>">
                 </div>
 
             </div>
+
+            <div class="row mb-3">
+                <!-- NOTES text area -->
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <label for="notesInput" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notesInput" name="guest[notes]" placeholder="[Optional] Relevant dietary, medical or behavioral info..." aria-label="Notes" value="<%= guest.notes %>"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <!-- IMAGE SELECT / UPLOAD -->
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <label for="inputGroupFile" class="form-label">Photo</label>
+                    <div class="input-group">
+                        <input type="file" class="form-control" id="inputGroupFile" aria-describedby="inputGroupFileAddon" aria-label="Upload">
+                        <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon">Upload</button>
+                    </div>
+                </div>
+            </div>
+
             
             <div class="row mb-3"></div>
 
             <div class="mx-auto mt-3 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button> 
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-outline-primary">Revert Changes</button> 
                 <a href="/guest-records/<%= guest._id%>" class="btn btn-outline-primary">Back</a>
             </div>
             
 
     </div>
+    
+    <script>
+        // disabling form submission if there are invalid fields
+        (function () {
+        'use strict'
 
-    <!-- <div class="mx-auto mt-3 text-center">
-        <a href="/guest-records" class="btn btn-primary">Back</a>
-    </div> -->
+        // fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.validated-form')
+
+        // loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+            })
+        })()
+    </script>
 
 
     <%- include('../../../partials/footer') %>
+

@@ -1,0 +1,73 @@
+<%- include('../../../partials/header') %>
+
+<h2 class="display-6 mb-3 text-center">Client Records</h2>
+
+<div class="container">
+
+    <script>
+        var searchValue = $("#inputSearch").val()
+        //console.log(searchValue)
+    </script>
+
+        <form class="row g-3 mt-3 col-6 mx-auto" action="/client-records?nameSearch=" method="GET">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="inputSearch" name="nameSearch" placeholder="Client Name">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+
+
+
+    <div class="table-responsive" style="max-height: 600px">
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+            <th scope="col">Name</th>
+
+            <th scope="col">Phone</th>
+            <th scope="col">Email</th>
+            <th scope="col">Address</th>
+            <th scope="col">&emsp; &nbsp; Pets</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <% for(let client of clients) { %>
+
+            <tr>
+            <td><a href="/client-records/<%= client._id %>"><%= client.fullName %></a></td>
+            <td><%= client.formattedPhone %></td>
+            <td><%= client.email %></td>
+            <td><%= client.formattedAddress %></td>
+            <td>
+                <ul style="list-style-type: none;">
+                <% for (i = 0; i < client.pets.length; i++) { %>
+                    <li>
+                    <a href="/guest-records/<%= client.pets[i]._id %>"><%=client.pets[i].name%></a>
+                    </li>
+                <% } %>
+
+                </ul>
+            </td>
+            </tr>
+
+            <% } %>
+
+        </tbody>
+        </table>
+
+    </div>
+
+    <!-- <div>
+            <a href="/guest-records"> All</a>  |  <a href="/guest-records?current=true"> Current only </a>
+    </div> -->
+
+
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <a href="/client-records/new" class="btn btn-primary">Add new Client</a>
+    </div>
+
+
+</div>
+
+<%- include('../../../partials/footer') %>

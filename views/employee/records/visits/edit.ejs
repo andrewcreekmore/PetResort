@@ -1,0 +1,137 @@
+<%- include('../../../partials/header') %>
+
+<h2 class="display-6 mb-3 text-center">Visit Records</h2>
+
+    <h1 class="display-3 text-center mb-3">Edit visit record</h1>
+    <div class="row mb-3"></div>
+
+    <div class="container">
+
+        <form class="validated-form align-items-center" action="/visit-records/<%=visit._id%>?_method=PUT" method="POST" novalidate>
+
+            <!-- HIDDEN FORM INPUTS (guest, visitNum, start/end dates) -->
+            <select class="form-select" aria-label="Guest" id="guestInput" name="visit[guest]" hidden>
+                <option value="<%=visit.guest._id%>" selected><%= visit.guest.name %></option>
+            </select>
+
+                <input type="text" class="form-control" name="visit[number]" id="visitNumHidden" value="<%=visit.number %>" hidden>
+
+            <input type="text"  class="form-control" id="visitStartFormInput" name="visit[startDate]" value="<%= visit.startDate %>" hidden>
+            <input type="text" class="form-control" id="visitEndFormInput" name="visit[endDate]" value ="<%= visit.endDate %>" hidden>
+            
+            <div class="row">
+                <div class="col-2"></div>
+
+                <div class="col-4 mb-3">
+                    <label for="guestName" class="form-label">Guest</label>
+            
+                    <input type="text" class="form-control" id="guestName" value="<%= visit.guest.fullName %>" disabled readonly>
+                </div>
+
+                <!-- <div class="col-1"></div> -->
+
+                <div class="col-1 mb-3">
+                    <label for="visitNum" class="form-label">Visit #</label>
+                    <input type="text" class="form-control" name="visit[number]" id="visitNum" value="<%= visit.number %>" disabled readonly>  
+                </div>
+
+                <div class="col-3 mb-3">
+                    <label for="daterange" class="form-label">Check-in / out dates</label>
+                        <input type="text" class="form-control" id="daterange">
+                </div>
+                
+
+            </div> <!--  end of row -->
+
+            <div class="row">
+                <div class="col-2"></div>
+                
+                <div class="col-8 mb-3">
+                    <label for="notesInput" class="form-label">Notes</label>
+                    <textarea class="form-control" id="notesInput" name="visit[notes]" rows="2" value="<%= visit.notes %>"></textarea>
+                </div>
+
+            </div>  <!--  end of row -->
+
+            <div class="mx-auto mt-3 text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-outline-primary" onclick="customReset()">Revert Changes</button> 
+                <a href="/guest-records/<%= visit.guest._id%>" class="btn btn-outline-primary">Back</a>
+            </div>
+            
+    </div>
+    
+
+    <%- include('../../../partials/footer-noCommonScripts') %>
+
+    <script>
+
+        // pulling visit start/end date strings in proper format to set date range picker starting values
+        const startOriginalDate = new Date(document.getElementById('visitStartFormInput').value)
+        const startOriginalDateStr = `${String(startOriginalDate.getMonth() + 1)}/${String(startOriginalDate.getDate())}/${String(startOriginalDate.getFullYear())}`
+        const endOriginalDate = new Date(document.getElementById('visitEndFormInput').value)
+        const endOriginalDateStr = `${String(endOriginalDate.getMonth() + 1)}/${String(endOriginalDate.getDate())}/${String(endOriginalDate.getFullYear())}`
+
+        $(document).ready(function() {
+            // updating current 'active' navbar link
+            var currentPageRoute = ('guest-records');
+            $('.navbar li.active').removeClass('active');
+            $('#navbar_' + currentPageRoute).addClass('active');
+
+            // init date range picker 
+            $('#daterange').daterangepicker({
+                opens: 'center',
+            });
+
+            // setting date range picker values to stored start/end dates
+            $('#daterange').data('daterangepicker').setStartDate(startOriginalDateStr);
+            $('#daterange').data('daterangepicker').setEndDate(endOriginalDateStr)
+
+
+            // update start/end date vars on date range picker apply event
+            $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+            
+                    // update hidden date form field values with stored vars from date range picker
+                    document.getElementById('visitStartFormInput').value = picker.startDate;;
+                    document.getElementById('visitEndFormInput').value = picker.endDate;;
+
+                });
+        
+        });
+
+        // disabling form submission if there are invalid fields
+        (function () {
+        'use strict'
+
+        // fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.validated-form')
+
+        // loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        
+            })
+        })()
+
+        // storing original (on load) form values for custom reset function
+        var visitNotesInputField = document.getElementById('notesInput');    
+        var originalVisitNotesValue = visitNotesInputField.value;
+
+        // custom form reset
+        customReset = function() {
+            // notes field
+            visitNotesInputField.value = originalVisitNotesValue;
+
+            // date range
+            $('#daterange').data('daterangepicker').setStartDate(startOriginalDateStr);
+            $('#daterange').data('daterangepicker').setEndDate(endOriginalDateStr)
+        };
+
+    </script>

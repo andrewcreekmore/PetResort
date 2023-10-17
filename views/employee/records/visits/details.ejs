@@ -1,0 +1,249 @@
+<%- include('../../../partials/header') %>
+
+<h2 class="display-6 text-center">Visit Record</h2>
+
+<div class="container mt-3">
+
+    <!-- <h4 class="display-9 ">Check-in/out Record</h4> -->
+    <!-- record visit history display -->
+    <div class="table-responsive my-3" style="max-height: 600px">
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+            
+            <th scope="col" style="text-align: center;">Visit #</th>
+            <th scope="col" style="text-align: center;">Start Date</th>
+            <th scope="col" style="text-align: center;">Checked-in by:</th>
+            <th scope="col" style="text-align: center;">End Date</th>
+            <th scope="col" style="text-align: center;">Checked-out by:</th>
+  
+
+            <th scope="col" style="text-align: center;"></th>
+        
+            </tr>
+        </thead>
+        <tbody>
+
+                <tr>
+                <td valign="middle" style="text-align: center;"> <%= visit.number %></a></td>
+                <td valign="middle" style="text-align: center;"> <%= visit.formatDateMonthFirst('startDate') %></td>
+                <td valign="middle" style="text-align: center;"> (Employee Name)</a></td>
+                <td valign="middle" style="text-align: center;"> <%= visit.formatDateMonthFirst('endDate') %></td>
+                <td valign="middle" style="text-align: center;"> (Employee Name)</a></td>
+            </td>
+
+                <td  style="text-align: right;"> <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> </td>
+                
+                </tr>
+       
+        </tbody>
+        </table>
+    </div>
+
+    <!-- visit notes field card -->
+    <div class="container h-100 d-flex justify-content-center align-items-center mb-3">
+        <div class="card" style="width: 35rem;">
+            <div class="card-body">
+                
+            <!-- <h5 class="card-title">Card title</h5> -->
+            <h6 class="card-subtitle mb-2"><b>Visit Notes</b></h6>
+            <p class="card-text"> <% if (visit.notes) { %>  
+                <%= visit.notes %>
+                <% } else { %>
+                    <i>No notes to display.</i>
+                    <% } %>
+            
+                </p>
+            
+            </div>
+        </div>
+    </div>
+
+
+    <h4 class="display-9 ">Service Record</h4>
+    <!-- service record table -->
+    <div class="table-responsive my-3" style="max-height: 600px">
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+            
+            <th scope="col" style="text-align: center;">Service</th>
+            <th scope="col" style="text-align: center;">Price</th>
+            <th scope="col" style="text-align: center;">Status</th>
+            <th scope="col" style="text-align: center;">Completed by:</th>
+            <th scope="col" style="text-align: center;">Completion Date/Time</th>
+            <th scope="col" style="text-align: center;"></th>
+        
+            </tr>
+        </thead>
+            
+
+        <% for (i = 0; i < visit.services.length; i++) { %>
+            <tbody>
+                <td style="text-align: center;"><%= visit.services[i].name %></td>
+                <td style="text-align: center;">$<%= visit.services[i].price %></td>
+
+                <td style="text-align: center;">
+                    <% var statusStr = 'Complete' %>
+                    <span <% if (!visit.services[i].rendered) { %>
+                    style='color: crimson'
+                    <% statusStr = 'Pending' %>
+                <% } else { %>
+                    style='color: green'
+                <% } %>><%= statusStr %></span></td>     
+                </td>
+
+                <td style="text-align: center;"><%=  %></td>
+                <td style="text-align: center;"><%=  %></td>
+                <td style="text-align: right;"> <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> </td>
+            </tbody>
+        <% } %>
+        
+        </table>
+
+        <% if (visit.services.length === 0) { %>
+            <div class="text-center my-3"><i>No services to display.</i></div>
+            <% } %>
+
+        <div class="text-center">
+           <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm">Add service</a> 
+        </div>
+        
+    </div>
+
+
+    
+
+    <h4 class="display-9 ">Billing Details</h4>
+    <!-- billing detail table -->
+        <div class="table-responsive my-3" style="max-height: 600px">
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+            
+                <th scope="col" style="text-align: center;">Billable Days</th>
+                <th scope="col" style="text-align: center;">Base Rate</th>
+                <th scope="col" style="text-align: center;">Base Cost</th>
+                <th scope="col" style="text-align: center;">Services Cost</th>
+                <th scope="col" style="text-align: center;">Discounts/Credits</th>
+                <th scope="col" style="text-align: center;">Total Visit Cost</th>
+                <th scope="col" style="text-align: center;">Status</th>
+        
+            </tr>
+        </thead>
+            <tbody>
+                <td style="text-align: center;"><%= visit.duration %></td>
+
+                <td valign="middle" style="text-align: center;">$<%= visit.rate %>/day</td>
+
+                <% const paidStr = visit.paid? 'Paid' : 'Unpaid' %>
+                <!-- tallying total cost of visit  -->
+                <% var totalCost = visit.baseCost %>
+                <% var serviceCost = 0 %>
+                <% for (i = 0; i < visit.services.length; i++) { %>
+                    <% serviceCost += visit.services[i].price  %>
+                    <% totalCost += visit.services[i].price  %>
+                <% } %>
+
+                <td valign="middle" style="text-align: center;">$<%= visit.baseCost %></td>
+                <td valign="middle" style="text-align: center;">$<%= serviceCost %></td>
+                <td valign="middle" style="text-align: center;"> $<%=  %>0 </td>
+                
+                <td valign="middle" style="text-align: center;"> $<%= totalCost %> </td>
+                
+                <td valign="middle" style="text-align: center;"><span <% if (!visit.paid) { %>
+                    style='color: crimson'
+                <% } else { %>
+                    style='color: green'
+                <% } %>><%= paidStr %></span></td>
+
+                <td  style="text-align: right;"> <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> </td>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- button: collect payment -->
+    <div class="text-center">
+        <button class="btn btn-primary"<% if (visit.paid) { %>
+         disabled
+        <% } %> >Collect Payment
+        </button>
+
+                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteVisitModal">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg> Delete Visit</a></button>
+    </div>
+
+
+
+</div> <!--end of container -->
+
+    <h4 class="display-9 mb-3">Guest</h4>
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <i><%= guest.fullName %></i>       
+            </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <!-- record overview card display -->
+                    <%- include('../../../partials/guest-card') %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- delete button -->
+    <div class="text-center mt-3">
+
+
+
+    </div>
+
+
+    <!-- back (return to index) button -->
+    <div class="mx-auto mt-3">
+        <a href="/guest-records/<%=visit.guest._id%>" class="btn btn-outline-primary"><- Guest Record</a>
+    </div>
+
+        <!-- delete record Modal pop-up -->
+    <div class="modal fade" id="deleteVisitModal" tabindex="-1" aria-labelledby="deleteVisitModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><%=guest.name%>: Visit <%=visit.number %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Permanently delete this visit record?
+            <br>
+            <br> 
+            Visit #<%= visit.number %>
+            <br>
+            Check-in: <%= visit.formatDate('startDate') %>
+            <br>
+            Check-out: <%= visit.formatDate('endDate') %>
+            </br>
+            </br>
+            </br>
+            </br>
+        </div>
+        <div class="modal-footer">
+            <form action="/visit-records/<%=visit._id%>?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg> Delete</button>
+            </form>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+<%- include('../../../partials/footer') %>

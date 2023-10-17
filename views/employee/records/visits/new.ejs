@@ -1,0 +1,166 @@
+<%- include('../../../partials/header') %>
+
+
+<h2 class="display-6 mb-3 text-center">Visit Records</h2>
+
+    <h1 class="display-3 text-center mb-3">Add a new visit for <%= guest.name %></h1>
+    <div class="row mb-3"></div> 
+
+    <div class="container">
+
+        <!-- <h4 class="display-9 mt-3 mb-3">&emsp; Details</h4> -->
+        
+        <form action="/visit-records" method="POST" novalidate class="validated-form" >
+
+            <!-- HIDDEN FORM INPUTS (guest, visitNum, start/end dates) -->
+            <select class="form-select" aria-label="Guest" id="guestInput" name="visit[guest]" hidden>
+                <option value="<%=guest._id%>" selected><%= guest.name %></option>
+            </select>
+
+             <% var newVisitNumber = mostRecentVisitNumber + 1 %>
+                <input type="text" class="form-control" name="visit[number]" id="visitNumHidden" value="<%= newVisitNumber %>" hidden>
+
+            <input type="text"  class="form-control" id="visitStartFormInput" name="visit[startDate]" hidden>
+            <input type="text" class="form-control" id="visitEndFormInput" name="visit[endDate]" hidden>
+
+        
+        <div class="row">
+            <div class="col-2"></div>
+
+             <div class="col-4 mb-3">
+                <label for="guestName" class="form-label">Guest</label>
+        
+                <input type="text" class="form-control" id="guestName" value="<%= guest.fullName %>" disabled readonly>
+             </div>
+
+             <!-- <div class="col-1"></div> -->
+
+            <div class="col-1 mb-3">
+                <label for="visitNum" class="form-label">Visit #</label>
+                <input type="text" class="form-control" name="visit[number]" id="visitNum" value="<%= newVisitNumber %>" disabled readonly>  
+            </div>
+
+            <div class="col-3 mb-3">
+                <label for="daterange" class="form-label">Check-in / out dates</label>
+                    <input type="text" class="form-control" id="daterange">
+            </div>
+                
+
+        </div> <!--  end of row -->
+
+        <!-- <h4 class="display-9 mb-3">&emsp; Services</h4> -->
+        <!-- SERVICES checkboxes  -->
+        <div class="row">
+            <div class="col-2"></div>
+            
+
+            <!-- <div class="col-3 mb-3">
+                <label class="form-label" for="" ">Services</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Default checkbox
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Default checkbox
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Default checkbox
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Default checkbox
+                    </label>
+                </div>
+            </div> -->
+
+        <div class="col-8 mb-3">
+            <label for="notesInput" class="form-label">Notes</label>
+            <textarea class="form-control" id="notesInput" name="visit[notes]" rows="2"></textarea>
+        </div>
+
+        </div>  <!--  end of row -->
+
+
+        <div class="row mb-3"></div>
+
+        <div class="mx-auto mt-3 text-center">
+            <button type="submit" class="btn btn-primary" onclick="beforeSubmit()">Submit</button> 
+            <a href="/guest-records/<%=guest._id%>" class="btn btn-outline-primary">Back</a>
+        </div>
+        
+        </form>
+
+    </div> <!--  end of container -->
+
+
+    <!-- back (return to index) button -->
+    <!-- <div class="mx-auto mt-3">
+        <a href="/guest-records/<%=guest._id%>" class="btn btn-outline-primary"><- Guest Record</a>
+    </div> -->
+
+
+    <%- include('../../../partials/footer-noCommonScripts') %>
+
+    <script>
+
+        $(document).ready(function() {
+            // updating current 'active' navbar link
+            var currentPageRoute = (window.location.pathname.split("/")[1]);
+            $('.navbar li.active').removeClass('active');
+            $('#navbar_' + currentPageRoute).addClass('active');
+
+            // init date range picker 
+            $('#daterange').daterangepicker({
+                opens: 'center',
+                minDate: new Date(),
+            });
+
+            // update start/end date vars on date range picker apply event
+            $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+            
+                    // update hidden date form field values with stored vars from date range picker
+                    document.getElementById('visitStartFormInput').value = picker.startDate;;
+                    document.getElementById('visitEndFormInput').value = picker.endDate;;
+
+                });
+        
+        });
+
+        // disabling form submission if there are invalid fields
+        (function () {
+        'use strict'
+
+        // fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.validated-form')
+
+        // loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        
+            })
+        })()
+
+
+        beforeSubmit = function(){
+        }
+        
+
+    </script>

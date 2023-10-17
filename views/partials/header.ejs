@@ -5,16 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title  %></title>
     <link rel="stylesheet" href = "/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/daterangepicker.css" />
+    <link rel="stylesheet" href = "/css/app.css">
 </head>
 
-<body>
+<body class="d-flex flex-column vh-100">
 
     <% if(user === 'employee') { %>
         <%- include('emp-navbar') %>
     <% } else if(user === 'customer') { %>
         <%- include('cust-navbar') %>
+    <% } else if(user === 'home') { %>
+        <%- include('cust-navbar') %>
     <% } %>
-    
+
     <div class="container mt-5">
         
         

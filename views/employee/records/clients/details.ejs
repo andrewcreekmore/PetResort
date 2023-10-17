@@ -1,0 +1,195 @@
+<%- include('../../../partials/header') %>
+
+<h2 class="display-6 text-center">Client Record</h2>
+
+<div class="row">
+    <div class="col-8 offset-2">
+
+            <div class="card my-3"> 
+
+                <div class="row g-0 d-flex flex-wrap align-items-center">
+                    <div class="col-md-4">
+                        <img src="../img/user.png" class="img-fluid rounded-start">
+                    </div>
+                    <div class="col-md-8">
+
+                        <div class="card-body">
+                            <h3 class="card-title"><%= singleClient.fullName %></h3>
+                            <h6 class="card-subtitle mb-2 text-muted"><%= singleClient.formattedPhone %> 
+                                <% if (singleClient.email) { %> 
+                                    &bullet;
+                                <% } %> 
+                            <%= singleClient.email %> </h6>
+                            <!-- <br></br> -->
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><i>Pets: &nbsp; </i>
+                                    <ul>
+                                    <% for (i = 0; i < singleClient.pets.length; i++) { %>
+                                        <li><a href="/guest-records/<%= singleClient.pets[i]._id %>">
+                                            <%= singleClient.pets[i].name %>
+                                            <!-- <% if (singleClient.pets.length > i + 1) { %>
+                                                ,
+                                            <% } %> -->
+                                        </a></li>
+                                    <% } %></h6>
+                                    </ul>
+                                </li>
+                                <!-- <li class="list-group-item"><i>Phone: &nbsp; </i> <%= singleClient.formattedPhone %></li>
+                                <li class="list-group-item"><i>Email: &nbsp; </i> <%= %> </li> -->
+                                <li class="list-group-item"><i>Address: &nbsp; </i> 
+                                    <% if (singleClient.address.streetAddress) { %>
+                                        <%= singleClient.formattedAddress%>
+                                    <br>  &nbsp; &emsp; &emsp; &emsp;   <%=singleClient.address.city %>, <%=singleClient.address.state %> 
+                                     <%=singleClient.address.zip %>   </br>
+                                     <% } %>
+                                    </li>
+                                <li class="list-group-item"><i>Notes: &nbsp; </i> <%= %> </li>
+                                <li class="list-group-item"> </li>
+                                </ul>
+                                <!-- edit and delete buttons -->
+                                <div class="text-center">
+                                    <a href="/client-records/<%=singleClient._id%>/edit" class="btn btn-primary">Edit</a> 
+
+                                    <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                    </svg> Delete</a></button>
+
+                                </div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+    <!-- billing summary: account credit / balance -->
+    <div class="table-responsive my-3" style="max-height: 600px">
+        <table class="table table-hover">
+        <thead>
+            <tr>
+            
+            <th scope="col" style="text-align: center;">Account Credit</th>
+            <th scope="col" style="text-align: center;">Account Balance</th>
+
+            </tr>
+        </thead>
+        <tbody>
+                    <tr>
+                    <td valign="middle" style="text-align: center;">$<%= singleClient.accountCredit %></td>
+
+                    <% var balance = 0 %>
+                    <% for (i = 0; i < singleClient.pets.length; i ++) { %>
+                        <% for (j = 0; j < singleClient.pets[i].visits.length; j++) { %>
+                            <% if (!singleClient.pets[i].visits[j].paid) { %>
+                                <% balance += singleClient.pets[i].visits[j].baseCost %>
+                                <% for (k = 0; k < singleClient.pets[i].visits[j].services.length; k++) { %>
+                                    <% balance += singleClient.pets[i].visits[j].services[k].price %>
+                                    <% } %>
+                                <% } %>
+                            <% } %>
+                        <% } %>
+
+                    <td valign="middle" style="text-align: center;">$<%= balance %></td>
+                    </tr>
+        </tbody>
+        </table>
+    </div>
+
+</div> <!--end of container -->
+
+    <h4 class="display-9 ">Pets' Visit History</h4>
+    <!-- record visit history display for all of clients' pets -->
+    <div class="table-responsive my-3" style="max-height: 600px">
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+            
+            <th scope="col" style="text-align: center;">Guest</th>
+            <th scope="col" style="text-align: center;">Visit #</th>
+            <th scope="col" style="text-align: center;">Check-in</th>
+            <th scope="col" style="text-align: center;">Check-out</th>
+            <th scope="col" style="text-align: center;">Duration</th>
+            <th scope="col" style="text-align: center;">Total Bill</th>
+            <th scope="col" style="text-align: center;"></th>
+        
+            </tr>
+        </thead>
+        <tbody>
+            <!-- for each pet, sorted alphabetically by pet -->
+            <% const sortedPetsArr = singleClient.pets %>
+            <% for (i = 0; i < sortedPetsArr.length; i++) { %>
+                <!-- for each of that pet's visits, sorted by most recent visit -->
+                <% const sortedVisitsArr = sortedPetsArr[i].visits.sort((b, a) => a.endDate - b.endDate)%>
+                <% for(j = 0; j < sortedVisitsArr.length; j++) { %>
+                    <tr>
+                    <td valign="middle" style="text-align: center;"><a href="/guest-records/<%= sortedPetsArr[i]._id %>"> <%= sortedPetsArr[i].name %></a></td>
+                    <td valign="middle" style="text-align: center;"> <%= sortedVisitsArr[j].number %></td>
+                    <td valign="middle" style="text-align: center;"> <%= sortedVisitsArr[j].formatDate('startDate') %></td>
+                    <td valign="middle" style="text-align: center;"> <%= sortedVisitsArr[j].formatDate('endDate') %></td>
+                    <td valign="middle" style="text-align: center;"> <%= sortedVisitsArr[j].duration %></td>
+
+    
+                    <% const paidStr = sortedVisitsArr[j].paid? 'Paid' : 'Unpaid' %>
+
+                    <!-- tallying total cost of visit  -->
+                    <% var totalCost = sortedVisitsArr[j].baseCost %>
+                    <% for (l = 0; l < sortedVisitsArr[j].services.length; l++) { %>
+                        <% totalCost += sortedVisitsArr[j].services[l].price  %>
+                    <% } %>
+                    
+                    <td valign="middle" style="text-align: center;"> $<%= totalCost %> <span <% if (!sortedVisitsArr[j].paid) { %>
+                        style='color: crimson'
+                    <% } else { %>
+                        style='color: green'
+                    <% } %>>(<%= paidStr %>)</span></td>
+                    <td  style="text-align: center;"> <a href="/visit-records/<%=sortedVisitsArr[j]._id%>" class="btn btn-outline-primary btn-sm">Details</a> </td>
+                    <% } %>
+                    </tr>
+            <% } %>
+        </tbody>
+        </table>
+            <!-- check if client has no pet visits on record; indicate if so -->
+            <% var clientPetVisitsTally = 0 %>
+            <% for (i = 0; i < singleClient.pets.length; i++) { %>
+                <%   clientPetVisitsTally += singleClient.pets[i].visits.length; %>
+                <% } %>
+
+            <% if (clientPetVisitsTally === 0) { %>
+            <div class="text-center my-3"><i>No pet visit history to display.</i></div>
+            <% } %>
+
+    </div>
+
+    <!-- back (return to index) button -->
+    <div class="mx-auto mt-3">
+        <a href="/client-records/" class="btn btn-outline-primary"><- All Clients</a>
+    </div>
+
+</div>
+
+    <!-- delete record Modal pop-up -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><%=singleClient.fullName%></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Permanently delete this client record?
+        </div>
+        <div class="modal-footer">
+            <form action="/client-records/<%=singleClient._id%>?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg> Delete</button>
+            </form>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+<%- include('../../../partials/footer') %>
