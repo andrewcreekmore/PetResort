@@ -10,17 +10,15 @@ service.model.ts
 
 // create schema: service
 const ServiceSchema = new Schema({
-    // petType: [
-    //     {
-    //         type: String,
-    //         required: true,
-    //         index: true,
-    //     }
-    // ],
+    petType: [
+        {
+            type: String,
+            required: true,
+        }
+    ],
 	name: {
 		type: String,
 		required: true,
-		index: true,
 	},
 	price: {
 		type: Number,
@@ -29,18 +27,18 @@ const ServiceSchema = new Schema({
 	description: {
 		type: String,
 	},
-	rendered: {
-		type: Boolean,
-		default: false,
+	serviceType: {
+		type: String,
+		required: true,
 	}
 });
 
 interface IService {
-    // petType: Types.Array<String>;
+    petType: Types.Array<String>;
 	name: string;
 	price: number;
     description: string;
-	rendered: boolean;
+	type: string;
 }
 
 interface IServiceDoc extends IService, Document {}
@@ -48,7 +46,7 @@ interface IServiceDoc extends IService, Document {}
 const Service = mongoose.model<IServiceDoc>("Service", ServiceSchema);
 
 // setup indices
-// ServiceSchema.index({ name: 1 }, { unique: true });
-// Service.createIndexes();
+ServiceSchema.index({ petType: 1, name: 1 }, { unique: true });
+Service.createIndexes();
 
 export { Service, IServiceDoc, ServiceSchema };

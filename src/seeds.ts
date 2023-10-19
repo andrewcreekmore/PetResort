@@ -5,7 +5,6 @@ import { Visit, IVisitDoc } from "./models/visit.model";
 import { Service, IServiceDoc } from "./models/service.model";
 
 
-
 /*
 ===========================================================================
 seeds.ts
@@ -158,90 +157,84 @@ const seedClients = [
 
 const seedServices = [
 	{
-		// petType: ["cat"],
+		petType: ["cat"],
 		name: "Nail Trim",
 		price: 10,
 		description: "",
+		serviceType: "basic",
 	},
 	{
-		// petType: ["dog"],
+		petType: ["dog"],
 		name: "Nail Grind & Trim",
 		price: 15,
 		description: "",
+		serviceType: "basic",
 	},
 	{
-		// petType: ["cat", "dog"],
+		petType: ["cat", "dog"],
 		name: "Haircut",
 		price: 10,
 		description: "",
+		serviceType: "basic",
 	},
 	{
-		// petType: ["cat", "dog"],
+		petType: ["cat", "dog"],
 		name: "Ear Cleaning",
 		price: 10,
 		description: "",
+		serviceType: "basic",
 	},
 	{
-		// petType: ["cat"],
+		petType: ["cat"],
 		name: "Bath & Brush",
 		price: 10,
 		description: "",
+		serviceType: "basic",
 	},
-	// {
-	// 	petType: ["dog"],
-	// 	name: "Bath & Brush",
-	// 	price: 15,
-	// 	description: "",
-	// },
 	{
-		// petType: ["cat"],
+		petType: ["dog"],
+		name: "Bath & Brush",
+		price: 15,
+		description: "",
+		serviceType: "basic",
+	},
+	{
+		petType: ["cat"],
 		name: "Full Service",
 		price: 30,
 		description:
 			"Includes bath, brushing, haircut, nail trim, and ear cleaning.",
+		serviceType: "package",
 	},
 	{
-		// petType: ["dog"],
+		petType: ["dog"],
 		name: "Full Service",
 		price: 40,
 		description:
 			"Includes bath, brushing, haircut, nail trim, and ear cleaning.",
+		serviceType: "package",
 	},
 	// add-on service packages
 	{
-		// petType: ["dog"],
+		petType: ["dog"],
 		name: "Deluxe",
 		price: 10,
 		description:
 			"Base service PLUS premium shampoo & conditioner, teeth brushing & breath freshener, cologne spritz, and bandana or bow.",
+		serviceType: "addon",
 	},
 	{
-		// petType: ["dog"],
+		petType: ["dog"],
 		name: "Luxury",
 		price: 10,
 		description:
 			"Deluxe service PLUS luxury shampoo, conditioner & spritz, paw & nose balm and premium face wash.",
+		serviceType: "addon",
 	},
 ];
 
 // function to seed database with initial data
 const seedDB = async () => {
-	// delete all addresses
-	// await Address.deleteMany({});
-	// // add seedAddresses
-	// for (var i = 0; i < seedAddresses.length; i++) {
-	// 	const address = new Address({
-	// 		zip: seedAddresses[i].zip,
-	// 		state: seedAddresses[i].state,
-	// 		city: seedAddresses[i].city,
-	// 		street: seedAddresses[i].street,
-	// 		houseNumber: seedAddresses[i].houseNumber,
-	// 		apartment: seedAddresses[i].apartment,
-	// 	});
-	// 	await address.save();
-	// }
-
-	//console.log(`Added ${seedAddresses.length} address records.`);
 
 	// delete all clients
 	await Client.deleteMany({});
@@ -297,62 +290,17 @@ const seedDB = async () => {
 	// add seedServices
 	for (var i = 0; i < seedServices.length; i++) {
 		const service = new Service({
-			// petType: seedServices[i].petType,
+			petType: seedServices[i].petType,
 			name: seedServices[i].name,
 			price: seedServices[i].price,
 			description: seedServices[i].description,
+			serviceType: seedServices[i].serviceType,
 		});
 		await service.save();
 	}
 
 	console.log(`Added ${seedServices.length} service records.`);
 };
-
-// ADDING CLIENT-GUEST RELATIONSHIP
-
-// const clientGuestSeed = [
-// 	{ guest: "Alvina", clientFirstName: "Andrew", clientLastName: "Creekmore" },
-// 	{ guest: "Eleanor Rigby", clientFirstName: "Andrew", clientLastName: "Creekmore" },
-// ];
-
-const makeRelationships = async () => {
-	// for (var i = 0; i < clientGuestSeed.length; i++) {
-	// 	const guest = await Guest.findOne({ name: clientGuestSeed[i].guest });
-	// 	const client = await Client.findOne({
-	// 		firstName: clientGuestSeed[i].clientFirstName,
-	// 		lastName: clientGuestSeed[i].clientLastName,
-	// 	});
-
-	// 	if (guest && client) {
-	// 		guest.owner = client;
-	// 		client.pets.push(guest);
-	// 		await guest.save();
-	// 		await client.save();
-	// 	}
-	// }
-}
-
-// ADDING ADDRESS RECORDS TO SEEDED CLIENTS
-
-// const addClientAdresses = async () => {
-// 	for (var i = 0; i < seedAddresses.length; i++) {
-// 		const client = await Client.findOne({
-// 			firstName: seedClients[i].firstName,
-// 			lastName: seedClients[i].lastName,
-// 		});
-
-// 		if (client) {
-// 			const address = await Address.findOne( 
-// 				{ zip: seedAddresses[i].zip }, 
-// 				{ street: seedAddresses[i].street },
-// 				{ houseNumber: seedAddresses[i].houseNumber });
-// 			if (address) {
-// 				client.address = address;
-// 				await client.save();
-// 			}
-// 		}
-// 	}
-// }
 
 // ADDING VISITS RECORDS TO SEEDED GUESTS
 const guestVisitsSeed = [
@@ -397,17 +345,17 @@ const addVisitsData = async () => {
 const visitServicesSeed = [
 	{
 		guest: "Alvina",
-		visits: [
-			{ startDate: "2022-3-6" },
-			{ startDate: "2021-10-24" },
-		],
+		visits: [{ startDate: "2022-3-6" }, { startDate: "2021-10-24" }],
 		services: [
 			[
-				{ name: "Nail Trim" }, { name: 'Bath & Brush' }
+				{ petType: "cat", name: "Nail Trim" },
+				{ petType: "cat", name: "Bath & Brush" },
 			],
-			[
-				{ name: 'Full Service'},
-			],
+			[{ petType: "cat", name: "Full Service" }],
+		],
+		servicesRendered: [
+			[{ petType: "cat", name: "Nail Trim" }],
+			[],
 		],
 	},
 ];
@@ -423,15 +371,28 @@ const addServicesData = async () => {
 				});
 
 				if (visit) {
+					// adding services
 					for (var k = 0; k < visitServicesSeed[i].services[j].length; k++) {
 						const service = await Service.findOne({
-							name: visitServicesSeed[i].services[j][k].name
+							name: visitServicesSeed[i].services[j][k].name,
+							petType: visitServicesSeed[i].services[j][k].petType,
 						});
 						
 						if (service) {
 							visit.services.push(service);
 						}
 					}
+					// adding services rendered
+					for (var k = 0; k < visitServicesSeed[i].servicesRendered[j].length; k++) {
+						const service = await Service.findOne({
+							name: visitServicesSeed[i].servicesRendered[j][k].name,
+							petType: visitServicesSeed[i].servicesRendered[j][k].petType,
+						});
+
+						if (service) {
+							visit.servicesRendered.push(service);
+						}
+					}	
 					await visit.save();
 				}
 			}
@@ -441,14 +402,10 @@ const addServicesData = async () => {
 
 // execute seed function
 seedDB().then(() => 
-	//addClientAdresses().then(() => 
-		makeRelationships().then(() => 
-			addVisitsData().then(() => 
-				addServicesData().then(() => {
-					mongoose.connection.close();
-					console.log("Connection to database closed.");
-				})
-			)
-		)
-	)	
-//)
+	addVisitsData().then(() => 
+		addServicesData().then(() => {
+			mongoose.connection.close();
+			console.log("Connection to database closed.");
+		})
+	)
+)

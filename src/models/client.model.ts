@@ -10,30 +10,6 @@ client.model.ts
 ===========================================================================
 */
 
-// address schema/interface/model (for clients)
-// const AddressSchema = new Schema({
-// 	zip: String,
-// 	state: String,
-// 	city: String,
-// 	street: String,
-// 	houseNumber: String,
-// 	apartment: String
-// })
-
-// interface IAddress {
-// 	zip: string;
-// 	state: String,
-// 	city: string;
-// 	street: string;
-// 	houseNumber: string;
-// 	apartment?: string;
-// }
-
-
-
-// interface IAddressDoc extends IAddress, Document {}
-// const Address = mongoose.model<IAddressDoc>("Address", AddressSchema);
-
 // create schema: client (pet owners)
 const ClientSchema: Schema = new Schema({
 	firstName: {
@@ -51,10 +27,6 @@ const ClientSchema: Schema = new Schema({
 	email: {
 		type: String,
 	},
-	// address: {
-	// 	type: Schema.Types.ObjectId,
-	// 	ref: "Address",
-	// },
 	address: {
 		streetAddress: {
 			type: String,
@@ -95,7 +67,6 @@ interface IClient {
 	lastName: string;
 	phoneNumber: number;
 	email?: string;
-	//address: IAddressDoc['_id']
 	address?: object;
 	pets: Types.DocumentArray<IGuestDoc>
 }
@@ -114,22 +85,7 @@ ClientSchema.virtual('formattedPhone').get(function () {
 })
 
 
-// // formatted (with hyphens) phone number virtual method
-// ClientSchema.virtual('formattedAddress').get(function () {
-// 	if (this.address) {
-// 		var aptStr = ''
-// 		if (this.address.apartment) {
-// 			return `${this.address.houseNumber} ${this.address.street} Apt. ${this.address.apartment}`;
-// 		} else {
-// 			return `${this.address.houseNumber} ${this.address.street}`;
-// 		}
-		
-// 	} else {
-// 		return "";
-// 	}
-// })
-
-// formatted (with hyphens) phone number virtual method
+// formatted street address (for card display) virtual method
 ClientSchema.virtual('formattedAddress').get(function () {
 	if (this.address.streetAddress) {
 		var aptStr = ''
@@ -144,11 +100,16 @@ ClientSchema.virtual('formattedAddress').get(function () {
 	}
 })
 
+// setup query middleware: delete owned pets (guests) when deleting client
+ClientSchema.post('findOneAndDelete', async function (deletedClient) {
+	if (deletedClient.pets.length) {
+		const responseData = await Guest.deleteMany({ _id: { $in: deletedClient.pets }})
+	}
+})
 
 const Client = mongoose.model<IClientDoc>("Client", ClientSchema);
 
 // setup indices
-//AddressSchema.index({ zip: 1, street: 1, houseNumber: 1}, { unique: true });
 ClientSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
 Client.createIndexes();
 

@@ -1,0 +1,105 @@
+<%- include('../../../partials/header') %>
+
+<h2 class="display-6 text-center">Visit Record: Add Service</h2>
+
+<div class="container mt-3">
+    <form action="/visit-records/add-service/<%=visit._id%>?_method=PUT" method="POST" novalidate class="validated-form" >  
+
+        <!-- basic (relevant, i.e., matching petType) services --> 
+        <h4>Basic Services</h4>
+
+        <% for (i = 0; i < relevantServices.length; i++) {%> 
+            <% var makeHiddenInput = false; %>
+            <% if (relevantServices[i].serviceType === 'basic') { %>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="serviceCheckbox<%=i%>" name="visit[services]" value="<%= relevantServices[i]._id %>" 
+                    <% // checking if this service is in the visit's services arr; checking box if so %>
+                    <% const test = (element) => element.name === relevantServices[i].name %>
+                    <% if (visit.services.some(test)) { %>
+                        checked 
+                        <% // checking if this service is in the visit's renderedServices arr; disabling if so %>
+                        <% var match = visit.services.find((element) => element.name === relevantServices[i].name) %>
+                        <% const test2 = (element) => element.name === match.name %>
+                        <% if (visit.servicesRendered.some(test2)) { %>
+                            disabled
+                            <% makeHiddenInput = true; %>
+                            <% } %>
+                    <% } %>
+                    
+                    >
+                    <label class="form-check-label" for="serviceCheckbox<%=i%>">
+                        <%= relevantServices[i].name %>
+                    </label>
+                </div>
+
+                <!-- creating a hidden input corresponding to any disabled checkboxes -->
+                <% if (makeHiddenInput) { %>
+                    <input type="hidden"  name="visit[services]" value="<%= relevantServices[i]._id %>">
+                    <% } %>
+
+                <% } %>
+            
+            <% } %>
+
+           <!-- packages (full-service)-->
+            <h4>Packages</h4>
+            <% for (i = 0; i < relevantServices.length; i++) {%> 
+                <% if (relevantServices[i].serviceType === 'package') { %>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="serviceCheckbox<%=i%>" name="visit[services]" value="<%= relevantServices[i]._id %>" 
+                        <% // checking if this service is in the visit's services arr; checking box if so %>
+                        <% const test = (element) => element.name === relevantServices[i].name %>
+                        <% if (visit.services.some(test)) { %>
+                            checked 
+                            <% // checking if this service is in the visit's renderedServices arr; disabling if so %>
+                            <% var match = visit.services.find((element) => element.name === relevantServices[i].name) %>
+                            <% const test2 = (element) => element.name === match.name %>
+                            <% if (visit.servicesRendered.some(test2)) { %>
+                                disabled
+                                <% } %>
+                        <% } %>
+                        
+                        >
+                        <label class="form-check-label" for="serviceCheckbox<%=i%>">
+                            <%= relevantServices[i].name %>
+                        </label>
+                    </div>
+
+                <% } %>
+            
+            <% } %>
+
+            <!-- check for add-ons (only on dogs)-->
+            <% if (visit.guest.petType === 'dog') { %>
+                <h4>Add-ons</h4>
+                <% } %>
+
+            <div class="mx-auto mt-3 text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-outline-primary">Revert Changes</button> 
+                <a href="/visit-records/<%= visit._id%>" class="btn btn-outline-primary">Back</a>
+            </div>
+
+    </form>
+
+
+ </div>  <!-- end of container -->
+
+
+<%- include('../../../partials/footer-noCommonScripts') %>
+
+ <script>
+
+        $(document).ready(function() {
+            // updating current 'active' navbar link
+            var currentPageRoute = ('guest-records');
+            $('.navbar li.active').removeClass('active');
+            $('#navbar_' + currentPageRoute).addClass('active');
+
+            // for (i = 0; i < visit.services.length; i++) {
+            //     originalServices.push(visit.services[i])
+            //     }
+        });
+
+      
+</script>

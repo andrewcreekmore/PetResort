@@ -71,7 +71,7 @@
             <th scope="col" style="text-align: center;">Price</th>
             <th scope="col" style="text-align: center;">Status</th>
             <th scope="col" style="text-align: center;">Completed by:</th>
-            <th scope="col" style="text-align: center;">Completion Date/Time</th>
+            <th scope="col" style="text-align: center;">Completion Date</th>
             <th scope="col" style="text-align: center;"></th>
         
             </tr>
@@ -85,17 +85,53 @@
 
                 <td style="text-align: center;">
                     <% var statusStr = 'Complete' %>
-                    <span <% if (!visit.services[i].rendered) { %>
-                    style='color: crimson'
-                    <% statusStr = 'Pending' %>
-                <% } else { %>
-                    style='color: green'
-                <% } %>><%= statusStr %></span></td>     
+                    <!-- if service not present in servicesRendered arr... -->
+                    <% const test = (element) => element.name === visit.services[i].name  %>
+                    <span <% if (!visit.servicesRendered.some(test)) { %>
+                        style='color: crimson'
+                        <% statusStr = 'Pending' %>
+                        <% } %>
+                    ><%= statusStr %></span></td>     
                 </td>
 
                 <td style="text-align: center;"><%=  %></td>
                 <td style="text-align: center;"><%=  %></td>
-                <td style="text-align: right;"> <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> </td>
+                <td style="text-align: right;"> 
+                    <form action="/visit-records/toggleServiceStatus/<%=visit._id%>?_method=PUT" method="POST" novalidate class="validated-form" >
+
+                        <!-- service is currently pending: toggle to Complete-->
+                        <% // checking if this service is in the visit's renderedServices arr %>
+                        <% const checkIfRendered = (element) => element.name === visit.services[i].name %>
+                        <% if (!visit.servicesRendered.some(checkIfRendered)) { %>
+
+                            <input type="hidden" name="visit[servicesRendered]" value="<%= visit.services[i]._id %>">
+
+                            <!-- ensuring any already marked-rendered services remain so-->
+                            <% for (j = 0; j < visit.servicesRendered.length; j ++) { %>
+                                <input type="hidden" name="visit[servicesRendered]" 
+                                value="<%= visit.servicesRendered[j]._id %>">
+                                <% } %>
+
+                            <button type="submit" class="btn btn-outline-primary btn-sm">Mark Complete</a> </td>
+                        
+                        <!-- service is currently Complete: toggle to Pending -->
+                        <% } else { %>
+
+                            <!-- ensuring any already marked-rendered services remain so-->
+                            <% for (j = 0; j < visit.servicesRendered.length; j ++) { %>
+                                <!-- ...except the one we're toggling to Pending -->
+                                <% if (visit.services[i].name != visit.servicesRendered[j].name) { %>
+                                    <input type="hidden" name="visit[servicesRendered]" 
+                                    value="<%= visit.servicesRendered[j]._id %>">
+                                    <% } %>
+
+                                <% } %>
+                       
+
+                            <button type="submit" class="btn btn-outline-primary btn-sm">Mark Pending</a> </td>
+                            <% } %>
+
+                    </form>
             </tbody>
         <% } %>
         
@@ -106,13 +142,10 @@
             <% } %>
 
         <div class="text-center">
-           <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm">Add service</a> 
+           <a href="/visit-records/add-service/<%=visit._id%>" class="btn btn-outline-primary btn-sm">Add/remove services</a> 
         </div>
         
     </div>
-
-
-    
 
     <h4 class="display-9 ">Billing Details</h4>
     <!-- billing detail table -->
@@ -246,4 +279,16 @@
     </div>
 
 </div>
-<%- include('../../../partials/footer') %>
+<%- include('../../../partials/footer-noCommonScripts') %>
+
+<meta name="visitID" content=<%= visit._id  %> />
+
+<script>
+    $(document).ready(function() {
+        // updating current 'active' navbar link
+        var currentPageRoute = "guest-records";
+        $('.navbar li.active').removeClass('active');
+        $('#navbar_' + currentPageRoute).addClass('active');
+    });
+
+</script>

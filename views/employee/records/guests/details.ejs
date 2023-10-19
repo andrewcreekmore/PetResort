@@ -42,12 +42,14 @@
                     <!-- formatting style to indicate rendered status -->
                     <% for (i = 0; i < visit.services.length; i++) { %>
                         <% var appendStr = '' %>
+
+                        <!-- if service not present in servicesRendered arr... -->
+                        <% const test = (element) => element.name === visit.services[i].name  %>
                         
-                        <span <% if (!visit.services[i].rendered) { %>
+                        <span <% if (!visit.servicesRendered.some(test)) { %>
                             style='color: crimson'
-                            <% } else { %>
-                                style='color: green'
-                            <% } %>>
+                            <% } %>
+                            >
 
                         <%if (visit.services.length > i + 1) { _%>
                             <% appendStr = ',' %>

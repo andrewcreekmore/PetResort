@@ -32,10 +32,16 @@ const VisitSchema = new Schema({
 		type: Date,
 	},
 	services: [
-		{ 
-			type: Schema.Types.ObjectId, 
-			ref: 'Service', 
-		}
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Service",
+		},
+	],
+	servicesRendered: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Service",
+		},
 	],
 	paid: {
 		type: Boolean,
@@ -43,7 +49,7 @@ const VisitSchema = new Schema({
 	},
 	notes: {
 		type: String,
-	}
+	},
 });
 
 interface IVisit {
@@ -52,6 +58,7 @@ interface IVisit {
 	startDate: Date;
 	endDate: Date;
 	services: Types.DocumentArray<IServiceDoc>;
+	servicesRendered: Types.DocumentArray<IServiceDoc>;
 	paid?: boolean;
 	notes?: string;
 }
