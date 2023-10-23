@@ -17,7 +17,8 @@
                 <option value="<%=guest._id%>" selected><%= guest.name %></option>
             </select>
 
-             <% var newVisitNumber = mostRecentVisitNumber + 1 %>
+                <% var newVisitNumber = mostRecentVisitNumber + 1 %>
+
                 <input type="text" class="form-control" name="visit[number]" id="visitNumHidden" value="<%= newVisitNumber %>" hidden>
 
             <input type="text"  class="form-control" id="visitStartFormInput" name="visit[startDate]" hidden>

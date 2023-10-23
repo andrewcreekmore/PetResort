@@ -3,6 +3,8 @@ import express = require("express");
 import bodyParser = require("body-parser");
 import methodOverride = require('method-override');
 import mongoose = require('mongoose');
+import session = require('express-session');
+import flash = require('connect-flash')
 
 import AppError = require("./utils/appError");
 import { registerSchemas } from "./models/client.model";
@@ -22,10 +24,12 @@ app.ts
 */
 
 class App {
+
 	public app: Application;
 	public port: number;
 
 	constructor(appInitParams: { port: number }) {
+
 		// setup express instance on passed port
 		this.app = express();
 		this.port = appInitParams.port;
@@ -47,10 +51,35 @@ class App {
 
 	// setup app middleware
 	private initMiddleware() {
+
 		// run on every request:
 		this.app.use(bodyParser.json());
 		this.app.use(express.urlencoded({ extended: true }));
 		this.app.use(methodOverride("_method"));
+
+		// express session options
+		const sessionConfig = {
+			secret: "tempSecret",
+			resave: false,
+			saveUninitialized: false,
+			cookie: {
+				httpOnly: true,
+				expire: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
+				maxAge: 1000 * 60 * 60 * 24 * 7,
+			},
+		};
+
+		this.app.use(session(sessionConfig));
+		this.app.use(flash());
+
+		// store any flash messages in locals
+		const storeFlashMessages = function (req: Request, res: Response, next: NextFunction){
+			res.locals.success = req.flash('success');
+			res.locals.error = req.flash('error');
+			next();
+		}
+
+		this.app.use(storeFlashMessages)
 	}
 
 	// setup routing
@@ -128,6 +157,7 @@ class App {
 
 	// setup app database
 	private initDatabase() {
+
 		// connect to database + setup logging
 		mongoose.connect("mongodb://127.0.0.1:27017/petResort");
 		const db = mongoose.connection;
@@ -141,6 +171,7 @@ class App {
 
 	// define listener
 	public listen() {
+
 		this.app.listen(this.port, () => {
 			console.log(
 				`Server is running at http://localhost:${this.port}; ctrl + C to stop.`

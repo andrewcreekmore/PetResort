@@ -6,6 +6,7 @@ import { Guest } from "../models/guest.model";
 const { guestValidationSchema } = require("../validationSchemas");
 import { Client } from "../models/client.model";
 
+
 /*
 ===========================================================================
 guests.route.ts
@@ -99,6 +100,7 @@ router.post(
                 throw new AppError(400);
             }
         }
+        req.flash('success', 'Successfully added new guest.');
         res.redirect(`/guest-records/${newGuest._id}`);
     })
 );
@@ -126,7 +128,8 @@ router.get(
                 },
             ]);
         if (!guest) {
-            throw new AppError(404);
+            req.flash('error', `Couldn't find that guest.`)
+            return res.redirect('/guest-records')
         } else {
             var bUseAltImgPath = false;
             var data = { title, user, guest, bUseAltImgPath };
@@ -143,7 +146,8 @@ router.get(
         const guest = await Guest.findById(id).populate("owner");
         var allClients = await Client.find({});
         if (!guest) {
-            throw new AppError(404);
+            req.flash("error", `Couldn't find that guest.`);
+            return res.redirect("/guest-records");
         } else {
             var data = { title, user, guest, allClients };
             res.render(guestRecordsDir + "/edit", { ...data });
@@ -162,6 +166,7 @@ router.put(
             new: true,
         });
         if (guest) {
+            req.flash('success', 'Successfully updated guest.')
             res.redirect(`/guest-records/${guest._id}`);
         }
     })
@@ -176,6 +181,7 @@ router.delete(
         if (!deletedGuest) {
             throw new AppError(404);
         } else {
+            req.flash("success", "Successfully deleted guest.");
             res.redirect("/guest-records");
         }
     })

@@ -2,6 +2,11 @@
 
 <h2 class="display-6 text-center">Guest Record</h2>
 
+<!-- display any flash messages -->
+<div class="w-50 mx-auto text-center mt-3">
+    <%- include('../../../partials/flash') %>
+</div>
+
 <%- include('../../../partials/guest-card') %>
 
 <div class="container">
@@ -96,7 +101,10 @@
         <a href="/guest-records/" class="btn btn-outline-primary"><- All Guests</a>
     </div>
 
+
 </div> <!--end of container -->
+
+
 
 </div>
 <%- include('../../../partials/footer') %>

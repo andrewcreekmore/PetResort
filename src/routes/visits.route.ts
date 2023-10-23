@@ -47,7 +47,8 @@ router.get(
             .populate("services")
             .populate("servicesRendered");
         if (!visit) {
-            throw new AppError(404);
+            req.flash("error", `Couldn't find that visit.`);
+            return res.redirect("/guest-records");
         } else {
             const guest = await Guest.findById(visit.guest).populate("owner");
             var bUseAltImgPath = false;
@@ -68,10 +69,11 @@ router.get(
             .populate("owner")
             .populate("visits");
         if (guest && guest.visits) {
-            const sortedVisitsArr = guest.visits.sort(
-                (b, a) => a.number - b.number
-            );
-            var mostRecentVisitNumber = sortedVisitsArr[0].number;
+            var mostRecentVisitNumber = 0;
+            if (guest.visits.length) {
+                const sortedVisitsArr = guest.visits.sort((b, a) => a.number - b.number);
+                mostRecentVisitNumber = sortedVisitsArr[0].number;
+            }
             var bUseAltImgPath = true;
             var today = new Date();
             var tomorrow = dateFns.addDays(today, 1);
@@ -112,6 +114,7 @@ router.post(
                 throw new AppError(400);
             }
         }
+        req.flash('success', 'Successfully added new visit.')
         res.redirect(`/visit-records/${newVisit._id}`);
     })
 );
@@ -134,7 +137,8 @@ router.get(
         ]);
 
         if (!visit) {
-            throw new AppError(404);
+            req.flash("error", `Couldn't find that visit.`);
+            return res.redirect("/guest-records");
         } else {
             var data = { title, user, visit };
             res.render(visitRecordsDir + "/edit", { ...data });
@@ -152,6 +156,7 @@ router.put(
             new: true,
         });
         if (visit) {
+            req.flash("success", "Successfully updated visit.");
             res.redirect(`/guest-records/${visit.guest._id}`);
         }
     })
@@ -221,6 +226,7 @@ router.delete(
         if (!deletedVisit) {
             throw new AppError(404);
         } else {
+            req.flash("success", "Successfully deleted visit.");
             res.redirect(`/guest-records/${deletedVisit.guest._id}`);
         }
     })

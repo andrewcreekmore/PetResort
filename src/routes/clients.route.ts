@@ -79,6 +79,7 @@ router.post(
             throw new AppError(400);
         } else {
             await newClient.save();
+            req.flash('success', 'Successfully added new client.')
             res.redirect(`/client-records/${newClient._id}`);
         }
     })
@@ -107,7 +108,8 @@ router.get(
                 },
             ]);
         if (!singleClient) {
-            throw new AppError(404);
+            req.flash("error", `Couldn't find that client.`);
+            return res.redirect("/client-records");
         } else {
             var data = { title, user, singleClient };
             res.render(clientRecordsDir + "/details", { ...data });
@@ -138,7 +140,8 @@ router.get(
                 },
             ]);
         if (!singleClient) {
-            throw new AppError(404);
+            req.flash("error", `Couldn't find that client.`);
+            return res.redirect("/client-records");
         } else {
             var data = { title, user, singleClient, stateInfo };
             res.render(clientRecordsDir + "/edit", { ...data });
@@ -161,6 +164,7 @@ router.put(
             }
         );
         if (singleClient) {
+            req.flash('success', 'Successfully updated client.')
             res.redirect(`/client-records/${singleClient._id}`);
         }
     })
@@ -176,6 +180,7 @@ router.delete(
         if (!deletedClient) {
             throw new AppError(404);
         } else {
+            req.flash('success', 'Successfully deleted client.')
             res.redirect("/client-records");
         }
     })
