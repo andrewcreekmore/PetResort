@@ -2,16 +2,22 @@ import { Application, Request, Response, NextFunction } from "express";
 import express = require("express");
 import bodyParser = require("body-parser");
 import methodOverride = require('method-override');
-import mongoose = require('mongoose');
+//import mongoose = require('mongoose');
+import mongoose, { Document, PassportLocalModel } from "mongoose";
 import session = require('express-session');
-import flash = require('connect-flash')
+import flash = require('connect-flash');
+import passport = require('passport');
+//import localStrategy = require('passport-local')
+const localStrategy = require("passport-local");
 
 import AppError = require("./utils/appError");
 import { registerSchemas } from "./models/client.model";
-const guestRoutes =  require('./routes/guests.route')
+const Employee = require("./models/employee.model");
+const guestRoutes = require("./routes/guests.route")
 const adminRoutes = require('./routes/admin.route')
-const clientRoutes = require('./routes/clients.route')
-const visitRoutes = require('./routes/visits.route')
+const clientRoutes = require("./routes/clients.route")
+const visitRoutes = require("./routes/visits.route")
+
 
 /*
 ===========================================================================
@@ -71,6 +77,19 @@ class App {
 
 		this.app.use(session(sessionConfig));
 		this.app.use(flash());
+		this.app.use(passport.initialize());
+		this.app.use(passport.session());
+	
+		//passport.use(new localStrategy(Employee.authenticate()));
+		passport.use(Employee.createStrategy());
+		passport.serializeUser(Employee.serializeUser());
+		passport.deserializeUser(Employee.deserializeUser());
+
+		// store currently logged in employee user
+		this.app.use((req: Request, res: Response, next: NextFunction) => {
+			res.locals.currentUser = req.user;
+			next();
+		})
 
 		// store any flash messages in locals
 		const storeFlashMessages = function (req: Request, res: Response, next: NextFunction){
@@ -104,6 +123,35 @@ class App {
 			var data = { title, user, adminAccess };
 			res.render("employee/employeePortal", { ...data });
 		});
+
+		// employee login - form entry
+		this.app.get('/login', (req: Request, res: Response) => {
+			const title = "Pet Resort · Employee Login";
+			var user = "employee";
+			var data = { title, user };
+			res.render("employee/login", { ...data });
+		})
+
+		// employee login - authentication
+		this.app.post('/login', 
+			passport.authenticate(
+				'local', 
+				{ failureFlash: true, failureRedirect: '/admin/login'}
+				), (req: Request, res: Response) => {
+			req.flash('success', 'Welcome back!');
+        	res.redirect('/employee')
+		})
+
+		// employee logout
+		this.app.get('/logout', (req: Request, res: Response, next: NextFunction) => {
+			req.logout(function (err) {
+				if (err) {
+					return next(err);
+				}
+				req.flash("success", "Goodbye!");
+				res.redirect("/employee");
+			})
+		})
 
 		// customer portal
 		this.app.get("/customer", (req: Request, res: Response) => {

@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-sm">
+<nav class="navbar sticky-top navbar-expand-lg">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Pet Resort</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#empNavbar" aria-controls="empNavbar"aria-expanded="false" aria-label="Toggle navigation">
@@ -13,7 +13,14 @@
         <li><a class="nav-link" id="navbar_client-records" href="/client-records">Clients</a></li>
       </ul>
 
-      <button class="btn btn-outline-primary" id="loginbtn">Log In</button>
+     <% if (!currentUser) { %>
+          <a class="nav-link" href="/login">Log In</a>
+      <% } else { %>
+          <a class="nav-link" href="/logout">Log Out</a>
+      <% } %>
+
+      &nbsp;
+
     </div>
 
   </div>

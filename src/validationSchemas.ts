@@ -21,27 +21,6 @@ module.exports.guestValidationSchema =  Joi.object({
 	}).required(),
 });
 
-// module.exports.clientValidationSchema = Joi.object({
-// 	client: Joi.object({
-// 		firstName: Joi.string().required(),
-// 		lastName: Joi.string().required(),
-// 		phoneNumber: Joi.string().regex(/^[0-9]{10}$/).messages({'string.pattern.base': `Phone number must have 10 digits.`}).required(),
-// 		email: Joi.string().optional().allow(""),
-
-// 		address: Joi.object().keys({
-// 			streetAddress: Joi.string().optional().allow(""),
-// 			apartment: Joi.string().optional().allow(""),
-// 			city: Joi.string().optional().allow(""),
-// 			state: Joi.string().optional().allow(""),
-// 			zip: Joi.number().optional().allow(""),
-// 		}),
-
-// 		pets: Joi.array().sparse(),
-// 		accountCredit: Joi.number().min(0),
-// 		accountBalance: Joi.number().min(0),
-// 	}).required(),
-// });
-
 module.exports.clientValidationSchema = Joi.object({
 		client: Joi.object({
 			firstName: Joi.string().required(),
