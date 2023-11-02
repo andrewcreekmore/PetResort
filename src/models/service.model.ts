@@ -10,12 +10,10 @@ service.model.ts
 
 // create schema: service
 const ServiceSchema = new Schema({
-    petType: [
-        {
-            type: String,
-            required: true,
-        }
-    ],
+    petType: {
+		type: String,
+		required: true,
+	},
 	name: {
 		type: String,
 		required: true,
@@ -34,7 +32,7 @@ const ServiceSchema = new Schema({
 });
 
 interface IService {
-    petType: Types.Array<String>;
+    petType: string;
 	name: string;
 	price: number;
     description: string;
@@ -42,6 +40,12 @@ interface IService {
 }
 
 interface IServiceDoc extends IService, Document {}
+
+// full name virtual method
+ServiceSchema.virtual("formattedServiceType").get(function () {
+	var serviceType: string = this.serviceType;
+	return serviceType.charAt(0).toUpperCase() + serviceType.slice(1);
+});
 
 const Service = mongoose.model<IServiceDoc>("Service", ServiceSchema);
 

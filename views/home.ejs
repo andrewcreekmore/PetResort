@@ -1,12 +1,49 @@
-<%- include('partials/header') %>
+<%-// include('partials/header') %>
 
-<h1 class="display-1 text-center text-primary">Pet Resort</h1>
-<h2 class="display-6 text-center">boarding & grooming</h2>
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Resort &bullet; Home</title>
+    <link rel="stylesheet" href = "/css/bootstrap.min.css">
+    <link rel="stylesheet" href = "/css/home.css">
+</head>
 
-<div class="d-grid gap-2 col-6 mx-auto">
+<body class="d-flex text-center text-white bg-dark">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="mb-auto">
+            <div>
+                <%- include('partials/cust-navbar') %>
+            </div>
+        </header>
 
-    <button type="button" class="btn btn-primary" onclick = "window.location.href='/employee'">Employees</button>
-    <button type="button" class="btn btn-primary" onclick = "window.location.href='/customer'">Customers</button>
-</div>
+    <h1 class="display-1 text-center text-primary">Pet Resort</h1>
+    <h2 class="display-6 text-center">boarding & grooming</h2>
 
-<%- include('partials/footer') %>
+    <div class="d-grid gap-2 col-6 mx-auto">
+            <main class="px-3 text-center">
+                <p class="lead mt-3 mb-3"> Welcome to Pet Resort! <br>
+                <div class="row col-7 mx-auto">
+                    <a href="/customer" class="btn btn-lg btn-secondary font-weight-bold border-white mt-3">Our Services</a>
+                </div>
+                <div class="row col-7 mx-auto">
+                    <a href="/employee" class="btn btn-lg btn-secondary font-weight-bold border-white mt-3">Employee Portal</a>
+                </div>
+            </main>
+    </div>
+
+
+    <footer class="mt-auto text-white-50">
+        <p>&copy; 2023 Pet Resort </p>
+    </footer>
+
+
+    </div>
+
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
+
+    </body>
+
+</html>

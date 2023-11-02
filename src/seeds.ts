@@ -3,6 +3,7 @@ import { Guest, IGuestDoc } from "./models/guest.model";
 import { Client, IClientDoc } from "./models/client.model";
 import { Visit, IVisitDoc } from "./models/visit.model";
 import { Service, IServiceDoc } from "./models/service.model";
+import Employee = require("./models/employee.model");
 
 
 /*
@@ -19,6 +20,25 @@ connect().catch((err) => console.log(err));
 async function connect() {
     await mongoose.connect("mongodb://127.0.0.1:27017/petResort");
 }
+
+const seedEmployees = [
+	{
+		firstName: "GLaDOS",
+		lastName: "_",
+		role: "Owner",
+		adminAccess: true,
+		username: 'admin',
+		password: 'admin',
+		phoneNumber: 5707903431,
+		email: "admin@aperture.com",
+		address: {
+			streetAddress: "2545 High Meadow Lane",
+			city: "Hazleton",
+			state: "Pennsylvania",
+			zip: 18201,
+		},
+	},
+];
 
 const seedGuests = [
 	{
@@ -157,49 +177,63 @@ const seedClients = [
 
 const seedServices = [
 	{
-		petType: ["cat"],
+		petType: "cat",
 		name: "Nail Trim",
 		price: 10,
 		description: "",
 		serviceType: "basic",
 	},
 	{
-		petType: ["dog"],
+		petType: "dog",
 		name: "Nail Grind & Trim",
 		price: 15,
 		description: "",
 		serviceType: "basic",
 	},
 	{
-		petType: ["cat", "dog"],
+		petType: "cat",
 		name: "Haircut",
 		price: 10,
 		description: "",
 		serviceType: "basic",
 	},
 	{
-		petType: ["cat", "dog"],
+		petType: "dog",
+		name: "Haircut",
+		price: 15,
+		description: "",
+		serviceType: "basic",
+	},
+	{
+		petType: "cat",
 		name: "Ear Cleaning",
 		price: 10,
 		description: "",
 		serviceType: "basic",
 	},
 	{
-		petType: ["cat"],
+		petType: "dog",
+		name: "Ear Cleaning",
+		price: 15,
+		description: "",
+		serviceType: "basic",
+	},
+	{
+		petType: "cat",
 		name: "Bath & Brush",
 		price: 10,
 		description: "",
 		serviceType: "basic",
 	},
 	{
-		petType: ["dog"],
+		petType: "dog",
 		name: "Bath & Brush",
 		price: 15,
 		description: "",
 		serviceType: "basic",
 	},
 	{
-		petType: ["cat"],
+		petType: "cat",
 		name: "Full Service",
 		price: 30,
 		description:
@@ -207,7 +241,7 @@ const seedServices = [
 		serviceType: "package",
 	},
 	{
-		petType: ["dog"],
+		petType: "dog",
 		name: "Full Service",
 		price: 40,
 		description:
@@ -216,25 +250,47 @@ const seedServices = [
 	},
 	// add-on service packages
 	{
-		petType: ["dog"],
+		petType: "dog",
 		name: "Deluxe",
 		price: 10,
 		description:
 			"Base service PLUS premium shampoo & conditioner, teeth brushing & breath freshener, cologne spritz, and bandana or bow.",
-		serviceType: "addon",
+		serviceType: "add-on",
 	},
 	{
-		petType: ["dog"],
+		petType: "dog",
 		name: "Luxury",
 		price: 10,
 		description:
 			"Deluxe service PLUS luxury shampoo, conditioner & spritz, paw & nose balm and premium face wash.",
-		serviceType: "addon",
+		serviceType: "add-on",
 	},
 ];
 
 // function to seed database with initial data
 const seedDB = async () => {
+
+	// delete all employees
+	await Employee.deleteMany({});
+	// add seedEmployees
+	for (var i = 0; i < seedEmployees.length; i++) {
+		const newEmployee = new Employee({
+			firstName: seedEmployees[i].firstName,
+			lastName: seedEmployees[i].lastName,
+			username: seedEmployees[i].username,
+			role: seedEmployees[i].role,
+			adminAccess: seedEmployees[i].adminAccess,
+			phoneNumber: seedEmployees[i].phoneNumber,
+			email: seedEmployees[i].email,
+			address: seedEmployees[i].address,
+		});
+
+		// hash + salt password & save, via register func
+		const password = seedEmployees[i].password;
+		await Employee.register(newEmployee, password);
+	}
+
+	console.log(`Added ${seedEmployees.length} employee records.`);
 
 	// delete all clients
 	await Client.deleteMany({});

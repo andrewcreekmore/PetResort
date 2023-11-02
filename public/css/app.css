@@ -9,3 +9,6 @@ thead {
     object-fit: cover;
 }
 
+.cover-container {
+  max-width: 75vw;
+}

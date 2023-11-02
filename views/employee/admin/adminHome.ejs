@@ -2,6 +2,8 @@
 
 <h2 class="display-6 text-center">Admin Tools</h2>
 
+<% console.log(activeTab) %>
+
 <div class="container mt-3">
     <!-- <div class="row"></div> -->
 
@@ -18,9 +20,177 @@
         <%- include('../../partials/flash') %>
     </div>
 
-    <!-- options -->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <% if (activeTab === 'dogServices') { %>
+        active
+        <% } %>" id="dog-services-tab" data-bs-toggle="tab" data-bs-target="#dog-services" type="button" role="tab" aria-controls="dog-services" aria-selected="true">Dog Services</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <% if (activeTab === 'catServices') { %>
+        active
+        <% } %>" id="cat-services-tab" data-bs-toggle="tab" data-bs-target="#cat-services" type="button" role="tab" aria-controls="cat-services" aria-selected="false">Cat Services</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <% if (activeTab === 'employees') { %>
+        active
+        <% } %>" id="employees-tab" data-bs-toggle="tab" data-bs-target="#employees" type="button" role="tab" aria-controls="employees" aria-selected="false">Employees</button>
+  </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+
+  <div class="tab-pane fade <% if (activeTab === 'dogServices') { %>
+        show active
+    <% } %>" id="dog-services" role="tabpanel" aria-labelledby="dog-services-tab">
+        <div class="table-responsive" style="max-height: 600px">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 20%;">Name</th>
+                        <th scope="col" style="width: 15%;">Type</th>
+                        <th scope="col" style="width: 15%;">Price</th>
+                        <th scope="col" style="width: 35%;">Description</th>
+                        <th style="width: 15%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <% for(let service of allServices) { %>
+                        <% if (service.petType === 'dog') {%>
+
+                        <tr>
+                            <td valign="middle"><%= service.name %></td>
+                            <td valign="middle"><%= service.formattedServiceType %></td>
+                            <td valign="middle">$<%= service.price %></td>
+                            <td valign="middle"><%= service.description %>
+                            <td valign="middle" style="text-align: right;">
+                                <a href="/admin/service-records/<%=service._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> 
+                            </td>
+                        </tr>
+                        <% } %>
+                    <% } %>
+
+                </tbody>
+            </table>
+        </div>
+
     <div class="mx-auto mt-3 text-center">
-        <a href="/admin/registerEmployee" class="btn btn-primary">Register New Employee</a>
+        <div class="row mb-3">
+            <div class="col-4 mx-auto text-center">
+                <a href="/admin/service-records/new?petType=dog" class="btn btn-primary">Add New Service</a>
+            </div>
+        </div>
+    </div>
+
+    </div> <!-- end of dog services-tab-->
+
+  <div class="tab-pane fade <% if (activeTab === 'catServices') { %>
+        show active
+    <% } %> " id="cat-services" role="tabpanel" aria-labelledby="cat-services-tab">
+        <div class="table-responsive" style="max-height: 600px">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 20%">Name</th>
+                        <th scope="col" style="width: 15%">Type</th>
+                        <th scope="col" style="width: 15%">Price</th>
+                        <th scope="col" style="width: 35%">Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <% for(let service of allServices) { %>
+                        <% if (service.petType ==='cat') {%>
+
+                        <tr>
+                            <td><%= service.name %></td>
+                            <td><%= service.formattedServiceType %></td>
+                            <td>$<%= service.price %></td>
+                            <td><%= service.description %>
+                            <td style="text-align: right;">
+                                <a href="/admin/service-records/<%=service._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> 
+                            </td>
+                        </tr>
+                        <% } %>
+                    <% } %>
+
+                </tbody>
+            </table>
+        </div>
+
+    <div class="mx-auto mt-3 text-center">
+        <div class="row mb-3">
+            <div class="col-4 mx-auto text-center">
+                <a href="/admin/service-records/new?petType=cat" class="btn btn-primary">Add New Service</a>
+            </div>
+        </div>
+    </div>
+
+    </div> <!-- end of cat services-tab-->
+
+  <div class="tab-pane fade <% if (activeTab === 'employees') { %>
+        show active
+    <% } %> " id="employees" role="tabpanel" aria-labelledby="employees-tab">
+
+        <div class="table-responsive" style="max-height: 600px">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Admin Access</th>
+                    <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <% for(let employee of allEmployees) { %>
+
+                    <tr>
+                    <td><a href="/employee-records/<%= employee._id %>"><%= employee.fullName %></a></td>
+                    <td><%= employee.role %></td>
+                    <td><%= employee.username %></td>
+                    <td><%= employee.adminAccess %></td>
+                    </tr>
+
+                    <% } %>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mx-auto mt-3 text-center">
+            <div class="row mb-3">
+                <div class="col-4 mx-auto text-center">
+                    <a href="/admin/employee-records/new" class="btn btn-primary">Register New Employee</a>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- end of employees-tab-->
+
+
+
+</div> <!-- end of tab-content -->
+
+        <!-- horizontal rule / divider -->
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-3">
+            </div>
+        </div> <!-- end of row -->
+
+        <div class="row">
+            <div class="col-3 mx-auto mb-3 text-center">
+                <a href="/logout" class="btn btn-outline-primary">Log Out</a>
+            </div>
+        </div>
+
+
     </div>
 
 </div> <!-- end of container-->

@@ -1,0 +1,115 @@
+<%- include('../../../partials/header') %>
+
+<h4 class="display-6 text-center mb-3">Add New Service</h4>
+
+<!-- horizontal rule / divider -->
+<div class="row">
+    <div class="col-5"></div>
+    <div class="col-2">
+        <hr class="mt-3">
+    </div>
+</div> <!-- end of row -->
+
+<div class="row mb-3"></div>
+
+<div class="container w-60">
+
+    <form class="validated-form align-items-center" action="/admin/service-records" method="POST" novalidate>
+
+    <!-- Service NAME -->
+    <div class="row">
+        <div class="col-1"></div> &emsp; &nbsp;
+        <div class="col-4 mb-3">
+            <label for="nameInput" class="form-label">Name</label>
+            <input type="text" class="form-control" name="service[name]" id="nameInput" aria-label="name" required>
+            <div id="validationNameFeedback" class="invalid-feedback">
+                Name is required.
+            </div>
+        </div>
+
+        <!-- PRICE -->
+        <div class="col-2 mb-3">
+        <label for="price" class="form-label">Price</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">$</span>
+                <input type="text" class="form-control" name="service[price]"  aria-label="price">
+            </div>
+        </div>
+
+        <!-- SERVICE TYPE -->
+        <div class="col-3 mb-3">
+        <label for="serviceTypeSelect" class="form-label">Service Type</label>
+            <select class="form-select" name="service[serviceType]" aria-label="serviceTypeSelect">
+            <option selected disabled>Choose...</option>
+            <option value="basic">Basic</option>
+            <option value="package">Package</option>
+            <option value="add-on">Add-on</option>
+            </select>
+        </div>
+
+    </div> <!--end of row -->
+
+    <div class="row">
+        <div class="col-1"></div> &emsp; &nbsp;
+
+        <!-- PET TYPE -->
+        <div class="col-2 mb-3">
+
+            <label for="guestType" class="form-label">Pet Type</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="service[petType]" id="petTypeOption1" value="cat" 
+                    <% if (petType === '"cat"') {  console.log('cat!')  %>
+                        checked
+                    <% } %> required>
+                <label class="form-check-label" for="petTypeCat">cat</label>
+            </div>   
+        
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="service[petType]" id="petTypeOption2" value="dog"
+                    <% if (petType === '"dog"') {  %>
+                        checked
+                    <% } %> required>
+                <label class="form-check-label" for="petTypeDog">dog</label>    
+                <div id="validationServerTypeFeedback" class="invalid-feedback">
+                    Pet type is required.
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-7 mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea rows="3" class="form-control" id="description" name="service[description]" ></textarea>
+        </div>
+
+    </div> <!--end of row -->
+
+</div> <!--  end of container -->
+
+<!-- horizontal rule / divider -->
+<div class="row">
+    <div class="col-5"></div>
+    <div class="col-2">
+        <hr class="mt-3">
+    </div>
+</div> <!-- end of row -->
+            
+<!-- SUBMIT/BACK BUTTONS -->
+<div class="row mb-3"></div>
+
+<div class="mx-auto mt-3 text-center">
+    <button type="submit" onclick="beforeSubmit()" class="btn btn-primary">Submit</button>
+    <a href="/admin" class="btn btn-outline-primary">Back</a>
+</div>
+
+</div>
+
+<%- include('../../../partials/footer') %>
+
+<script>
+        beforeSubmit = function(){
+
+            res.locals.activeTab = 'catServices';
+        }
+
+</script>

@@ -2,12 +2,10 @@ import { Application, Request, Response, NextFunction } from "express";
 import express = require("express");
 import bodyParser = require("body-parser");
 import methodOverride = require('method-override');
-//import mongoose = require('mongoose');
 import mongoose, { Document, PassportLocalModel } from "mongoose";
 import session = require('express-session');
 import flash = require('connect-flash');
 import passport = require('passport');
-//import localStrategy = require('passport-local')
 const localStrategy = require("passport-local");
 
 import AppError = require("./utils/appError");
@@ -17,6 +15,7 @@ const guestRoutes = require("./routes/guests.route")
 const adminRoutes = require('./routes/admin.route')
 const clientRoutes = require("./routes/clients.route")
 const visitRoutes = require("./routes/visits.route")
+const { storeReturnTo } = require('./middleware')
 
 
 /*
@@ -80,14 +79,14 @@ class App {
 		this.app.use(passport.initialize());
 		this.app.use(passport.session());
 	
-		//passport.use(new localStrategy(Employee.authenticate()));
 		passport.use(Employee.createStrategy());
 		passport.serializeUser(Employee.serializeUser());
 		passport.deserializeUser(Employee.deserializeUser());
 
-		// store currently logged in employee user
+		// store currently logged in employee user; activeTab value
 		this.app.use((req: Request, res: Response, next: NextFunction) => {
 			res.locals.currentUser = req.user;
+			res.locals.activeTab = req.session.activeTab;
 			next();
 		})
 
@@ -134,12 +133,18 @@ class App {
 
 		// employee login - authentication
 		this.app.post('/login', 
+			storeReturnTo, // save returnTo url value from session to res.locals
 			passport.authenticate(
 				'local', 
 				{ failureFlash: true, failureRedirect: '/admin/login'}
 				), (req: Request, res: Response) => {
 			req.flash('success', 'Welcome back!');
-        	res.redirect('/employee')
+			const redirectUrl = res.locals.returnTo;
+			if (redirectUrl) {
+				res.redirect(redirectUrl);
+			} else {
+				res.redirect('/employee')
+			}
 		})
 
 		// employee logout

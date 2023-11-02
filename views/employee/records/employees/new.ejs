@@ -1,4 +1,4 @@
-<%- include('../../partials/header') %>
+<%- include('../../../partials/header') %>
 
 <script src="https://unpkg.com/imask"></script>
 
@@ -16,10 +16,10 @@
 
     <!-- display any flash messages -->
     <div class="w-50 mx-auto text-center mt-3">
-        <%- include('../../partials/flash') %>
+        <%- include('../../../partials/flash') %>
     </div>
 
-    <form action="/admin/registerEmployee" method="POST" novalidate class="validated-form">
+    <form action="/admin/employee-records" method="POST" novalidate class="validated-form">
 
         <!-- FIRST and LAST NAME -->
         <div class="row">
@@ -38,6 +38,36 @@
                 <input type="text" class="form-control" name="employee[lastName]" id="lastNameInput" placeholder="Doe" aria-label="lastName" required>
                 <div id="validationLastNameFeedback" class="invalid-feedback">
                     Last name is required.
+                </div>
+            </div>
+        </div> <!--end of row -->
+
+        <!-- ROLE and ADMIN ACCESS -->
+        <div class="row">
+            <div class="col-3"></div>
+
+            <div class="col-3 mb-3">
+            <label for="roleSelect" class="form-label">Role</label>
+                <select class="form-select" name="employee[role]" aria-label="roleSelect">
+                <option selected disabled>Choose...</option>
+                <option value="Manager">Manager</option>
+                <option value="CSR">Customer Service</option>
+                </select>
+            </div>
+
+            <div class="col-4 mb-3">
+                <label for="adminAccess" class="form-label">Admin Access</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="employee[adminAccess]" id="adminAccessOption1" value="true" required>
+                    <label class="form-check-label" for="adminAccessOption1">Yes</label>
+                </div>   
+            
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="employee[adminAccess]" id="adminAccessOption2" value="false" required>
+                    <label class="form-check-label" for="adminAccessOption2">No</label>    
+                    <div id="validationServerAdminAccessFeedback" class="invalid-feedback">
+                        Admin Access is required.
+                    </div>
                 </div>
             </div>
         </div> <!--end of row -->
@@ -184,4 +214,4 @@
 
     </script>
 
-<%- include('../../partials/footer') %>
+<%- include('../../../partials/footer') %>

@@ -1,0 +1,148 @@
+<%- include('../../../partials/header') %>
+
+<h4 class="display-6 text-center mb-3">Edit Service</h4>
+
+<!-- horizontal rule / divider -->
+<div class="row">
+    <div class="col-5"></div>
+    <div class="col-2">
+        <hr class="mt-3">
+    </div>
+</div> <!-- end of row -->
+
+<div class="row mb-3"></div>
+
+<div class="container w-60">
+
+    <form id="serviceEditForm" class="validated-form align-items-center" action="/admin/service-records/<%=service._id%>?_method=PUT" method="POST" novalidate>
+
+    <!-- Service NAME -->
+    <div class="row">
+        <div class="col-1"></div> &emsp; &nbsp;
+        <div class="col-4 mb-3">
+            <label for="nameInput" class="form-label">Name</label>
+            <input type="text" class="form-control" name="service[name]" id="nameInput" value="<%= service.name %>" aria-label="name" required>
+            <div id="validationNameFeedback" class="invalid-feedback">
+                Name is required.
+            </div>
+        </div>
+
+        <!-- PRICE -->
+        <div class="col-2 mb-3">
+        <label for="price" class="form-label">Price</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">$</span>
+                <input type="text" class="form-control" name="service[price]" value="<%= service.price %>" aria-label="price">
+            </div>
+        </div>
+
+        <!-- SERVICE TYPE -->
+        <div class="col-3 mb-3">
+        <label for="serviceTypeSelect" class="form-label">Service Type</label>
+            <select class="form-select" name="service[serviceType]" aria-label="serviceTypeSelect">
+            <option selected disabled>Choose...</option>
+            <option value="basic" <% if (service.serviceType === 'basic') { %> selected <% } %> >Basic</option>
+            <option value="package" <% if (service.serviceType === 'package') { %> selected <% } %>>Package</option>
+            <option value="add-on" <% if (service.serviceType === 'add-on') { %> selected <% } %>>Add-on</option>
+            </select>
+        </div>
+
+    </div> <!--end of row -->
+
+    <div class="row">
+        <div class="col-1"></div> &emsp; &nbsp;
+
+        <!-- PET TYPE -->
+        <div class="col-2 mb-3">
+
+            <label for="guestType" class="form-label">Pet Type</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="service[petType]" id="petTypeOption1" value="cat" 
+                    <% if (service.petType ==='cat') { %>
+                        checked
+                    <% } %> required>
+                <label class="form-check-label" for="petTypeCat">cat</label>
+            </div>   
+        
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="service[petType]" id="petTypeOption2" value="dog"
+                    <% if (service.petType === 'dog') {  %>
+                        checked
+                    <% } %> required>
+                <label class="form-check-label" for="petTypeDog">dog</label>    
+                <div id="validationServerTypeFeedback" class="invalid-feedback">
+                    Pet type is required.
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-7 mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea rows="3" class="form-control" id="description" name="service[description]" ><%= service.description %></textarea>
+        </div>
+
+    </div> <!--end of row -->
+
+</div> <!--  end of container -->
+
+<!-- horizontal rule / divider -->
+<div class="row">
+    <div class="col-5"></div>
+    <div class="col-2">
+        <hr class="mt-3">
+    </div>
+</div> <!-- end of row -->
+            
+<!-- SUBMIT/REVERT/BACK BUTTONS -->
+<div class="row mb-3"></div>
+
+<div class="mx-auto mt-3 text-center">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-outline-primary">Revert Changes</button> 
+    <a href="/admin" class="btn btn-outline-primary">Back</a>
+</div>
+
+</form>
+
+<div class="mx-auto mt-3 text-center">
+<!-- delete service button -->
+    <button class="btn btn-outline-danger" id="serviceDeleteButton" data-bs-toggle="modal" data-bs-target="#deleteServiceModal">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
+    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+    </svg> Delete Service</a></button>
+</div>
+
+<!-- delete service Modal pop-up -->
+<div class="modal fade" id="deleteServiceModal" tabindex="-1" aria-labelledby="deleteServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><%=service.name%></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Permanently delete this Service?
+            <br>
+
+            </br>
+            </br>
+            </br>
+            </br>
+        </div>
+        <div class="modal-footer">
+            <form action="/admin/service-records/<%=service._id%>?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg> Delete</button>
+            </form>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<%- include('../../../partials/footer') %>

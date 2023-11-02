@@ -10,12 +10,11 @@
 </head>
 
 <body class="d-flex flex-column vh-100">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
     <% if(user === 'employee') { %>
         <%- include('emp-navbar') %>
     <% } else if(user === 'customer') { %>
-        <%- include('cust-navbar') %>
-    <% } else if(user === 'home') { %>
         <%- include('cust-navbar') %>
     <% } %>
 
