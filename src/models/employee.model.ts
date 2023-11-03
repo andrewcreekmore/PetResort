@@ -43,6 +43,12 @@ const EmployeeSchema = new mongoose.Schema({
 			type: Number,
 		},
 	},
+	resetPasswordToken: {
+		type: String,
+	},
+	resetPasswordExpires: {
+		type: Date,
+	},
 });
 
 // adds req. username, hash, and salt fields to schema, additional methods, etc
@@ -59,6 +65,8 @@ interface IEmployee {
 	username: string;
 	hash: string;
 	salt: string;
+	resetPasswordToken?: string;
+	resetPasswordExpires?: Date;
 }
 
 interface IEmployeeDoc extends IEmployee, mongoose.PassportLocalDocument {}
@@ -93,6 +101,9 @@ EmployeeSchema.virtual("formattedAddress").get(function () {
 // Employee.createIndexes();
 
 
+
+
 const Employee = mongoose.model<IEmployeeDoc>("Employee", EmployeeSchema);
 
 export = Employee;
+

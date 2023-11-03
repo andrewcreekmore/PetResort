@@ -2,11 +2,16 @@
 import express = require("express");
 import { Request, Response, NextFunction } from "express";
 import AppError = require("../utils/appError");
-import Employee = require("../models/employee.model");
+import Employee  = require('../models/employee.model')
+const { IEmployeeDoc } = require('../models/employee.model')
 import { Service } from "../models/service.model";
 import { stateInfo } from "../utils/staticData";
 import catchAsync = require("../utils/catchAsync");
 import passport = require("passport");
+import async = require('async');
+import nodemailer = require('nodemailer');
+import crypto = require('crypto');
+import { PassportLocalDocument, PassportLocalModel } from "mongoose";
 const { isLoggedIn, storeReturnTo, storeActiveTab } = require("../middleware");
 
 /*
@@ -23,16 +28,10 @@ const employeesDir = "employee/records/employees"
 var user = "employee";
 var adminAccess: boolean = true;
 
-
 // admin tools index
 router.get("/", catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const title = "Pet Resort · Admin";
-    //var activeTab =  res.locals.activeTab ? res.locals.activeTab : 'dogServices'
-    var activeTab = 'dogServices'
-    if (res.locals.activeTab) {
-        console.log(res.locals.activeTab)
-        activeTab = res.locals.activeTab
-    }
+    var activeTab =  res.locals.activeTab ? res.locals.activeTab : 'dogServices'
     const allServices = await Service.find({});
     const allEmployees = await Employee.find({});
     var data = {
@@ -45,6 +44,88 @@ router.get("/", catchAsync(async (req: Request, res: Response, next: NextFunctio
 		};
     res.render(adminDir + "/adminHome", { ...data });
 }));
+
+// EMP USER AUTH ROUTES
+
+// reset emp password - form entry (request email with link)
+router.get("/forgot", function (req: Request, res: Response) {
+    const title = "Pet Resort · Reset Password";
+    var data = { title, user };
+	res.render(adminDir + "/forgot", { ...data });
+});
+
+
+// reset emp password - send email to user
+router.post('/forgot', catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const employee: typeof IEmployeeDoc = await Employee.findOne({ email: req.body.email })
+    if (!employee) {
+        req.flash("error", "No account with that email address exists.");
+        return res.redirect("/admin/forgot");
+    } else {
+
+        var token = crypto.randomBytes(20).toString('hex')
+        employee.resetPasswordToken = token;
+		employee.resetPasswordExpires = Date.now() + 3600000; // 1 hr
+		await employee.save();
+
+        var smtpTransport = nodemailer.createTransport({
+					host: "smtp.zoho.com",
+					port: 465,
+					secure: true,
+					auth: {
+						user: "petresort@zohomail.com",
+						pass: process.env.ZOHOPW
+					},
+				});
+        var mailOptions = {
+            to: employee.email,
+            from: "petresort@zohomail.com",
+            subject: "Node.js Password Reset",
+            text:
+                "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
+                "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
+                "http://" +
+                req.headers.host +
+                "/admin/reset/" +
+                token +
+                "\n\n" +
+                "If you did not request this, please ignore this email and your password will remain unchanged.\n",
+        };
+
+        smtpTransport.verify(function (err, success) {
+            if (err) {
+            console.log(err);
+            } else {
+                console.log("Server is ready to take our messages");
+                smtpTransport.sendMail(mailOptions, function(err) {
+                console.log('mail sent!')
+                req.flash('success', 'An e-mail has been sent to ' + employee.email + ' with further instructions.');
+                res.redirect('/admin/forgot')
+            })
+            }
+        })
+    }
+}));
+
+// reset emp password - form entry (input new pw)
+router.get("/reset/:token", catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+	const employee = await Employee.findOne(
+        { resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } });
+
+    if (!employee) {
+        req.flash("error", "Password reset token is invalid or has expired.");
+        return res.redirect("/admin/forgot");
+    }
+    const title = "Pet Resort · Reset Password";
+    var token = req.params.token;
+    var data = { title, user, token };
+    //res.render(adminDir + "/reset", { token: req.params.token });
+    res.render(adminDir + "/reset", { ...data });
+}));
+						
+ 
+
+// EMPLOYEE CRUD ROUTES
 
 // registration of new employees - form entry
 router.get("/employee-records/new", (req: Request, res: Response) => {
@@ -74,6 +155,63 @@ router.post("/employee-records", // NEED TO ADD JOI VALIDATE EMPLOYEE FUNC ()
         }
 }))
 
+// employee records: view single record details
+router.get(
+	"/employee-records/:id",
+	catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+		const title = "Pet Resort · Employee Records";
+		var user = "employee";
+        req.session.activeTab = "employees";
+		const { id } = req.params;
+		const employee = await Employee.findById(id)
+			.populate("address")
+		if (!employee) {
+			req.flash("error", `Couldn't find that employee.`);
+			return res.redirect("/admin");
+		} else {
+			var data = { title, user, employee };
+			res.render(employeesDir + "/details", { ...data });
+		}
+	})
+);
+
+// employee records: update single record - form entry
+router.get(
+    "/employee-records/:id/edit",
+    catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const title = "Pet Resort · Employee Records";
+        var user = "employee";
+        req.session.activeTab = "employees";
+        const { id } = req.params;
+        const employee = await Employee.findById(id)
+        if (!employee) {
+            req.flash("error", `Couldn't find that employee.`);
+            
+            return res.redirect("/admin");
+        } else {
+            var data = { title, user, employee, stateInfo };
+            res.render(employeesDir + "/edit", { ...data });
+        }
+    })
+);
+
+// employee records: update single record - edit on server
+router.put(
+	"/employee-records/:id",
+	// NEED TO ADD JOI VALIDATE EMPLOYEEE FUNC
+	catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+		const { id } = req.params;
+		const employee = await Employee.findByIdAndUpdate(id, req.body.employee, {
+			runValidators: true,
+			new: true,
+		});
+		if (employee) {
+			req.flash("success", "Successfully updated employee.");
+			res.redirect(`/employee-records/${employee._id}`);
+		}
+	})
+);
+
 // employee records: delete single record
 router.delete(
     "/employee-records/:id",
@@ -97,6 +235,7 @@ router.get("/service-records/new", (req: Request, res: Response) => {
     const title = "Pet Resort · Admin";
     const petType = JSON.stringify(req.query.petType);
     var data = { title, user, adminAccess, petType };
+    req.session.activeTab = petType === "cat" ? "catServices" : "dogServices";
     res.render(servicesDir + "/new", { ...data });
 })
 
@@ -130,6 +269,7 @@ router.get(
             return res.redirect("/admin");
         } else {
             var data = { title, user, service };
+            req.session.activeTab = service.petType === "cat" ? "catServices" : "dogServices";
             res.render(servicesDir + "/edit", { ...data });
         }
     })

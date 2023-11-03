@@ -2,8 +2,6 @@
 
 <h2 class="display-6 text-center">Admin Tools</h2>
 
-<% console.log(activeTab) %>
-
 <div class="container mt-3">
     <!-- <div class="row"></div> -->
 
@@ -140,6 +138,7 @@
                     <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Role</th>
+                    <th scope="col">Phone</th>
                     <th scope="col">Username</th>
                     <th scope="col">Admin Access</th>
                     <th></th>
@@ -150,8 +149,9 @@
                     <% for(let employee of allEmployees) { %>
 
                     <tr>
-                    <td><a href="/employee-records/<%= employee._id %>"><%= employee.fullName %></a></td>
+                    <td><a href="/admin/employee-records/<%= employee._id %>"><%= employee.fullName %></a></td>
                     <td><%= employee.role %></td>
+                    <td><%= employee.formattedPhone %></td>
                     <td><%= employee.username %></td>
                     <td><%= employee.adminAccess %></td>
                     </tr>
@@ -196,3 +196,7 @@
 </div> <!-- end of container-->
 
 <%- include('../../partials/footer') %>
+
+<script>
+    
+</script>

@@ -1,0 +1,56 @@
+<%- include('../../partials/header') %>
+
+<h2 class="display-6 text-center">Reset Password</h2>
+
+<div class="container mt-3">
+    <!-- <div class="row"></div> -->
+
+    <!-- horizontal rule / divider -->
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-3">
+        </div>
+    </div> <!-- end of row -->
+
+    <!-- display any flash messages -->
+    <div class="w-50 mx-auto text-center mt-3">
+        <%- include('../../partials/flash') %>
+    </div>
+
+
+    <form action="#" method="POST">
+
+        <div class="col-sm-6 offset-sm-8 mx-auto">
+            <div class="row">
+                <div class="mb-3">
+                    <label for="emailInput" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" id="emailInput" placeholder="" aria-label="email" required>
+                    <div id="validationServerEmailFeedback" class="invalid-feedback">
+                        Email is required.
+                    </div>
+                </div>
+            </div> <!-- end of row-->
+        </div>
+
+
+
+        <!-- horizontal rule / divider -->
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-3">
+            </div>
+        </div> <!-- end of row -->
+
+        <div class="mt-3 text-center">
+            <button type="submit" class="btn btn-primary">Submit</button> 
+            <a href="/admin" class="btn btn-outline-primary">Back</a>
+        </div>
+    </form>
+
+
+
+</div> <!-- end of container-->
+
+<%- include('../../partials/footer') %>

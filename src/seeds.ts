@@ -4,6 +4,7 @@ import { Client, IClientDoc } from "./models/client.model";
 import { Visit, IVisitDoc } from "./models/visit.model";
 import { Service, IServiceDoc } from "./models/service.model";
 import Employee = require("./models/employee.model");
+//import { Employee } from "models/employee.model";
 
 
 /*

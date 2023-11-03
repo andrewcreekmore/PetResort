@@ -1,0 +1,210 @@
+<%- include('../../../partials/header') %>
+
+<script src="https://unpkg.com/imask"></script>
+
+<h2 class="display-6 text-center">Edit employee record</h2>
+
+<div class="container mt-3">
+
+    <!-- horizontal rule / divider -->
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-3">
+        </div>
+    </div> <!-- end of row -->
+
+    <!-- display any flash messages -->
+    <div class="w-50 mx-auto text-center mt-3">
+        <%- include('../../../partials/flash') %>
+    </div>
+
+    <form action="/admin/employee-records" method="POST" novalidate class="validated-form">
+
+        <!-- FIRST and LAST NAME -->
+        <div class="row">
+            <div class="col-2"></div>
+
+            <div class="col-4 mb-3">
+                <label for="firstNameInput" class="form-label">First Name</label>
+                <input type="text" class="form-control" name="employee[firstName]" value="<%= employee.firstName %>" id="firstNameInput" placeholder="John" aria-label="firstName" required>
+                <div id="validationFirstNameFeedback" class="invalid-feedback">
+                    First name is required.
+                </div>
+            </div>
+
+            <div class="col-4 mb-3">
+                <label for="lastNameInput" class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="employee[lastName]" value="<%= employee.lastName %>" id="lastNameInput" placeholder="Doe" aria-label="lastName" required>
+                <div id="validationLastNameFeedback" class="invalid-feedback">
+                    Last name is required.
+                </div>
+            </div>
+        </div> <!--end of row -->
+
+        <!-- ROLE and ADMIN ACCESS -->
+        <div class="row">
+            <div class="col-3"></div>
+
+            <div class="col-3 mb-3">
+            <label for="roleSelect" class="form-label">Role</label>
+                <select class="form-select" name="employee[role]" aria-label="roleSelect">
+                <option disabled>Choose...</option>
+                <option value="Manager" <% if (employee.role === 'manager') { %>
+                    selected
+                    <% } %>>Manager</option>
+                <option value="CSR" <% if (employee.role === 'CSR') { %>
+                    selected
+                    <% } %>>Customer Service</option>
+                </select>
+            </div>
+
+            <div class="col-4 mb-3">
+                <label for="adminAccess" class="form-label">Admin Access</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="employee[adminAccess]" id="adminAccessOption1" value="true" required <% if (employee.adminAccess) { %>
+                    checked
+                    <% } %>>
+                    <label class="form-check-label" for="adminAccessOption1">Yes</label>
+                </div>   
+            
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="employee[adminAccess]" id="adminAccessOption2" value="false" required <% if (!employee.adminAccess) { %>
+                    selected
+                    <% } %>>
+                    <label class="form-check-label" for="adminAccessOption2">No</label>    
+                    <div id="validationServerAdminAccessFeedback" class="invalid-feedback">
+                        Admin Access is required.
+                    </div>
+                </div>
+            </div>
+        </div> <!--end of row -->
+
+        <!-- PHONE and EMAIL-->
+            <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4 mb-3">
+                <label for="phoneInput" class="form-label">Phone Number</label>
+                <input type="text" class="form-control" name="employee[phoneNumber]" value="<%= employee.phoneNumber %>" id="phoneInput" placeholder="(214) 555-9999" aria-label="phone" required>
+                <div id="validationPhoneFeedback" class="invalid-feedback">
+                    Phone number is required.
+                </div>
+            </div>
+    
+            <div class="col-4 mb-3">
+                <label for="emailInput" class="form-label">Email</label>
+                <input type="email" class="form-control" name="employee[email]" value="<%= employee.email %>" id="emailInput" placeholder="user@email.com" aria-label="email" required>
+                <div id="validationServerEmailFeedback" class="invalid-feedback">
+                    Email is required.
+                </div>
+            </div>
+
+        </div> <!-- end of row-->
+
+        <div class="row">
+            <!-- ADDRESS: street address -->
+            <div class="col-2"></div>
+            
+            <div class="col-8 mb-3">
+                <label for="streetAddressInput" class="form-label">Address</label>
+                <input type="text" class="form-control" name="employee[address][streetAddress]" value="<%= employee.address.streetAddress %>" id="streetAddressInput" placeholder="123 Boydstun St" aria-label="streetAddress" required>
+                <div id="validationAddress1Feedback" class="invalid-feedback">
+                    Street address is required.
+                </div>
+            </div>
+
+        </div> <!--end of row -->
+
+        <div class="row">
+            <!-- ADDRESS 2:  Apt? -->
+            <div class="col-2"></div>
+
+            <div class="col-8 mb-3">
+                <label for="apartmentInput" class="form-label">Address 2 </label>
+                <input type="text" class="form-control" name="employee[address][apartment]" 
+                <% if (employee.address.apartment) { %>
+                    value="<%= employee.address.apartment %>"
+                    <% } %> id="apartmentInput" placeholder="Apt, suite, or floor" aria-label="apartment">
+            </div>
+            </div> <!--end of row -->
+
+        <div class="row">
+            <!-- ADDRESS: city, state, zip -->
+            <div class="col-2"></div>
+            
+            <div class="col-4 mb-3">
+                <label for="cityInput" class="form-label">City</label>
+                <input type="text" class="form-control" name="employee[address][city]" id="cityInput" 
+                value="<%= employee.address.city %>" aria-label="city" required>
+                <div id="validationCityFeedback" class="invalid-feedback">
+                    City is required.
+                </div>
+            </div>
+
+            <div class="col-2 mb-3">
+                <label for="stateInput" class="form-label">State</label>
+                <select class="form-select" id="stateInput" name="employee[address][state]" required>
+
+                    <option disabled value="">Choose...</option>
+                    <% for (i = 0; i < stateInfo.length; i++) { %>
+                         <option <% if (employee.address.state === stateInfo[i].name) { %>
+                                selected
+                                <% } %>
+                        ><%= stateInfo[i].name %></option>
+                        <% } %>
+                    
+                </select>
+                <div id="validationStateFeedback" class="invalid-feedback">
+                    State is required.
+                </div>
+            </div>
+
+            <div class="col-2 mb-3">
+                <label for="zipInput" class="form-label">Zip</label>
+                <input type="text" class="form-control" name="employee[address][zip]" id="zipInput" 
+                value="<%= employee.address.zip %>" aria-label="zip" required>
+                <div id="validationZipFeedback" class="invalid-feedback">
+                    Zip code is required.
+                </div>
+            </div>
+
+
+        </div> <!-- end of row-->
+
+        <!-- horizontal rule / divider -->
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-3">
+            </div>
+        </div> <!-- end of row -->
+
+        <div class="row mb-3"></div>
+
+        <div class="mx-auto mt-3 text-center">
+            <button type="submit" class="btn btn-primary" onclick="beforeSubmit()">Submit</button> 
+            <a href="/admin" class="btn btn-outline-primary">Back</a>
+        </div>
+
+    </form>
+
+</div> <!-- end of container-->
+
+    <script>
+
+        // input mask for tel input
+        const element = document.getElementById('phoneInput');
+        const maskOptions = {
+            mask: '(000) 000-0000'
+        };
+
+        const phoneMask = IMask(element, maskOptions);
+
+        beforeSubmit = function(){
+            // unmask phoneInput
+            document.getElementById('phoneInput').value = phoneMask.unmaskedValue;
+        }
+
+    </script>
+
+<%- include('../../../partials/footer') %>
