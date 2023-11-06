@@ -1,4 +1,5 @@
 import mongoose = require("mongoose");
+import { transpileModule } from "typescript";
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const EmployeeSchema = new mongoose.Schema({
@@ -25,6 +26,7 @@ const EmployeeSchema = new mongoose.Schema({
 	email: {
 		type: String,
 		unique: true,
+		required: true,
 	},
 	address: {
 		streetAddress: {
@@ -60,7 +62,7 @@ interface IEmployee {
 	role: string;
 	adminAccess?: boolean;
 	phoneNumber: number;
-	email?: string;
+	email: string;
 	address?: object;
 	username: string;
 	hash: string;

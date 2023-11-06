@@ -1,6 +1,6 @@
 <%- include('../../partials/header') %>
 
-<h2 class="display-6 text-center">Reset Password</h2>
+<h2 class="display-6 text-center">Reset <%= employee.fullName %>'s Password</h2>
 
 <div class="container mt-3">
     <!-- <div class="row"></div> -->
@@ -19,24 +19,26 @@
     </div>
 
 
-    <form action="/admin/forgot" method="POST">
+    <form action="/admin/resetDirect/<%= employee._id %>" method="POST" novalidate class="validated-form">
 
-        <div class="col-sm-6 offset-sm-8 mx-auto">
+        <div class="col-sm-5 offset-sm-8 mx-auto">
             <div class="row">
                 <div class="mb-3">
-                    <label for="emailInput" class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" id="emailInput" placeholder="" aria-label="email" required>
-                    <div id="validationServerEmailFeedback" class="invalid-feedback">
-                        Email is required.
+                    <input type="password" class="form-control" name="password" id="passwordInput" placeholder="New password" aria-label="password" required>
+                    <div id="validationServerPasswordFeedback" class="invalid-feedback">
+                        New password is required.
                     </div>
                 </div>
             </div> <!-- end of row-->
-        </div>
 
-        <div class="col-sm-6 mx-auto">
             <div class="row">
-                <p class="text-muted">If an account with this address exists, an email will be sent with further instructions.</p>
-            </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="passwordConfirm" id="passwordConfirmInput" placeholder="Confirm new password" aria-label="passwordConfirm" required>
+                    <div id="validationServerPasswordFeedback" class="invalid-feedback">
+                        Password confirmation is required.
+                    </div>
+                </div>
+            </div> <!-- end of row-->
         </div>
 
         <!-- horizontal rule / divider -->
@@ -49,7 +51,7 @@
 
         <div class="mt-3 text-center">
             <button type="submit" class="btn btn-primary">Submit</button> 
-            <a href="/admin" class="btn btn-outline-primary">Back</a>
+            <a href="/admin/employee-records/<%= employee._id %>" class="btn btn-outline-primary">Back</a>
         </div>
     </form>
 

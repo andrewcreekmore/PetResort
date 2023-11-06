@@ -19,21 +19,27 @@
     </div>
 
 
-    <form action="#" method="POST">
+    <form action="/admin/reset/<%= token %>" method="POST" novalidate class="validated-form">
 
-        <div class="col-sm-6 offset-sm-8 mx-auto">
+        <div class="col-sm-5 offset-sm-8 mx-auto">
             <div class="row">
                 <div class="mb-3">
-                    <label for="emailInput" class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" id="emailInput" placeholder="" aria-label="email" required>
-                    <div id="validationServerEmailFeedback" class="invalid-feedback">
-                        Email is required.
+                    <input type="password" class="form-control" name="password" id="passwordInput" placeholder="New password" aria-label="password" required>
+                    <div id="validationServerPasswordFeedback" class="invalid-feedback">
+                        New password is required.
+                    </div>
+                </div>
+            </div> <!-- end of row-->
+
+            <div class="row">
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="passwordConfirm" id="passwordConfirmInput" placeholder="Confirm new password" aria-label="passwordConfirm" required>
+                    <div id="validationServerPasswordFeedback" class="invalid-feedback">
+                        Password confirmation is required.
                     </div>
                 </div>
             </div> <!-- end of row-->
         </div>
-
-
 
         <!-- horizontal rule / divider -->
         <div class="row">

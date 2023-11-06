@@ -54,7 +54,6 @@ router.get("/forgot", function (req: Request, res: Response) {
 	res.render(adminDir + "/forgot", { ...data });
 });
 
-
 // reset emp password - send email to user
 router.post('/forgot', catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const employee: typeof IEmployeeDoc = await Employee.findOne({ email: req.body.email })
@@ -80,7 +79,7 @@ router.post('/forgot', catchAsync(async (req: Request, res: Response, next: Next
         var mailOptions = {
             to: employee.email,
             from: "petresort@zohomail.com",
-            subject: "Node.js Password Reset",
+            subject: "PetResort Employee Password Reset",
             text:
                 "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
                 "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
@@ -96,9 +95,9 @@ router.post('/forgot', catchAsync(async (req: Request, res: Response, next: Next
             if (err) {
             console.log(err);
             } else {
-                console.log("Server is ready to take our messages");
+                //console.log("Server is ready to take our messages");
                 smtpTransport.sendMail(mailOptions, function(err) {
-                console.log('mail sent!')
+                //console.log('mail sent!')
                 req.flash('success', 'An e-mail has been sent to ' + employee.email + ' with further instructions.');
                 res.redirect('/admin/forgot')
             })
@@ -119,11 +118,142 @@ router.get("/reset/:token", catchAsync(async (req: Request, res: Response, next:
     const title = "Pet Resort · Reset Password";
     var token = req.params.token;
     var data = { title, user, token };
-    //res.render(adminDir + "/reset", { token: req.params.token });
     res.render(adminDir + "/reset", { ...data });
 }));
 						
- 
+// reset emp password - edit on server
+router.post('/reset/:token', catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const employee = await Employee.findOne({
+			resetPasswordToken: req.params.token,
+			resetPasswordExpires: { $gt: Date.now() },
+		});
+    if (!employee) {
+        req.flash('error', 'Password reset token is invalid or has expired.');
+        return res.redirect('back');
+    }
+    if (req.body.password === req.body.passwordConfirm) {
+			employee.setPassword(req.body.password, function() {
+                employee.resetPasswordToken = undefined;
+                employee.resetPasswordExpires = undefined;
+                // save updated pw + login user
+                employee.save();
+                req.login(employee, (err) => {
+                    if (err) return next(err);
+                });
+
+                // send email confirmation of pw change
+                var smtpTransport = nodemailer.createTransport({
+                    host: "smtp.zoho.com",
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: "petresort@zohomail.com",
+                        pass: process.env.ZOHOPW,
+                    },
+                });
+                var mailOptions = {
+                    to: employee.email,
+                    from: "petresort@zohomail.com",
+                    subject: "Your password has been updated",
+                    text:
+                        "Hello,\n\n" +
+                        "This is a confirmation that the password for your account " +
+                        employee.email +
+                        " has just been changed.\n",
+                };
+                smtpTransport.verify(function (err, success) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        //console.log("Server is ready to take our messages");
+                        smtpTransport.sendMail(
+                            mailOptions,
+                            function (err) {
+                                //console.log("mail sent!");
+                                req.flash(
+                                    "success",
+                                    "Your password has been successfully updated."
+                                );
+                                res.redirect("/employee");
+                            }
+                        );
+                    }
+                });
+            });
+		} else {
+			req.flash("error", "Passwords do not match.");
+			return res.redirect("back");
+		}
+})) 
+
+// reset emp password DIRECTLY (from admin tools emp record) - form entry
+router.get('/resetDirect/:id', catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const employee: typeof IEmployeeDoc = await Employee.findById(id);
+    if (!employee) {
+        req.flash('error', 'Employee not found.');
+        return res.redirect(`/admin/employee-records/${id}`);
+    } else {
+			const title = "Pet Resort · Reset Password";
+			var data = { title, user, employee };
+			res.render(adminDir + "/resetDirect", { ...data });
+		}
+}))
+
+// reset emp password DIRECTLY (from admin tools emp record) - edit on server
+router.post('/resetDirect/:id', catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const employee: typeof IEmployeeDoc = await Employee.findById(id);
+    if (!employee) {
+        req.flash("error", "Employee not found.");
+        return res.redirect(`/admin/employee-records/${id}`);
+    }
+    if (req.body.password === req.body.passwordConfirm) {
+        // call setPassword with cb func
+        employee.setPassword(req.body.password, function() {
+            // save updated pw
+            employee.save();
+            // send email confirmation of pw change
+            var smtpTransport = nodemailer.createTransport({
+                host: "smtp.zoho.com",
+                port: 465,
+                secure: true,
+                auth: {
+                    user: "petresort@zohomail.com",
+                    pass: process.env.ZOHOPW,
+                },
+            });
+            var mailOptions = {
+                to: employee.email,
+                from: "petresort@zohomail.com",
+                subject: "Your password has been updated",
+                text:
+                    "Hello,\n\n" +
+                    "This is a confirmation that the password for your account " +
+                    employee.email +
+                    " has just been changed.\n",
+            };
+            smtpTransport.verify(function (err, success) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    //console.log("Server is ready to take our messages");
+                    smtpTransport.sendMail(mailOptions, function (err) {
+                        //console.log("mail sent!");
+                        req.flash(
+                            "success",
+                            employee.fullName + "'s password has been successfully updated."
+                        );
+                        res.redirect("/employee");
+                    });
+                }
+            });
+        });
+		} else {
+			req.flash("error", "Passwords do not match.");
+			return res.redirect("back");
+		}
+}))
 
 // EMPLOYEE CRUD ROUTES
 
@@ -207,7 +337,7 @@ router.put(
 		});
 		if (employee) {
 			req.flash("success", "Successfully updated employee.");
-			res.redirect(`/employee-records/${employee._id}`);
+			res.redirect(`/admin/employee-records/${employee._id}`);
 		}
 	})
 );

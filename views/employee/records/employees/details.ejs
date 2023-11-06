@@ -20,24 +20,20 @@
 
                         <div class="card-body">
                             <h3 class="card-title"><%= employee.fullName %></h3>
-                            <h6 class="card-subtitle mb-2 text-muted"><%= employee.formattedPhone %> 
-                                <% if (employee.email) { %> 
-                                    &bullet;
-                                <% } %> 
-                            <%= employee.email %> </h6>
+                            <h6 class="card-subtitle mb-2 text-muted"><%= employee.role %>  </h6>
                             <!-- <br></br> -->
-                            <ul class="list-group list-group-flush">
+                            <ul class="list-group list-group-flush mb-3">
 
-                                <li class="list-group-item"><i>Role: &emsp; &nbsp; </i> <%= employee.role %></li>
+                                <li class="list-group-item"><i>Email: &emsp;  </i> <%= employee.email %></li>
+                                <li class="list-group-item"><i>Phone: &nbsp; &nbsp; </i> <%= employee.formattedPhone %> </li>
                                 <li class="list-group-item"><i>Address: &nbsp; </i> 
                                     <% if (employee.address.streetAddress) { %>
                                         <%= employee.formattedAddress%>
-                                    <br>  &nbsp; &emsp; &emsp; &emsp;   <%=employee.address.city %>, <%=employee.address.state %> 
-                                     <%=employee.address.zip %>   </br>
+                                    <br>  &nbsp; &emsp; &emsp; &emsp;   <%=employee.address.city %>, <%=employee.address.state %> <br> &nbsp; &emsp; &emsp; &emsp;
+                                     <%=employee.address.zip %> </br>  
                                      <% } %>
                                     </li>
-                                <li class="list-group-item"><i>Notes: &nbsp; </i> <%= %> </li>
-                                <li class="list-group-item"> </li>
+
                                 </ul>
                                 <!-- edit and delete buttons -->
                                 <div class="text-center">
@@ -55,6 +51,8 @@
                     </div>
                 </div>
             </div>
+    
+    <h4 class="display-12 text-center" style="padding-top: 25px;">Login Credentials</h4>
 
     <!-- billing summary: account credit / balance -->
     <div class="table-responsive my-3" style="max-height: 600px">
@@ -62,22 +60,24 @@
         <thead>
             <tr>
             
-            <th scope="col" style="text-align: center;">Username</th>
-            <th scope="col" style="text-align: center;">Admin Access</th>
+            <th scope="col" style="text-align: center">Username</th>
+            <th scope="col" style="text-align: center">Admin Access</th>
+            <th scope="col" style="text-align: center">Password</th>
 
             </tr>
         </thead>
         <tbody>
                     <tr>
-                    <td valign="middle" style="text-align: center;"><%= employee.username  %></td>
+                    <td valign="middle" style="text-align: center"><%= employee.username  %></td>
 
-
-
-                    <td valign="middle" style="text-align: center;"><%= employee.adminAccess %></td>
+                    <td valign="middle" style="text-align: center"><%= employee.adminAccess %></td>
+                    <td valign="middle" style="text-align: center"><a href="/admin/resetDirect/<%= employee._id %>" class="btn btn-outline-primary btn-sm">Reset</a></td>
+                  
                     </tr>
         </tbody>
         </table>
     </div>
+
 
 </div> <!--end of container -->
 
@@ -99,9 +99,8 @@
         </div>
         <div class="modal-body">
             Permanently delete this employee record? 
+            <br> 
 
-            <br> <br>
-\
         </div>
         <div class="modal-footer">
             <form action="/admin/employee-records/<%=employee._id%>?_method=DELETE" method="POST">

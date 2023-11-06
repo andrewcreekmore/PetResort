@@ -1,6 +1,6 @@
 <%- include('../partials/header') %>
 
-<h2 class="display-6 text-center">Employee Login</h2>
+<h2 class="display-6 text-center mb-3">Employee Login</h2>
 
 <!-- horizontal rule / divider -->
 <div class="row">
@@ -36,7 +36,7 @@
         </div> <!-- end of row -->
 
         <div class="row">
-            <div class="mb-3">
+            <div class="mb-1">
                 <label for="passwordInput" class="form-label">Password</label>
                 <input type="password" class="form-control" name="password" id="passwordInput" placeholder="" aria-label="password" required>
                 <div id="validationServerPasswordFeedback" class="invalid-feedback">
@@ -45,6 +45,10 @@
             </div>
 
         </div> <!-- end of row -->
+
+        <div class="row mb-3">
+            <a href="/admin/forgot" class="link-secondary">Forgot password?</a>
+        </div>
 
         </div>
 

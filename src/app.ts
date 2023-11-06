@@ -120,7 +120,7 @@ class App {
 			var user = "employee";
 			var adminAccess: boolean = true;
 			var data = { title, user, adminAccess };
-			res.render("employee/employeePortal", { ...data });
+			res.render("employee/dashboard", { ...data });
 		});
 
 		// employee login - form entry
@@ -136,7 +136,7 @@ class App {
 			storeReturnTo, // save returnTo url value from session to res.locals
 			passport.authenticate(
 				'local', 
-				{ failureFlash: true, failureRedirect: '/admin/login'}
+				{ failureFlash: true, failureRedirect: '/login'}
 				), (req: Request, res: Response) => {
 			req.flash('success', 'Welcome back!');
 			const redirectUrl = res.locals.returnTo;
