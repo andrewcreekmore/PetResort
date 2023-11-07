@@ -42,8 +42,14 @@ const GuestSchema: Schema = new Schema({
 		default: 0,
 	},
 	image: {
-		type: String,
-		default: "../img/pawPrint.png",
+		url: {
+			type: String,
+			default: "../img/pawPrint.png",
+		},
+		filename: {
+			type: String,
+			default: 'pawPrint.png',
+		}
 	},
 	notes: {
 		type: String,
@@ -64,7 +70,7 @@ interface IGuest {
 	age?: number;
 	weight?: number;
 	current?: Boolean;
-	image?: string;
+	image?: object;
 	notes?: string;
 	visits?: Types.DocumentArray<IVisitDoc>;
 }

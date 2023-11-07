@@ -17,6 +17,10 @@ module.exports.guestValidationSchema =  Joi.object({
 		owner: Joi.string().required(),
 		age: Joi.number().min(0),
 		weight: Joi.number().min(0),
+		image: Joi.object().keys({
+			url: Joi.string().optional().allow(""),
+			filename: Joi.string().optional().allow(""),
+		}).optional().allow(""),
 		notes: Joi.string().optional().allow(""),
 	}).required(),
 });

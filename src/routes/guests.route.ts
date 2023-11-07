@@ -5,6 +5,9 @@ import catchAsync = require("../utils/catchAsync");
 import { Guest } from "../models/guest.model";
 const { guestValidationSchema } = require("../validationSchemas");
 import { Client } from "../models/client.model";
+import multer = require('multer');
+const { storage } = require('../cloudinary')
+const upload = multer({ storage });
 
 
 /*
@@ -80,29 +83,33 @@ router.get(
 
 // guest records: create new record - add on server
 router.post(
-    "/",
-    validateGuest,
-    catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        const newGuest = new Guest(req.body.guest);
-        await newGuest.save();
-        const populatedGuest = await Guest.findOne(newGuest._id).populate(
-            "owner"
-        );
-        if (populatedGuest) {
-            const owner = await Client.findOne(
-                { firstName: populatedGuest.owner.firstName },
-                { lastName: populatedGuest.owner.lastName }
-            ).populate("pets");
-            if (owner) {
-                owner.pets.push(populatedGuest);
-                await owner.save();
-            } else {
-                throw new AppError(400);
-            }
-        }
-        req.flash('success', 'Successfully added new guest.');
-        res.redirect(`/guest-records/${newGuest._id}`);
-    })
+	"/",
+	upload.single("imageFileInput"),
+	validateGuest,
+	catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+		const newGuest = new Guest(req.body.guest);
+		if (req.file) {
+			const uploadedURL = req.file.path;
+			const uploadedFilename = req.file.filename;
+			newGuest.image = { url: uploadedURL, filename: uploadedFilename };
+		}
+		await newGuest.save();
+		const populatedGuest = await Guest.findOne(newGuest._id).populate("owner");
+		if (populatedGuest) {
+			const owner = await Client.findOne(
+				{ firstName: populatedGuest.owner.firstName },
+				{ lastName: populatedGuest.owner.lastName }
+			).populate("pets");
+			if (owner) {
+				owner.pets.push(populatedGuest);
+				await owner.save();
+			} else {
+				throw new AppError(400);
+			}
+		}
+		req.flash("success", "Successfully added new guest.");
+		res.redirect(`/guest-records/${newGuest._id}`);
+	})
 );
 
 // guest records: view single record details
@@ -158,14 +165,19 @@ router.get(
 // guest records: update single record - edit on server
 router.put(
     "/:id",
+    upload.single("imageFileInput"),
     validateGuest,
     catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
-        const guest = await Guest.findByIdAndUpdate(id, req.body.guest, {
+        const guest = await Guest.findByIdAndUpdate(id, req.body.guest,  {
             runValidators: true,
             new: true,
         });
         if (guest) {
+            if (req.file) {
+                guest.image = { url: req.file.path, filename: req.file.filename };
+                await guest.save();
+            }
             req.flash('success', 'Successfully updated guest.')
             res.redirect(`/guest-records/${guest._id}`);
         }
@@ -185,6 +197,26 @@ router.delete(
             res.redirect("/guest-records");
         }
     })
+);
+
+// guest records: remove photo (reset to placeholder)
+router.put(
+	"/removePhoto/:id",
+	catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+		const { id } = req.params;
+		const guest = await Guest.findById(id);
+
+		if (guest) {
+			guest.image = {
+				url: "../img/pawPrint.png",
+				filename: "pawPrint.png",
+			};
+			await guest.save();
+
+			req.flash("success", "Successfully removed guest photo.");
+			res.redirect(`/guest-records/${guest._id}/edit`);
+		}
+	})
 );
 
 

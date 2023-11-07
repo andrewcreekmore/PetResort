@@ -73,7 +73,7 @@ router.post('/forgot', catchAsync(async (req: Request, res: Response, next: Next
 					secure: true,
 					auth: {
 						user: "petresort@zohomail.com",
-						pass: process.env.ZOHOPW
+						pass: process.env.ZOHO_PW
 					},
 				});
         var mailOptions = {
@@ -148,7 +148,7 @@ router.post('/reset/:token', catchAsync(async (req: Request, res: Response, next
                     secure: true,
                     auth: {
                         user: "petresort@zohomail.com",
-                        pass: process.env.ZOHOPW,
+                        pass: process.env.ZOHO_PW,
                     },
                 });
                 var mailOptions = {
@@ -220,7 +220,7 @@ router.post('/resetDirect/:id', catchAsync(async (req: Request, res: Response, n
                 secure: true,
                 auth: {
                     user: "petresort@zohomail.com",
-                    pass: process.env.ZOHOPW,
+                    pass: process.env.ZOHO_PW,
                 },
             });
             var mailOptions = {

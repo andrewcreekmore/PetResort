@@ -7,7 +7,7 @@
 
     <div class="container">
 
-        <form action="/guest-records" method="POST" novalidate class="validated-form">
+        <form action="/guest-records" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
             <!-- NAME and TYPE -->
             <div class="row">
                 <div class="col-2"></div>
@@ -101,8 +101,7 @@
                 <div class="col-8">
                     <label for="inputGroupFile" class="form-label">Photo</label>
                     <div class="input-group">
-                        <input type="file" class="form-control" id="inputGroupFile" aria-describedby="inputGroupFileAddon" aria-label="Upload">
-                        <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon">Upload</button>
+                        <input type="file" class="form-control" name="imageFileInput" id="imageFileInput" aria-describedby="imageFileInput" aria-label="imageFileInput">
                     </div>
                 </div>
             </div>

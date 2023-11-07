@@ -7,11 +7,11 @@
                 <div class="row g-0 d-flex flex-wrap align-items-center">
                     <div class="col-md-4">
                         <img  src="<% if (bUseAltImgPath) { %>
-                            <% var imgPath = guest.image %>
-                            <% var altImgPath = imgPath.slice(2) %>
+                            <% var imgPath = guest.image.url %>
+                            <% //var altImgPath = imgPath.slice(2) %>
                             <%=altImgPath %>
                             <% } else { %>
-                                <%=guest.image%>
+                                <%=guest.image.url%>
                             <% } %>
                             " class="img-fluid rounded-start">
                     </div>

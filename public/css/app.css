@@ -12,3 +12,10 @@ thead {
 .cover-container {
   max-width: 75vw;
 }
+
+.tooltip-inner {
+  background-color: transparent;
+  text-align: center;
+  margin-left: -75%;
+}
+

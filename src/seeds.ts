@@ -33,7 +33,7 @@ const seedEmployees = [
 		phoneNumber: 5707903431,
 		email: "admin@aperture.com",
 		address: {
-			streetAddress: "2545 High Meadow Lane",
+			streetAddress: "2545 High Meadow Ln",
 			city: "Hazleton",
 			state: "Pennsylvania",
 			zip: 18201,
@@ -50,7 +50,10 @@ const seedGuests = [
 		ownerLastName: "Creekmore",
 		age: 2,
 		weight: 10.5,
-		image: "../img/alvi.jpg",
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699384679/PetResort/alvi_rumvjx.jpg",
+			filename: "alvi_rumvjx.jpg",
+		},
 		notes: "",
 	},
 	{
@@ -61,7 +64,10 @@ const seedGuests = [
 		ownerLastName: "Creekmore",
 		age: 14,
 		weight: 6.2,
-		image: "../img/eleanor.jpg",
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699384685/PetResort/eleanor_faaard.jpg",
+			filename: "eleanor_faaard.jpg",
+		},
 		notes: "",
 	},
 	{
@@ -72,7 +78,10 @@ const seedGuests = [
 		ownerLastName: "Artorias",
 		age: 12,
 		weight: 73,
-		image: "../img/sif.jpg",
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699384676/PetResort/sif_tat8yg.jpg",
+			filename: "sif_tat8yg.jpg",
+		},
 		notes: "",
 	},
 	{
@@ -83,7 +92,10 @@ const seedGuests = [
 		ownerLastName: "Denton",
 		age: 5,
 		weight: 67,
-		image: "../img/dogmeat.png",
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699384683/PetResort/dogmeat_okyvne.png",
+			filename: "dogmeat_okyvne.png",
+		},
 		notes: "",
 	},
 	{
@@ -94,7 +106,10 @@ const seedGuests = [
 		ownerLastName: "Raiden",
 		age: 3,
 		weight: 114,
-		image: "../img/bladeWolf.jpg",
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699384681/PetResort/bladeWolf_a6hfdn.jpg",
+			filename: "bladeWolf_a6hfdn.jpg",
+		},
 		notes: "Possesses an intellect far beyond human reckoning.",
 	},
 	{
@@ -105,7 +120,10 @@ const seedGuests = [
 		ownerLastName: "Jensen",
 		age: 6,
 		weight: 11,
-		image: "../img/shalquoir.png",
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699384675/PetResort/shalquoir_swxsdt.png",
+			filename: "shalquoir_swxsdt.png",
+		},
 		notes: "",
 	},
 ];
