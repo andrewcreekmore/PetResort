@@ -3,8 +3,9 @@ import { Guest, IGuestDoc } from "./models/guest.model";
 import { Client, IClientDoc } from "./models/client.model";
 import { Visit, IVisitDoc } from "./models/visit.model";
 import { Service, IServiceDoc } from "./models/service.model";
+import { IKennelDoc, Kennel } from "./models/kennel.model";
 import Employee = require("./models/employee.model");
-//import { Employee } from "models/employee.model";
+import { isFuture } from "date-fns";
 
 
 /*
@@ -88,7 +89,7 @@ const seedGuests = [
 		name: "Dogmeat",
 		type: "dog",
 		breed: "German Shepherd",
-		ownerFirstName: "JC",
+		ownerFirstName: "J.C.",
 		ownerLastName: "Denton",
 		age: 5,
 		weight: 67,
@@ -105,7 +106,7 @@ const seedGuests = [
 		ownerFirstName: "Jack",
 		ownerLastName: "Raiden",
 		age: 3,
-		weight: 114,
+		weight: 264,
 		image: {
 			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699384681/PetResort/bladeWolf_a6hfdn.jpg",
 			filename: "bladeWolf_a6hfdn.jpg",
@@ -126,6 +127,76 @@ const seedGuests = [
 		},
 		notes: "",
 	},
+	{
+		name: "Cerebus",
+		type: "dog",
+		breed: "Doberman Pinscher",
+		ownerFirstName: "Albert",
+		ownerLastName: "Wesker",
+		age: 3,
+		weight: 172,
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699640954/PetResort/cerebus_csifid.png",
+			filename: "cerebus_csifid.png",
+		},
+		notes: "",
+	},
+	{
+		name: "KEI-9",
+		type: "dog",
+		breed: "FENRIS Mech",
+		ownerFirstName: "Liara",
+		ownerLastName: "T'Soni",
+		age: 2,
+		weight: 76,
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699641645/PetResort/kei-9_txkrzr.png",
+			filename: "kei-9_txkrzr.png",
+		},
+		notes: "",
+	},
+	{
+		name: "Nemesis",
+		type: "dog",
+		breed: "Bio Organic Weapon",
+		ownerFirstName: "Jill",
+		ownerLastName: "Valentine",
+		age: 1,
+		weight: 432,
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699643111/PetResort/nemesis_ghlk0n.png",
+			filename: "nemesis_ghlk0n.png",
+		},
+		notes: "",
+	},
+	{
+		name: "Alice",
+		type: "dog",
+		breed: "Belgian Malinois",
+		ownerFirstName: "Ellie",
+		ownerLastName: "Williams",
+		age: 3,
+		weight: 84,
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699643795/PetResort/alice2_ivpyuy.png",
+			filename: "alice2_ivpyuy.png",
+		},
+		notes: "",
+	},
+	{
+		name: "Sniffer",
+		type: "dog",
+		breed: "Hound of Tindalos",
+		ownerFirstName: "Henry",
+		ownerLastName: "Townshend",
+		age: 4,
+		weight: 91,
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1699644448/PetResort/sniffer_rn3sai.png",
+			filename: "sniffer_rn3sai.png",
+		},
+		notes: "",
+	},
 ];
 
 const seedClients = [
@@ -135,7 +206,7 @@ const seedClients = [
 		phoneNumber: 3035550110,
 		email: "ac85@email.com",
 		address: {
-			streetAddress: "421 Nitsche Lock",
+			streetAddress: "421 Nitsche Rd",
 			apartment: "926",
 			city: "Howeshire",
 			state: "Mississippi",
@@ -156,12 +227,12 @@ const seedClients = [
 		},
 	},
 	{
-		firstName: "JC",
+		firstName: "J.C.",
 		lastName: "Denton",
 		phoneNumber: 2025550167,
 		email: "unatco29@email.com",
 		address: {
-			streetAddress: "781 Terry Freeway",
+			streetAddress: "781 Terry Fwy",
 			city: "Domenicoshire",
 			state: "Minnesota",
 			zip: 44250,
@@ -173,7 +244,7 @@ const seedClients = [
 		phoneNumber: 6035550146,
 		email: "whitedevil@email.com",
 		address: {
-			streetAddress: "11075 Kamille Field",
+			streetAddress: "11075 Kamille Rd",
 			city: "Bellside",
 			state: "Washington",
 			zip: 88860,
@@ -183,7 +254,7 @@ const seedClients = [
 		firstName: "Adam",
 		lastName: "Jensen",
 		phoneNumber: 7015550158,
-		email: "adam.jensen@si.det.usa ",
+		email: "adam.jensen@si.det.usa",
 		address: {
 			streetAddress: "468 Front St",
 			apartment: "5375",
@@ -191,6 +262,151 @@ const seedClients = [
 			state: "Michigan",
 			zip: 48226,
 		},
+	},
+	// {
+	// 	firstName: "B.J.",
+	// 	lastName: "Blazkowicz",
+	// 	phoneNumber: 4025522235,
+	// 	email: "terrorbilly@osa.gov",
+	// 	address: {
+	// 		streetAddress: "1533 Commerce Blvd",
+	// 		apartment: "",
+	// 		city: "Mesquite",
+	// 		state: "Texas",
+	// 		zip: 75150,
+	// 	},
+	// },
+	{
+		firstName: "Jill",
+		lastName: "Valentine",
+		phoneNumber: 8082522072,
+		email: "sammich@stars.gov",
+		address: {
+			streetAddress: "4391 Stratford Dr",
+			apartment: "6F",
+			city: "Raccoon City",
+			state: "Missouri",
+			zip: 63052,
+		},
+	},
+	// {
+	// 	firstName: "Flynn",
+	// 	lastName: "Taggart",
+	// 	phoneNumber: 9528546136,
+	// 	email: "slayer@uac.org",
+	// 	address: {
+	// 		streetAddress: "4351 Orchard St",
+	// 		apartment: "",
+	// 		city: "Bloomington",
+	// 		state: "Minnesota",
+	// 		zip: 55431,
+	// 	},
+	// },
+	// {
+	// 	firstName: "Seb",
+	// 	lastName: "Castellanos",
+	// 	phoneNumber: 4154834342,
+	// 	email: "seb@kcpd.gov",
+	// 	address: {
+	// 		streetAddress: "3191 Palmer Rd",
+	// 		apartment: "",
+	// 		city: "Krimson City",
+	// 		state: "Ohio",
+	// 		zip: 43085,
+	// 	},
+	// },
+	{
+		firstName: "Ellie",
+		lastName: "Williams",
+		phoneNumber: 6107851319,
+		email: "brickmaster@firefly.org",
+		address: {
+			streetAddress: "1811 Filbert St",
+			apartment: "",
+			city: "Jackson",
+			state: "Wyoming",
+			zip: 83001,
+		},
+	},
+	// {
+	// 	firstName: "Alex",
+	// 	lastName: "Casey",
+	// 	phoneNumber: 3478818217,
+	// 	email: "payne@nypd.gov",
+	// 	address: {
+	// 		streetAddress: "1144 Redbud Dr",
+	// 		apartment: "4A",
+	// 		city: "Brooklyn",
+	// 		state: "New York",
+	// 		zip: 11227,
+	// 	},
+	// },
+	// {
+	// 	firstName: "Chloe",
+	// 	lastName: "Frazer",
+	// 	phoneNumber: 9252712160,
+	// 	email: "ganesh@shoreline.org",
+	// 	address: {
+	// 		streetAddress: "4048 Water St",
+	// 		apartment: "",
+	// 		city: "Oakland",
+	// 		state: "California",
+	// 		zip: 94612,
+	// 	},
+	// },
+	{
+		firstName: "Albert",
+		lastName: "Wesker",
+		phoneNumber: 9175078656,
+		email: "saturation@umbrella.org",
+		address: {
+			streetAddress: "50 Geneva Street",
+			apartment: "",
+			city: "New York",
+			state: "New York",
+			zip: 10031,
+		},
+	},
+	{
+		firstName: "Henry",
+		lastName: "Townshend",
+		phoneNumber: 5707946258,
+		email: "21sacraments@wishhouse.org",
+		address: {
+			streetAddress: "2021 Cooper Rd",
+			apartment: "302",
+			city: "South Ashfield",
+			state: "Pennsylvania",
+			zip: 18640,
+		},
+	},
+	{
+		firstName: "Liara",
+		lastName: "T'Soni",
+		phoneNumber: 7722639498,
+		email: "shadowbroker@n7.org",
+		address: {
+			streetAddress: "4115 Elkview Dr",
+			apartment: "",
+			city: "Batavia",
+			state: "New York",
+			zip: 14020,
+		},
+	},
+];
+
+const seedKennels = [
+	{
+		kennel_id: "1",
+		size: "s",
+	},
+	{
+		kennel_id: "2",
+		size: "m",
+	},
+	{
+		kennel_id: "3",
+		size: "l",
 	},
 ];
 
@@ -288,7 +504,6 @@ const seedServices = [
 
 // function to seed database with initial data
 const seedDB = async () => {
-
 	// delete all employees
 	await Employee.deleteMany({});
 	// add seedEmployees
@@ -375,6 +590,19 @@ const seedDB = async () => {
 	}
 
 	console.log(`Added ${seedServices.length} service records.`);
+
+	// delete all kennels
+	await Kennel.deleteMany({});
+	// add seedKennels
+	for (var i = 0; i < seedKennels.length; i++) {
+		const kennel = new Kennel({
+			kennel_id: seedKennels[i].kennel_id,
+			size: seedKennels[i].size,
+		});
+		await kennel.save();
+	}
+
+	console.log(`Added ${seedKennels.length} kennel records.`);
 };
 
 // ADDING VISITS RECORDS TO SEEDED GUESTS
@@ -382,15 +610,22 @@ const guestVisitsSeed = [
 	{
 		guest: "Alvina",
 		visits: [
-			{ startDate: "2021-10-24", endDate: "2021-10-29" },
-			{ startDate: "2022-3-6", endDate: "2022-3-17" },
+			{ startDate: "2021-10-24", endDate: "2021-10-29", assignedKennel: "2" },
+			{ startDate: "2023-11-11", endDate: "2023-11-27", assignedKennel: "2" },
 		],
 	},
 	{
 		guest: "Eleanor Rigby",
 		visits: [
-			{ startDate: "2014-4-18", endDate: "2014-4-23" },
-			{ startDate: "2016-6-2", endDate: "2016-6-11" },
+			{ startDate: "2014-4-18", endDate: "2014-4-23", assignedKennel: "1" },
+			{ startDate: "2016-6-2", endDate: "2016-6-11", assignedKennel: "1" },
+		],
+	},
+	{
+		guest: "Blade Wolf",
+		visits: [
+			{ startDate: "2023-11-21", endDate: "2023-11-26", assignedKennel: "3" },
+			{ startDate: "2022-9-12", endDate: "2016-9-17", assignedKennel: "3" },
 		],
 	},
 ];
@@ -402,14 +637,28 @@ const addVisitsData = async () => {
 		if (guest) {
 
 			for (var j = 0; j < guestVisitsSeed[i].visits.length; j++) {
+
+				const kennel = await Kennel.findOne({
+						kennel_id: guestVisitsSeed[i].visits[j].assignedKennel,
+					});
+		
 				const newVisit = new Visit({
-					guest: guest, 
-					number: j + 1, // start at 1, not 0 
+					guest: guest,
+					number: j + 1, // start at 1, not 0
+					assignedKennel: kennel,
 					startDate: guestVisitsSeed[i].visits[j].startDate,
 					endDate: guestVisitsSeed[i].visits[j].endDate,
+					clearServicesRenderedFlag: false,
 				});
 				await newVisit.save();
 				guest.visits?.push(newVisit);
+
+				// add Guest as property on corresponding Kennel if occupancy is current
+				if (isFuture(+(newVisit.endDate)) && kennel) {
+					kennel.occupant = guest
+					await kennel.save();
+				}
+
 			}
 			await guest.save();
 		}

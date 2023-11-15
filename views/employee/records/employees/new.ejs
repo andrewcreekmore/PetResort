@@ -19,7 +19,7 @@
         <%- include('../../../partials/flash') %>
     </div>
 
-    <form action="/admin/employee-records" method="POST" novalidate class="validated-form">
+    <form action="/employee-records" method="POST" novalidate class="validated-form">
 
         <!-- FIRST and LAST NAME -->
         <div class="row">
@@ -112,7 +112,7 @@
             <div class="col-2"></div>
 
             <div class="col-8 mb-3">
-                <label for="apartmentInput" class="form-label">Address 2 </label>
+                <!-- <label for="apartmentInput" class="form-label">Address 2 </label> -->
                 <input type="text" class="form-control" name="employee[address][apartment]" id="apartmentInput" placeholder="Apt, suite, or floor" aria-label="apartment">
             </div>
             </div> <!--end of row -->

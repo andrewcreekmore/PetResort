@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 import { Client, IClientDoc } from "./client.model";
 import { IVisitDoc } from "./visit.model";
+import { IKennelDoc, Kennel } from "./kennel.model";
 import { lightFormat, isFuture, isPast } from "date-fns";
 
 /*
@@ -69,7 +70,8 @@ interface IGuest {
 	owner: IClientDoc["_id"];
 	age?: number;
 	weight?: number;
-	current?: Boolean;
+	mostRecentVisit: Date;
+	current: boolean;
 	image?: object;
 	notes?: string;
 	visits?: Types.DocumentArray<IVisitDoc>;
@@ -77,7 +79,7 @@ interface IGuest {
 
 interface IGuestDoc extends IGuest, Document {}
 
-GuestSchema.virtual("current").get(function () {
+GuestSchema.virtual('mostRecentVisit').get(function () {
 	if (this.visits.length > 0) {
 		const sortedVisitsArr = [...this.visits].sort(
 			(b, a) => a.endDate - b.endDate
@@ -85,19 +87,27 @@ GuestSchema.virtual("current").get(function () {
 		
 		const mostRecentEndDate =
 			sortedVisitsArr[sortedVisitsArr.length - 1].endDate;
-		//console.log(sortedVisitsArr[sortedVisitsArr.length - 1].endDate)
-		const today = new Date('2023-10-5')
-		const result = isFuture(today);
-		//console.log(result)
+		return mostRecentEndDate;
+	} else {
+		// TEMP/DEV - UNTIL ALL SEEDS DATE UPDATED
+		const tempStaticDate = new Date('1996-01-01')
+		return tempStaticDate;
+	}
+})
 
-		if (result === true) {
-			return `Active: Checks out ${mostRecentEndDate}`
-		} else {
-			return `Last checkout: ${lightFormat(mostRecentEndDate, 'yyyy-MM-dd')}`;
-		}
+GuestSchema.virtual("current").get(function () {
+	if (this.visits.length > 0) {
+		const sortedVisitsArr = [...this.visits].sort(
+			(a, b) => a.endDate - b.endDate
+		);
+		
+		const mostRecentEndDate =
+			sortedVisitsArr[sortedVisitsArr.length - 1].endDate;
+		const result = isFuture(mostRecentEndDate);
+		return result;
 
 	} else {
-		return 'TBD';
+		return false;
 	}
 });
 

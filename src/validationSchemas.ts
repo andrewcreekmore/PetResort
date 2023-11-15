@@ -4,7 +4,7 @@ import Joi = require('joi');
 ===========================================================================
 validationSchemas.ts
 - contains Joi schemas for each Mongoose schema
-- for verifying new/edit input data prior to sending to Mongoose
+- for verifying new/edit input data w/ Joi prior to sending to Mongoose
 ===========================================================================
 */
 
@@ -62,3 +62,50 @@ module.exports.visitValidationSchema = Joi.object({
 		notes: Joi.string().optional().allow(""),
 	})
 })
+
+module.exports.employeeValidationSchema = Joi.object({
+	employee: Joi.object({
+		firstName: Joi.string().required(),
+		lastName: Joi.string().required(),
+		phoneNumber: Joi.string()
+			.regex(/^[0-9]{10}$/)
+			.messages({
+				"string.pattern.base": `Phone number must have 10 digits.`,
+			})
+			.required(),
+		email: Joi.string().optional().allow(""),
+
+		address: Joi.object().keys({
+			streetAddress: Joi.string().required(),
+			apartment: Joi.string().optional().allow(""),
+			city: Joi.string().required(),
+			state: Joi.string().required(),
+			zip: Joi.number().required(),
+		}),
+
+		role: Joi.string().required(),
+		adminAccess: Joi.bool().optional(),
+		username: Joi.string().required(),
+		resetPasswordToken: Joi.string().optional().allow(""),
+		resetPasswordExpires: Joi.string().optional().allow(""),
+	}),
+}).options({ stripUnknown: true }); // password will not have been hashed/salted yet; ignore it
+
+module.exports.serviceValidationSchema = Joi.object({
+	service: Joi.object({
+		petType: Joi.string().required(),
+		name: Joi.string().required(),
+		price: Joi.number().required(),
+		description: Joi.string().optional().allow(""),
+		serviceType: Joi.string().required(),
+	}),
+});
+
+module.exports.kennelValidationSchema = Joi.object({
+	kennel: Joi.object({
+		kennel_id: Joi.string().required(),
+		size: Joi.string().required(),
+		// occupant is a str as it will be an guest._id reference
+		occupant: Joi.string().optional().allow(""),
+	}),
+});

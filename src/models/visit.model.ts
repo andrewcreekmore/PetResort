@@ -1,7 +1,9 @@
 import mongoose, { Schema, Document, Types, Date } from "mongoose";
 import { Guest, IGuestDoc, GuestSchema } from "./guest.model";
+import { Kennel, IKennelDoc } from "./kennel.model";
 import { Service, IServiceDoc } from "./service.model";
 import { formatDuration, intervalToDuration, differenceInDays } from "date-fns";
+import { boolean } from "joi";
 
 /*
 ===========================================================================
@@ -24,6 +26,10 @@ const VisitSchema = new Schema({
 		required: true,
 		index: true,
 	},
+	assignedKennel: {
+		type: Schema.Types.ObjectId,
+		ref: "Kennel",
+	},
 	startDate: {
 		type: Date,
 		required: true,
@@ -43,6 +49,10 @@ const VisitSchema = new Schema({
 			ref: "Service",
 		},
 	],
+	clearServicesRenderedFlag: {
+		type: Boolean,
+		default: false,
+	},
 	paid: {
 		type: Boolean,
 		default: false,
@@ -55,15 +65,23 @@ const VisitSchema = new Schema({
 interface IVisit {
 	guest: IGuestDoc["_id"];
 	number: number;
+	assignedKennel: IKennelDoc["_id"];
 	startDate: Date;
 	endDate: Date;
 	services: Types.DocumentArray<IServiceDoc>;
 	servicesRendered: Types.DocumentArray<IServiceDoc>;
+	clearServicesRenderedFlag: boolean;
 	paid?: boolean;
 	notes?: string;
 }
 
 interface IVisitDoc extends IVisit, Document {}
+
+// VisitSchema.virtual("currentKennel", {
+// 	ref: "Kennel",
+// 	localField: "assignedKennel",
+// 	foreignField: "_id",
+// });
 
 // returns a date in 'yyyy-MM-dd' format
 VisitSchema.methods.formatDate = function(dateProperty: string) {

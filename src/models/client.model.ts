@@ -2,6 +2,7 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 import { Guest, IGuestDoc, GuestSchema } from "./guest.model";
 import { Visit, IVisitDoc, VisitSchema } from "./visit.model";
 import { IServiceDoc, ServiceSchema } from "./service.model";
+import { IKennelDoc, KennelSchema } from "./kennel.model";
 
 /*
 ===========================================================================
@@ -68,7 +69,8 @@ interface IClient {
 	phoneNumber: number;
 	email?: string;
 	address?: object;
-	pets: Types.DocumentArray<IGuestDoc>
+	pets: Types.DocumentArray<IGuestDoc>;
+	mostRecentPet: IGuestDoc;
 }
 
 interface IClientDoc extends IClient, Document {}
@@ -100,6 +102,24 @@ ClientSchema.virtual('formattedAddress').get(function () {
 	}
 })
 
+ClientSchema.virtual('mostRecentPet').get(function() {
+	if (this.pets.length < 2) {
+		return this.pets[0];
+	} else {
+		return this.pets[0]
+	}
+})
+
+// ClientSchema.virtual("current").get(function () {
+// 	if (this.pets.length === 0) {
+// 		return false;
+// 	} else {
+		
+
+// 	}
+// });
+
+
 // setup query middleware: delete owned pets (guests) when deleting client
 ClientSchema.post('findOneAndDelete', async function (deletedClient) {
 	if (deletedClient.pets.length) {
@@ -122,4 +142,5 @@ export const registerSchemas = () => {
 	const Guest = mongoose.model<IGuestDoc>("Guest", GuestSchema);
 	const Visit = mongoose.model<IVisitDoc>("Visit", VisitSchema);
 	const Service = mongoose.model<IServiceDoc>("Service", ServiceSchema);
+	const Kennel = mongoose.model<IKennelDoc>("Kennel", KennelSchema);
 };

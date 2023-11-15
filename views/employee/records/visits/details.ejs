@@ -112,7 +112,7 @@
                             <input type="hidden" name="visit[servicesRendered]" value="<%= visit.services[i]._id %>">
 
                             <!-- ensuring any already marked-rendered services remain so-->
-                            <% for (j = 0; j < visit.servicesRendered.length; j ++) { %>
+                            <% for (j = 0; j < visit.servicesRendered.length; j++) { %>
                                 <input type="hidden" name="visit[servicesRendered]" 
                                 value="<%= visit.servicesRendered[j]._id %>">
                                 <% } %>
@@ -122,14 +122,21 @@
                         <!-- service is currently Complete: toggle to Pending -->
                         <% } else { %>
 
+                            <% if (visit.servicesRendered.length > 1) {%>
+                            
                             <!-- ensuring any already marked-rendered services remain so-->
-                            <% for (j = 0; j < visit.servicesRendered.length; j ++) { %>
+                            <% for (j = 0; j < visit.servicesRendered.length; j++) { %>
                                 <!-- ...except the one we're toggling to Pending -->
-                                <% if (visit.services[i].name != visit.servicesRendered[j].name) { %>
+                                <% if (visit.services[i].name !== visit.servicesRendered[j].name) { %>
+                                    <% console.log(visit.services[i].name) %>
                                     <input type="hidden" name="visit[servicesRendered]" 
                                     value="<%= visit.servicesRendered[j]._id %>">
                                     <% } %>
+                                <% } %>
 
+                            <% } else { %> <!-- flip flag to trigger route logic (toggleServiceStatus) to empty servicesRendered array-->
+                                    <input type="hidden" name="visit[clearServicesRenderedFlag]" 
+                                    value="true">
                                 <% } %>
                        
 

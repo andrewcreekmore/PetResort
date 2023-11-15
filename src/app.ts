@@ -11,11 +11,13 @@ const localStrategy = require("passport-local");
 import AppError = require("./utils/appError");
 import { registerSchemas } from "./models/client.model";
 const Employee = require("./models/employee.model");
+const indexRoutes = require('./routes/index.route')
 const guestRoutes = require("./routes/guests.route")
-const adminRoutes = require('./routes/admin.route')
 const clientRoutes = require("./routes/clients.route")
 const visitRoutes = require("./routes/visits.route")
-const { storeReturnTo } = require('./middleware')
+const adminRoutes = require("./routes/admin/admin.route");
+const employeeRoutes = require("./routes/admin/employees.route");
+const serviceRoutes = require("./routes/admin/services.route")
 
 
 /*
@@ -66,7 +68,7 @@ class App {
 		const sessionConfig = {
 			secret: "tempSecret",
 			resave: false,
-			saveUninitialized: false,
+			saveUninitialized: true,
 			cookie: {
 				httpOnly: true,
 				expire: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
@@ -83,10 +85,11 @@ class App {
 		passport.serializeUser(Employee.serializeUser());
 		passport.deserializeUser(Employee.deserializeUser());
 
-		// store currently logged in employee user; activeTab value
+		// store currently logged-in employee user; activeAdminTab values
 		this.app.use((req: Request, res: Response, next: NextFunction) => {
 			res.locals.currentUser = req.user;
-			res.locals.activeTab = req.session.activeTab;
+			res.locals.activeAdminTab = req.session.activeAdminTab;
+			res.locals.activeGuestsTab = req.session.activeGuestsTab;
 			next();
 		})
 
@@ -103,75 +106,15 @@ class App {
 	// setup routing
 	private initRoutes() {
 
-		// HOME / ROOT ROUTES
+		// INDEX / EMPLOYEE ROUTES
 		//=====================
-
-		// home page
-		this.app.get("/", (req: Request, res: Response) => {
-			const title = "Pet Resort · Home";
-			const user = "NONE";
-			const data = { title, user };
-			res.render("home", { ...data });
-		});
-
-		// employee portal
-		this.app.get("/employee", (req: Request, res: Response) => {
-			const title = "Pet Resort · Employee Portal";
-			var user = "employee";
-			var adminAccess: boolean = true;
-			var data = { title, user, adminAccess };
-			res.render("employee/dashboard", { ...data });
-		});
-
-		// employee login - form entry
-		this.app.get('/login', (req: Request, res: Response) => {
-			const title = "Pet Resort · Employee Login";
-			var user = "employee";
-			var data = { title, user };
-			res.render("employee/login", { ...data });
-		})
-
-		// employee login - authentication
-		this.app.post('/login', 
-			storeReturnTo, // save returnTo url value from session to res.locals
-			passport.authenticate(
-				'local', 
-				{ failureFlash: true, failureRedirect: '/login'}
-				), (req: Request, res: Response) => {
-			req.flash('success', 'Welcome back!');
-			const redirectUrl = res.locals.returnTo;
-			if (redirectUrl) {
-				res.redirect(redirectUrl);
-			} else {
-				res.redirect('/employee')
-			}
-		})
-
-		// employee logout
-		this.app.get('/logout', (req: Request, res: Response, next: NextFunction) => {
-			req.logout(function (err) {
-				if (err) {
-					return next(err);
-				}
-				req.flash("success", "Goodbye!");
-				res.redirect("/employee");
-			})
-		})
-
-		// customer portal
-		this.app.get("/customer", (req: Request, res: Response) => {
-			const title = "Pet Resort · Customer Site";
-			var user = "customer";
-			var data = { title, user };
-			res.render("customer/customerPortal", { ...data });
-		});
-
-		// EMPLOYEE ROUTES
-		//=====================
+		this.app.use('/', indexRoutes);
 		this.app.use("/admin", adminRoutes);
 		this.app.use("/guest-records", guestRoutes);
 		this.app.use("/client-records", clientRoutes);
 		this.app.use("/visit-records", visitRoutes);
+		this.app.use("/employee-records", employeeRoutes);
+		this.app.use("/service-records", serviceRoutes);
 
 		// CUSTOMER ROUTES
 		//=====================

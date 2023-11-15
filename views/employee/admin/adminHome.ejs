@@ -3,7 +3,6 @@
 <h2 class="display-6 text-center">Admin Tools</h2>
 
 <div class="container mt-3">
-    <!-- <div class="row"></div> -->
 
     <!-- horizontal rule / divider -->
     <div class="row">
@@ -20,17 +19,22 @@
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link <% if (activeTab === 'dogServices') { %>
+      <li class="nav-item" role="presentation">
+    <button class="nav-link <% if (activeAdminTab === 'kennels') { %>
+        active
+        <% } %>" id="kennels-tab" data-bs-toggle="tab" data-bs-target="#kennels" type="button" role="tab" aria-controls="kennels" aria-selected="false">Kennels</button>
+  </li>
+    <button class="nav-link <% if (activeAdminTab === 'dogServices') { %>
         active
         <% } %>" id="dog-services-tab" data-bs-toggle="tab" data-bs-target="#dog-services" type="button" role="tab" aria-controls="dog-services" aria-selected="true">Dog Services</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link <% if (activeTab === 'catServices') { %>
+    <button class="nav-link <% if (activeAdminTab === 'catServices') { %>
         active
         <% } %>" id="cat-services-tab" data-bs-toggle="tab" data-bs-target="#cat-services" type="button" role="tab" aria-controls="cat-services" aria-selected="false">Cat Services</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link <% if (activeTab === 'employees') { %>
+    <button class="nav-link <% if (activeAdminTab === 'employees') { %>
         active
         <% } %>" id="employees-tab" data-bs-toggle="tab" data-bs-target="#employees" type="button" role="tab" aria-controls="employees" aria-selected="false">Employees</button>
   </li>
@@ -38,7 +42,68 @@
 
 <div class="tab-content" id="myTabContent">
 
-  <div class="tab-pane fade <% if (activeTab === 'dogServices') { %>
+  <div class="tab-pane fade <% if (activeAdminTab === 'kennels') { %>
+        show active
+    <% } %>" id="kennels" role="tabpanel" aria-labelledby="kennels-tab">
+
+    <div>
+        <div class="btn-group mt-3 mb-1">
+            <a href="/admin?occupied=true" class="btn btn-outline-primary btn-sm <% if (occupiedOnly) { %>
+                active
+                <% } %>" >Occupied</a>
+            <a href="/admin" class="btn btn-outline-primary btn-sm <% if (!occupiedOnly) { %>
+                active
+                <% } %>">All</a>
+        </div>
+    </div>
+
+        <div class="table-responsive" style="max-height: 600px">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 20%;">ID</th>
+                        <th scope="col" style="width: 15%;">Occupant</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <% for(let kennel of allKennels) { %>
+                            <td valign="middle">
+                                <a href="/kennel-records/<%= kennel._id %>/edit" style="text-decoration: none;">
+                                <%= kennel.formatted_id %></a>
+                            </td>
+                            <td valign="middle">
+
+                                <% if (kennel.occupant) { %>
+                                    <a href="/guest-records/<%= kennel.occupant._id%>" style="text-decoration: none;"><%=kennel.occupant.name %></a>     
+                                    <% } %>
+                            </td>
+                        </tr>
+                        <% } %>
+
+                </tbody>
+            </table>
+        </div>
+
+    <!-- horizontal rule / divider -->
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-3">
+        </div>
+    </div> <!-- end of row -->
+
+    <div class="mx-auto mt-3 text-center">
+        <div class="row mb-3">
+            <div class="col-4 mx-auto text-center">
+                <a href="/kennel-records/new" class="btn btn-primary">Add New Kennel</a>
+            </div>
+        </div>
+    </div>
+
+    </div> <!-- end of dog services-tab-->
+
+  <div class="tab-pane fade <% if (activeAdminTab === 'dogServices') { %>
         show active
     <% } %>" id="dog-services" role="tabpanel" aria-labelledby="dog-services-tab">
         <div class="table-responsive" style="max-height: 600px">
@@ -49,7 +114,7 @@
                         <th scope="col" style="width: 15%;">Type</th>
                         <th scope="col" style="width: 15%;">Price</th>
                         <th scope="col" style="width: 35%;">Description</th>
-                        <th style="width: 15%;"></th>
+                        <!-- <th style="width: 15%;"></th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -58,13 +123,16 @@
                         <% if (service.petType === 'dog') {%>
 
                         <tr>
-                            <td valign="middle"><%= service.name %></td>
+                            <td valign="middle">                                
+                                <a href="/service-records/<%=service._id%>/edit" style="text-decoration: none;">
+                                    <%= service.name %></a>
+                            </td>
                             <td valign="middle"><%= service.formattedServiceType %></td>
                             <td valign="middle">$<%= service.price %></td>
                             <td valign="middle"><%= service.description %>
-                            <td valign="middle" style="text-align: right;">
-                                <a href="/admin/service-records/<%=service._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> 
-                            </td>
+                            <!-- <td valign="middle" style="text-align: right;">
+                                <a href="/service-records/<%=service._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> 
+                            </td> -->
                         </tr>
                         <% } %>
                     <% } %>
@@ -72,28 +140,36 @@
                 </tbody>
             </table>
         </div>
+    
+    <!-- horizontal rule / divider -->
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-3">
+        </div>
+    </div> <!-- end of row -->
 
     <div class="mx-auto mt-3 text-center">
         <div class="row mb-3">
             <div class="col-4 mx-auto text-center">
-                <a href="/admin/service-records/new?petType=dog" class="btn btn-primary">Add New Service</a>
+                <a href="/service-records/new?petType=dog" class="btn btn-primary">Add New Service</a>
             </div>
         </div>
     </div>
 
     </div> <!-- end of dog services-tab-->
 
-  <div class="tab-pane fade <% if (activeTab === 'catServices') { %>
+  <div class="tab-pane fade <% if (activeAdminTab === 'catServices') { %>
         show active
     <% } %> " id="cat-services" role="tabpanel" aria-labelledby="cat-services-tab">
         <div class="table-responsive" style="max-height: 600px">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th scope="col" style="width: 20%">Name</th>
+                        <th scope="col" style="width: 25%">Name</th>
                         <th scope="col" style="width: 15%">Type</th>
                         <th scope="col" style="width: 15%">Price</th>
-                        <th scope="col" style="width: 35%">Description</th>
+                        <th scope="col" style="width: 45%">Description</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -103,12 +179,17 @@
                         <% if (service.petType ==='cat') {%>
 
                         <tr>
-                            <td><%= service.name %></td>
+                            <td>
+                                <a href="/service-records/<%=service._id%>/edit" style="text-decoration: none;">
+                                    <%= service.name %></a>
+                            </td>
                             <td><%= service.formattedServiceType %></td>
                             <td>$<%= service.price %></td>
-                            <td><%= service.description %>
-                            <td style="text-align: right;">
-                                <a href="/admin/service-records/<%=service._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> 
+                            <td>
+                                <button class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="<%= service.description %>">Preview</button>
+                            </td>
+                            <td>
+                                <a href="/service-records/<%=service._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> 
                             </td>
                         </tr>
                         <% } %>
@@ -118,17 +199,25 @@
             </table>
         </div>
 
+    <!-- horizontal rule / divider -->
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-3">
+        </div>
+    </div> <!-- end of row -->
+
     <div class="mx-auto mt-3 text-center">
         <div class="row mb-3">
             <div class="col-4 mx-auto text-center">
-                <a href="/admin/service-records/new?petType=cat" class="btn btn-primary">Add New Service</a>
+                <a href="/service-records/new?petType=cat" class="btn btn-primary">Add New Service</a>
             </div>
         </div>
     </div>
 
     </div> <!-- end of cat services-tab-->
 
-  <div class="tab-pane fade <% if (activeTab === 'employees') { %>
+  <div class="tab-pane fade <% if (activeAdminTab === 'employees') { %>
         show active
     <% } %> " id="employees" role="tabpanel" aria-labelledby="employees-tab">
 
@@ -140,7 +229,6 @@
                     <th scope="col">Role</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Username</th>
-                    <th scope="col">Admin Access</th>
                     <th></th>
                     </tr>
                 </thead>
@@ -149,11 +237,13 @@
                     <% for(let employee of allEmployees) { %>
 
                     <tr>
-                    <td><a href="/admin/employee-records/<%= employee._id %>"><%= employee.fullName %></a></td>
-                    <td><%= employee.role %></td>
-                    <td><%= employee.formattedPhone %></td>
-                    <td><%= employee.username %></td>
-                    <td><%= employee.adminAccess %></td>
+                        <td>
+                            <a href="/employee-records/<%= employee._id %>" style="text-decoration: none;">
+                            <%= employee.fullName %></a>
+                        </td>
+                        <td><%= employee.role %></td>
+                        <td><%= employee.formattedPhone %></td>
+                        <td><%= employee.username %></td>
                     </tr>
 
                     <% } %>
@@ -162,10 +252,18 @@
             </table>
         </div>
 
+        <!-- horizontal rule / divider -->
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-3">
+            </div>
+        </div> <!-- end of row -->
+
         <div class="mx-auto mt-3 text-center">
             <div class="row mb-3">
                 <div class="col-4 mx-auto text-center">
-                    <a href="/admin/employee-records/new" class="btn btn-primary">Register New Employee</a>
+                    <a href="/employee-records/new" class="btn btn-primary">Register New Employee</a>
                 </div>
             </div>
         </div>
@@ -176,19 +274,6 @@
 
 </div> <!-- end of tab-content -->
 
-        <!-- horizontal rule / divider -->
-        <div class="row">
-            <div class="col-5"></div>
-            <div class="col-2">
-                <hr class="mt-3">
-            </div>
-        </div> <!-- end of row -->
-
-        <div class="row">
-            <div class="col-3 mx-auto mb-3 text-center">
-                <a href="/logout" class="btn btn-outline-primary">Log Out</a>
-            </div>
-        </div>
 
 
     </div>
@@ -198,5 +283,37 @@
 <%- include('../../partials/footer') %>
 
 <script>
-    
+
+    $('#dog-services-tab').on('click', function() {
+        var tabData = {activeAdminTab: "dogServices" }
+        setActiveAdminTab(tabData);
+    });
+
+    $('#cat-services-tab').on('click', function() {
+        var tabData = {activeAdminTab: "catServices" }
+        setActiveAdminTab(tabData);
+    });
+
+    $('#employees-tab').on('click', function() {
+        var tabData = {activeAdminTab: "employees" }
+        setActiveAdminTab(tabData);
+    });
+
+    $('#kennels-tab').on('click', function() {
+        var tabData = {activeAdminTab: "kennels" }
+        setActiveAdminTab(tabData);
+    });
+
+
+    function setActiveAdminTab(tabData) {
+        $.ajax({
+            url: 'http://localhost:8080/admin/setActiveTab',
+            type: "POST",
+            data: tabData,
+            success: function(data) {
+                let x = JSON.stringify(data);
+                console.log(x)
+            }
+        });
+    }
 </script>

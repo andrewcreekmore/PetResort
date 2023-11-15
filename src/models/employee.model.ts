@@ -1,5 +1,4 @@
 import mongoose = require("mongoose");
-import { transpileModule } from "typescript";
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const EmployeeSchema = new mongoose.Schema({
@@ -103,9 +102,11 @@ EmployeeSchema.virtual("formattedAddress").get(function () {
 // Employee.createIndexes();
 
 
-
-
 const Employee = mongoose.model<IEmployeeDoc>("Employee", EmployeeSchema);
 
 export = Employee;
+
+//module.exports.Employee = mongoose.model<IEmployeeDoc>("Employee", EmployeeSchema);
+
+
 

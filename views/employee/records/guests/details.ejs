@@ -22,8 +22,8 @@
             <th scope="col" style="text-align: center;">Check-in</th>
             <th scope="col" style="text-align: center;">Check-out</th>
             <th scope="col" style="text-align: center;">Duration</th>
+            <th scope="col" style="text-align: center;">Kennel</th>
             <th scope="col" style="text-align: center;">Services</th>
-            <th scope="col" style="text-align: center;">Rate</th>
             <th scope="col" style="text-align: center;">Cost</th>
             <th scope="col" style="text-align: center;"></th>
         
@@ -43,6 +43,7 @@
                         <% } else { %>
                         day <% } %>
                     </td>
+                <td valign="middle" style="text-align: center;"><%= visit.assignedKennel.formatted_id %></td>
                 <td valign="middle" style="text-align: center;">
                     <!-- formatting style to indicate rendered status -->
                     <% for (i = 0; i < visit.services.length; i++) { %>
@@ -65,7 +66,6 @@
                     <% } %>
 
                 </td>
-                <td valign="middle" style="text-align: center;">$<%= visit.rate %>/day</td>
                 <% const paidStr = visit.paid? 'Paid' : 'Unpaid' %>
 
                 <!-- tallying total cost of visit  -->

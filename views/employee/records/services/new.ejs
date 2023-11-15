@@ -14,7 +14,7 @@
 
 <div class="container w-60">
 
-    <form class="validated-form align-items-center" action="/admin/service-records" method="POST" novalidate>
+    <form class="validated-form align-items-center" action="/service-records" method="POST" novalidate>
 
     <!-- Service NAME -->
     <div class="row">
@@ -58,7 +58,7 @@
             <label for="guestType" class="form-label">Pet Type</label>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="service[petType]" id="petTypeOption1" value="cat" 
-                    <% if (petType === '"cat"') {  console.log('cat!')  %>
+                    <% if (petType === 'cat') {    %>
                         checked
                     <% } %> required>
                 <label class="form-check-label" for="petTypeCat">cat</label>
@@ -66,7 +66,7 @@
         
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="service[petType]" id="petTypeOption2" value="dog"
-                    <% if (petType === '"dog"') {  %>
+                    <% if (petType === 'dog') {  %>
                         checked
                     <% } %> required>
                 <label class="form-check-label" for="petTypeDog">dog</label>    
@@ -98,18 +98,10 @@
 <div class="row mb-3"></div>
 
 <div class="mx-auto mt-3 text-center">
-    <button type="submit" onclick="beforeSubmit()" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
     <a href="/admin" class="btn btn-outline-primary">Back</a>
 </div>
 
 </div>
 
 <%- include('../../../partials/footer') %>
-
-<script>
-        beforeSubmit = function(){
-
-            res.locals.activeTab = 'catServices';
-        }
-
-</script>

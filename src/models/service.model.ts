@@ -32,11 +32,11 @@ const ServiceSchema = new Schema({
 });
 
 interface IService {
-    petType: string;
+	petType: string;
 	name: string;
 	price: number;
-    description: string;
-	type: string;
+	description: string;
+	serviceType: string;
 }
 
 interface IServiceDoc extends IService, Document {}

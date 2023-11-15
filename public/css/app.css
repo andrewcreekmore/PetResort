@@ -19,3 +19,12 @@ thead {
   margin-left: -75%;
 }
 
+.contact-link {
+  color: white;
+  text-decoration: none;
+}
+
+.contact-link:hover {
+  color: rgb(139,185,254);
+}
+
