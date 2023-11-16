@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Guest } from "../models/guest.model";
+import { Visit } from "../models/visit.model";
 
 /*
 ===========================================================================
@@ -20,20 +21,36 @@ module.exports.showHome =
 // employee dashbaord
 module.exports.empDashboard = 
     async (req: Request, res: Response, next: NextFunction) => {
-        //const title = "Pet Resort · Employee Dashboard";
-        const title = "Pet Resort · Guest Records";
-        var activeGuestsTab = res.locals.activeGuestsTab
-                            ? res.locals.activeGuestsTab
-                            : "current";
+        const title = "Pet Resort · Employee Dashboard";
         var user = "employee";
         var adminAccess: boolean = true;
-        //var data = { title, user, adminAccess };
-        //res.render("employee/dashboard", { ...data });
-        const guests = await Guest.find({})
-					.populate("owner")
-					.populate("visits");
-		var data = { title, user, guests, activeGuestsTab };
-        res.render("employee/records/guests/index", { ...data });
+
+        // pagination
+        const page = Number(req.query.p) || 1;
+        const visitsPerPage = 8;
+
+        const allVisits = await Visit.find({})
+					.populate("guest")
+					.populate([
+						{
+							path: "assignedKennel",
+							model: "Kennel",
+						},
+					])
+					.sort({ endDate: -1 })
+					.skip((page - 1) * visitsPerPage)
+					.limit(visitsPerPage);
+
+
+
+        const visits = allVisits.filter(visit => visit.current)
+        const totalVisitCount = visits.length;
+        const pageCount = Math.ceil(totalVisitCount / visitsPerPage);
+        var data = { title, user, adminAccess, visits, page, pageCount };
+        res.render("employee/dashboard", { ...data });
+
+		//var data = { title, user, guests, activeGuestsTab };
+        //res.render("employee/records/guests/index", { ...data });
     };
 
 // employee login - form entry

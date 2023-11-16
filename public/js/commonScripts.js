@@ -6,6 +6,11 @@ $(document).ready(function() {
     $('.navbar li.active').removeClass('active');
 
     switch(currentPageRoute) {
+
+        case 'employee':
+            $('#navbar_dashboard').addClass('active');
+            break;
+            
         case 'guest-records':
             $('#navbar_' + currentPageRoute).addClass('active');
             break;

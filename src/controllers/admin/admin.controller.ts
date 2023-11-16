@@ -21,7 +21,7 @@ var adminAccess: boolean = true;
 
 // for ajax setting of activeAdminTab
 module.exports.setActiveTab =
-    (req: Request, res: Response) => {
+    (req: Request, res: Response, next: NextFunction) => {
         req.session.activeAdminTab = req.body.activeAdminTab;
         res.send(`activeTab set to ${req.session.activeAdminTab}`);
     }
@@ -29,26 +29,66 @@ module.exports.setActiveTab =
 // admin tools index/home
 module.exports.index = 
     async (req: Request, res: Response, next: NextFunction) => {
-        const title = "Pet Resort · Admin";
-        var activeAdminTab =  res.locals.activeAdminTab ? res.locals.activeAdminTab : 'dogServices'
-        const occupiedOnly: boolean = Boolean(req.query.occupied) || false;
+			const title = "Pet Resort · Admin";
+            var activeAdminTab = res.locals.activeAdminTab
+                                        ? res.locals.activeAdminTab
+                                        : "dogServices";
 
-        const allServices = await Service.find({});
-        const allEmployees = await Employee.find({});
-        const allKennels = await Kennel.find({})
-            .populate('occupant')
-        var data = {
-                title,
-                user,
-                adminAccess,
-                allServices,
-                allEmployees,
-                allKennels,
-                activeAdminTab,
-                occupiedOnly
-            };
-        res.render(adminDir + "/adminHome", { ...data });
-    }
+			const occupiedOnly: boolean = Boolean(req.query.occupied) || false;
+
+			// pagination
+            var page = Number(req.query.p) || 1;
+
+			const itemsPerPage =
+				activeAdminTab === "dogServices" || "catServices" ? 5 : 8;
+
+            const totalDogServiceCount = await Service.count( { petType: 'dog' });
+            const dogServices = await Service.find({ petType: 'dog'})
+                .sort({ displayOrder: 1, price: 1 })
+				.skip((page - 1) * itemsPerPage)
+				.limit(itemsPerPage);
+            const totalCatServiceCount = await Service.count( { petType: 'cat' });
+            const catServices = await Service.find({ petType: "cat" })
+                .sort({ displayOrder: 1, price: 1 })
+                .skip((page - 1) * itemsPerPage)
+                .limit(itemsPerPage);
+            const totalEmployeeCount = await Employee.count({});
+			const allEmployees = await Employee.find({})
+				.skip((page - 1) * itemsPerPage)
+				.limit(itemsPerPage);
+            const totalKennelCount = await Kennel.count({});
+			var allKennels = await Kennel.find({})
+				.populate("occupant")
+				.skip((page - 1) * itemsPerPage)
+				.limit(itemsPerPage);
+
+			if (occupiedOnly) {
+				allKennels = allKennels.filter((kennel) => kennel.occupant);
+			}
+
+			const kennelsPageCount = Math.ceil(totalKennelCount / itemsPerPage);
+			const employeesPageCount = Math.ceil(totalEmployeeCount / itemsPerPage);
+			const catServicesPageCount = Math.ceil(totalCatServiceCount / itemsPerPage);
+			const dogServicesPageCount = Math.ceil(totalDogServiceCount / itemsPerPage);
+
+			var data = {
+				title,
+				user,
+				adminAccess,
+				dogServices,
+                catServices,
+				allEmployees,
+				allKennels,
+				activeAdminTab,
+				occupiedOnly,
+				page,
+				kennelsPageCount,
+				dogServicesPageCount,
+				catServicesPageCount,
+				employeesPageCount,
+			};
+			res.render(adminDir + "/adminHome", { ...data });
+		}
 
 // reset emp password - form entry (request email with link)
 module.exports.renderForgotForm = 

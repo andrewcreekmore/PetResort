@@ -7,7 +7,7 @@
 
     <div class="collapse navbar-collapse" id="empNavbar">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbar-ul">
-        <!-- <li><a class="nav-link" id="navbar_employee" aria-current="page" href="/employee">Dashboard</a></li> -->
+        <li><a class="nav-link" id="navbar_dashboard" aria-current="page" href="/employee">Dashboard</a></li>
         <li><a class="nav-link" id="navbar_guest-records" href="/guest-records">Guests</a></li>
         <li><a class="nav-link" id="navbar_client-records" href="/client-records">Clients</a></li>
         <li><a class="nav-link" id="navbar_admin" aria-current="page" href="/admin" d>Admin</a></li>
@@ -27,7 +27,7 @@
      <% if (!currentUser) { %>
           <a class="nav-link" href="/login">Log In</a>
       <% } else { %>
-          <a class="nav-link" href="/logout">Log Out</a>
+          <span><%= currentUser.username %> |&nbsp;</span><a class="nav-link" href="/logout">Log Out</a>
       <% } %>
 
       &nbsp;

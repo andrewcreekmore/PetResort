@@ -1,8 +1,8 @@
 <%- include('../../partials/header') %>
 
-<h2 class="display-6 text-center">Admin Tools</h2>
+<h2 class="display-6 mb-1 text-center">Admin Tools</h2>
 
-<div class="container mt-3">
+<div class="container mt-0">
 
     <!-- horizontal rule / divider -->
     <div class="row">
@@ -57,12 +57,14 @@
         </div>
     </div>
 
+    <div class="table-wrap" style="height: 425px; overflow-y: auto;">
         <div class="table-responsive" style="max-height: 600px">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th scope="col" style="width: 20%;">ID</th>
-                        <th scope="col" style="width: 15%;">Occupant</th>
+                        <th scope="col" style="width: 20%;">Size</th>
+                        <th scope="col" style="width: 25%;">Occupant</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,6 +74,7 @@
                                 <a href="/kennel-records/<%= kennel._id %>/edit" style="text-decoration: none;">
                                 <%= kennel.formatted_id %></a>
                             </td>
+                            <td><%= kennel.formattedSize %></td>
                             <td valign="middle">
 
                                 <% if (kennel.occupant) { %>
@@ -84,6 +87,53 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div> <!-- pagination for kennels -->
+
+    <!-- previous page button -->
+    <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+            <li class="page-item <% if (page === 1) { %> 
+                disabled
+                <% } %> ">
+                <a class="page-link" href="?p=<%= page - 1 %><% if (occupiedOnly) { %>
+                    &occupied=true
+                    <% } %>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!-- numerical page buttons -->
+            <% var pageNumLabel = 1 %>
+            <% for (i = 0; i < kennelsPageCount; i++) { %>
+
+                <li class="page-item <% if (pageNumLabel === page) { %>
+                    active" aria-current="page"> 
+                    <span class="page-link"><%= pageNumLabel %></span>
+                    <% } else { %>
+                        "> <a class="page-link" href="?p=<%= pageNumLabel %><% if (occupiedOnly) { %>
+                            &occupied=true
+                            <% } %>"><%= pageNumLabel %></a>
+                        <% } %>
+                </li>    
+                <% pageNumLabel++ %>
+                <% } %>
+
+            <!-- next page button -->
+            <li class="page-item <% if (page === kennelsPageCount || kennelsPageCount < 2) { %>
+                disabled
+                <% } %> ">
+                <a class="page-link" href="?p=<%= page + 1 %><% if (occupiedOnly) { %>
+                    &occupied=true
+                    <% } %>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
 
     <!-- horizontal rule / divider -->
     <div class="row">
@@ -101,11 +151,13 @@
         </div>
     </div>
 
-    </div> <!-- end of dog services-tab-->
+    </div> <!-- end of kennels-tab-->
 
   <div class="tab-pane fade <% if (activeAdminTab === 'dogServices') { %>
         show active
     <% } %>" id="dog-services" role="tabpanel" aria-labelledby="dog-services-tab">
+
+     <div class="table-wrap" style="height: 425px; overflow-y: auto;">
         <div class="table-responsive" style="max-height: 600px">
             <table class="table table-striped table-hover">
                 <thead>
@@ -119,9 +171,7 @@
                 </thead>
                 <tbody>
 
-                    <% for(let service of allServices) { %>
-                        <% if (service.petType === 'dog') {%>
-
+                    <% for(let service of dogServices) { %>
                         <tr>
                             <td valign="middle">                                
                                 <a href="/service-records/<%=service._id%>/edit" style="text-decoration: none;">
@@ -134,12 +184,51 @@
                                 <a href="/service-records/<%=service._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> 
                             </td> -->
                         </tr>
-                        <% } %>
                     <% } %>
 
                 </tbody>
             </table>
         </div>
+    </div> <!-- end of table-wrap-->
+
+        <div> <!-- pagination for dog-services -->
+
+        <!-- previous page button -->
+        <nav aria-label="...">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <% if (page === 1) { %> 
+                    disabled
+                    <% } %> ">
+                    <a class="page-link" href="?p=<%= page - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- numerical page buttons -->
+                <% var pageNumLabel = 1 %>
+                <% for (i = 0; i < dogServicesPageCount; i++) { %>
+
+                    <li class="page-item <% if (pageNumLabel === page) { %>
+                        active" aria-current="page"> 
+                        <span class="page-link"><%= pageNumLabel %></span>
+                        <% } else { %>
+                            "> <a class="page-link" href="?p=<%= pageNumLabel %>"><%= pageNumLabel %></a>
+                            <% } %>
+                    </li>    
+                    <% pageNumLabel++ %>
+                    <% } %>
+
+                <!-- next page button -->
+                <li class="page-item <% if (page === dogServicesPageCount || dogServicesPageCount < 2) { %>
+                    disabled
+                    <% } %> ">
+                    <a class="page-link" href="?p=<%= page + 1 %>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     
     <!-- horizontal rule / divider -->
     <div class="row">
@@ -162,6 +251,9 @@
   <div class="tab-pane fade <% if (activeAdminTab === 'catServices') { %>
         show active
     <% } %> " id="cat-services" role="tabpanel" aria-labelledby="cat-services-tab">
+
+    <div class="table-wrap" style="height: 425px; overflow-y: auto;">
+
         <div class="table-responsive" style="max-height: 600px">
             <table class="table table-striped table-hover">
                 <thead>
@@ -175,9 +267,7 @@
                 </thead>
                 <tbody>
 
-                    <% for(let service of allServices) { %>
-                        <% if (service.petType ==='cat') {%>
-
+                    <% for(let service of catServices) { %>
                         <tr>
                             <td>
                                 <a href="/service-records/<%=service._id%>/edit" style="text-decoration: none;">
@@ -191,13 +281,52 @@
                             <td>
                                 <a href="/service-records/<%=service._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> 
                             </td>
-                        </tr>
-                        <% } %>
                     <% } %>
 
                 </tbody>
             </table>
         </div>
+
+    </div> <!-- end of table-wrap-->
+
+    <div> <!-- pagination for cat-services -->
+
+        <!-- previous page button -->
+        <nav aria-label="...">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <% if (page === 1) { %> 
+                    disabled
+                    <% } %> ">
+                    <a class="page-link" href="?p=<%= page - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- numerical page buttons -->
+                <% var pageNumLabel = 1 %>
+                <% for (i = 0; i < catServicesPageCount; i++) { %>
+
+                    <li class="page-item <% if (pageNumLabel === page) { %>
+                        active" aria-current="page"> 
+                        <span class="page-link"><%= pageNumLabel %></span>
+                        <% } else { %>
+                            "> <a class="page-link" href="?p=<%= pageNumLabel %>"><%= pageNumLabel %></a>
+                            <% } %>
+                    </li>    
+                    <% pageNumLabel++ %>
+                    <% } %>
+
+                <!-- next page button -->
+                <li class="page-item <% if (page === catServicesPageCount || catServicesPageCount < 2) { %>
+                    disabled
+                    <% } %> ">
+                    <a class="page-link" href="?p=<%= page + 1 %>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
     <!-- horizontal rule / divider -->
     <div class="row">
@@ -221,6 +350,7 @@
         show active
     <% } %> " id="employees" role="tabpanel" aria-labelledby="employees-tab">
 
+    <div class="table-wrap" style="height: 425px; overflow-y: auto;">
         <div class="table-responsive" style="max-height: 600px">
             <table class="table table-striped table-hover">
                 <thead>
@@ -251,6 +381,46 @@
                 </tbody>
             </table>
         </div>
+    </div> <!-- end of table-wrap -->
+
+    <div> <!-- pagination for employees -->
+
+        <!-- previous page button -->
+        <nav aria-label="...">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <% if (page === 1) { %> 
+                    disabled
+                    <% } %> ">
+                    <a class="page-link" href="?p=<%= page - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- numerical page buttons -->
+                <% var pageNumLabel = 1 %>
+                <% for (i = 0; i < employeesPageCount; i++) { %>
+
+                    <li class="page-item <% if (pageNumLabel === page) { %>
+                        active" aria-current="page"> 
+                        <span class="page-link"><%= pageNumLabel %></span>
+                        <% } else { %>
+                            "> <a class="page-link" href="?p=<%= pageNumLabel %>"><%= pageNumLabel %></a>
+                            <% } %>
+                    </li>    
+                    <% pageNumLabel++ %>
+                    <% } %>
+
+                <!-- next page button -->
+                <li class="page-item <% if (page === employeesPageCount || employeesPageCount < 2) { %>
+                    disabled
+                    <% } %> ">
+                    <a class="page-link" href="?p=<%= page + 1 %>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
         <!-- horizontal rule / divider -->
         <div class="row">
@@ -287,6 +457,7 @@
     $('#dog-services-tab').on('click', function() {
         var tabData = {activeAdminTab: "dogServices" }
         setActiveAdminTab(tabData);
+        
     });
 
     $('#cat-services-tab').on('click', function() {
@@ -297,11 +468,12 @@
     $('#employees-tab').on('click', function() {
         var tabData = {activeAdminTab: "employees" }
         setActiveAdminTab(tabData);
+
     });
 
     $('#kennels-tab').on('click', function() {
         var tabData = {activeAdminTab: "kennels" }
-        setActiveAdminTab(tabData);
+        setActiveAdminTab(tabData)
     });
 
 
@@ -313,7 +485,11 @@
             success: function(data) {
                 let x = JSON.stringify(data);
                 console.log(x)
+                // reload page without query strings
+                // (i.e., reset to default page/filter options)
+                window.location = window.location.pathname + window.location.hash;
             }
         });
     }
+
 </script>

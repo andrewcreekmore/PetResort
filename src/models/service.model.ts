@@ -28,6 +28,10 @@ const ServiceSchema = new Schema({
 	serviceType: {
 		type: String,
 		required: true,
+	},
+	displayOrder: {
+		type: Number,
+		default: 1,
 	}
 });
 
@@ -37,6 +41,7 @@ interface IService {
 	price: number;
 	description: string;
 	serviceType: string;
+	displayOrder: number;
 }
 
 interface IServiceDoc extends IService, Document {}

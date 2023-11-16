@@ -2,8 +2,13 @@ import mongoose, { Schema, Document, Types, Date } from "mongoose";
 import { Guest, IGuestDoc, GuestSchema } from "./guest.model";
 import { Kennel, IKennelDoc } from "./kennel.model";
 import { Service, IServiceDoc } from "./service.model";
-import { formatDuration, intervalToDuration, differenceInDays } from "date-fns";
-import { boolean } from "joi";
+import {
+	formatDuration,
+	intervalToDuration,
+	differenceInDays,
+	isFuture,
+} from "date-fns";
+
 
 /*
 ===========================================================================
@@ -57,6 +62,14 @@ const VisitSchema = new Schema({
 		type: Boolean,
 		default: false,
 	},
+	checkedIn: {
+		type: Boolean,
+		default: false,
+	},
+	checkedOut: {
+		type: Boolean,
+		default: false,
+	},
 	notes: {
 		type: String,
 	},
@@ -73,15 +86,26 @@ interface IVisit {
 	clearServicesRenderedFlag: boolean;
 	paid?: boolean;
 	notes?: string;
+	current: boolean;
+	checkedIn: boolean;
+	checkedOut: boolean;
 }
 
 interface IVisitDoc extends IVisit, Document {}
 
-// VisitSchema.virtual("currentKennel", {
-// 	ref: "Kennel",
-// 	localField: "assignedKennel",
-// 	foreignField: "_id",
-// });
+// returns whether visit is currently taking place
+VisitSchema.virtual("current").get(function () {
+	if (this.endDate) {
+		return isFuture(this.endDate)
+	} else {
+		return false;
+	}
+});
+
+// returns whether all services have been rendered
+VisitSchema.virtual("allServicesRendered").get(function () {
+	return this.services.length === this.servicesRendered.length;
+});
 
 // returns a date in 'yyyy-MM-dd' format
 VisitSchema.methods.formatDate = function(dateProperty: string) {

@@ -1,8 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 import { Client, IClientDoc } from "./client.model";
 import { IVisitDoc } from "./visit.model";
-import { IKennelDoc, Kennel } from "./kennel.model";
-import { lightFormat, isFuture, isPast } from "date-fns";
+import { isFuture } from "date-fns";
 
 /*
 ===========================================================================

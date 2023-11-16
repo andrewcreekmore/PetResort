@@ -35,6 +35,18 @@ interface IKennel {
 
 interface IKennelDoc extends IKennel, Document {}
 
+KennelSchema.virtual("formattedSize").get(function() {
+
+	switch (this.size) {
+		case 's':
+			return 'Small';		
+		case 'm':
+			return 'Medium';
+		case 'l':
+			return 'Large';
+	}
+})
+
 KennelSchema.virtual("formatted_id").get(function () {
     return `${this.kennel_id}-${this.size.toUpperCase()}`
 });

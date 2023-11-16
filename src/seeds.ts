@@ -417,6 +417,7 @@ const seedServices = [
 		price: 10,
 		description: "",
 		serviceType: "basic",
+		displayOrder: 1,
 	},
 	{
 		petType: "dog",
@@ -424,6 +425,7 @@ const seedServices = [
 		price: 15,
 		description: "",
 		serviceType: "basic",
+		displayOrder: 1,
 	},
 	{
 		petType: "cat",
@@ -431,6 +433,7 @@ const seedServices = [
 		price: 10,
 		description: "",
 		serviceType: "basic",
+		displayOrder: 1,
 	},
 	{
 		petType: "dog",
@@ -438,6 +441,7 @@ const seedServices = [
 		price: 15,
 		description: "",
 		serviceType: "basic",
+		displayOrder: 1,
 	},
 	{
 		petType: "cat",
@@ -445,6 +449,7 @@ const seedServices = [
 		price: 10,
 		description: "",
 		serviceType: "basic",
+		displayOrder: 1,
 	},
 	{
 		petType: "dog",
@@ -452,6 +457,7 @@ const seedServices = [
 		price: 15,
 		description: "",
 		serviceType: "basic",
+		displayOrder: 1,
 	},
 	{
 		petType: "cat",
@@ -459,6 +465,7 @@ const seedServices = [
 		price: 10,
 		description: "",
 		serviceType: "basic",
+		displayOrder: 1,
 	},
 	{
 		petType: "dog",
@@ -466,6 +473,7 @@ const seedServices = [
 		price: 15,
 		description: "",
 		serviceType: "basic",
+		displayOrder: 1,
 	},
 	{
 		petType: "cat",
@@ -474,6 +482,7 @@ const seedServices = [
 		description:
 			"Includes bath, brushing, haircut, nail trim, and ear cleaning.",
 		serviceType: "package",
+		displayOrder: 2,
 	},
 	{
 		petType: "dog",
@@ -482,6 +491,7 @@ const seedServices = [
 		description:
 			"Includes bath, brushing, haircut, nail trim, and ear cleaning.",
 		serviceType: "package",
+		displayOrder: 2,
 	},
 	// add-on service packages
 	{
@@ -491,6 +501,7 @@ const seedServices = [
 		description:
 			"Base service PLUS premium shampoo & conditioner, teeth brushing & breath freshener, cologne spritz, and bandana or bow.",
 		serviceType: "add-on",
+		displayOrder: 3,
 	},
 	{
 		petType: "dog",
@@ -499,6 +510,7 @@ const seedServices = [
 		description:
 			"Deluxe service PLUS luxury shampoo, conditioner & spritz, paw & nose balm and premium face wash.",
 		serviceType: "add-on",
+		displayOrder: 3,
 	},
 ];
 
@@ -585,6 +597,7 @@ const seedDB = async () => {
 			price: seedServices[i].price,
 			description: seedServices[i].description,
 			serviceType: seedServices[i].serviceType,
+			displayOrder: seedServices[i].displayOrder,
 		});
 		await service.save();
 	}
