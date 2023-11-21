@@ -2,8 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import AppError = require("../utils/appError");
 import { Visit } from "../models/visit.model";
 import { Guest } from "../models/guest.model";
-import { Service } from "../models/service.model";
+import { IServiceDoc, Service } from "../models/service.model";
+import { Kennel, IKennelDoc } from "../models/kennel.model";
 import dateFns = require("date-fns");
+import { InKeyword } from "typescript";
 
 /*
 ===========================================================================
@@ -26,7 +28,8 @@ module.exports.index =
         const visit = await Visit.findById(id)
             .populate("guest")
             .populate("services")
-            .populate("servicesRendered");
+            .populate("servicesRendered")
+            .populate('assignedKennel')
         if (!visit) {
             req.flash("error", `Couldn't find that visit.`);
             return res.redirect("/guest-records");
@@ -44,6 +47,10 @@ module.exports.renderNewForm =
         const title = "Pet Resort · Visit Records";
         var user = "employee";
         const { id } = req.params;
+
+        const allKennels = await Kennel.find({});
+        const unoccupiedKennels = allKennels.filter(kennel => !kennel.occupant);
+
         var guest = await Guest.findOne({ _id: id })
             .populate("owner")
             .populate("visits");
@@ -64,6 +71,7 @@ module.exports.renderNewForm =
                 mostRecentVisitNumber,
                 today,
                 tomorrow,
+                unoccupiedKennels,
             };
             res.render(visitRecordsDir + "/new", { ...data });
         } else {
@@ -86,6 +94,17 @@ module.exports.createVisit =
             if (guest && guest.visits) {
                 guest.visits.push(populatedVisit);
                 await guest.save();
+                if (populatedVisit.checkedIn) {
+                    await Kennel.findByIdAndUpdate(
+                        populatedVisit.assignedKennel._id,
+                        { occupant: populatedVisit.guest._id }
+                        );
+                    populatedVisit.checkedInBy = res.locals.currentUser.username;
+                    populatedVisit.servicesRenderedByMap = new Map();
+                    populatedVisit.servicesRenderedDateMap = new Map();
+                    await populatedVisit.save();
+                }
+
             } else {
                 throw new AppError(400);
             }
@@ -100,21 +119,42 @@ module.exports.renderEditForm =
         const title = "Pet Resort · Visit Records";
         var user = "employee";
         const { id } = req.params;
-        const visit = await Visit.findById(id).populate([
-            {
-                path: "guest",
-                populate: {
-                    path: "owner",
-                    model: "Client",
+
+        const visit = await Visit.findById(id)
+            .populate('assignedKennel')
+            .populate([
+                {
+                    path: "guest",
+                    populate: {
+                        path: "owner",
+                        model: "Client",
+                    },
                 },
-            },
-        ]);
+            ]);
 
         if (!visit) {
             req.flash("error", `Couldn't find that visit.`);
             return res.redirect("/guest-records");
         } else {
-            var data = { title, user, visit };
+            const allKennels = await Kennel.find({})
+            const currentKennel = await Kennel.find({ kennel_id: visit.assignedKennel.kennel_id })
+            var unoccupiedKennels = [];
+
+            for (var kennel of allKennels) {
+                if (!kennel.occupant) {
+                    unoccupiedKennels.push(kennel);
+                }
+            }
+
+            if (currentKennel.length > 0) {
+                const test = (element: IKennelDoc) =>
+									element.kennel_id === visit.assignedKennel.kennel_id; 
+                if (!unoccupiedKennels.some(test)) {
+                    unoccupiedKennels.push(currentKennel[0]);
+                }
+            }
+
+            var data = { title, user, visit, unoccupiedKennels };
             res.render(visitRecordsDir + "/edit", { ...data });
         }
     };
@@ -123,13 +163,47 @@ module.exports.renderEditForm =
 module.exports.updateVisit =
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
+        const preupdateVisit = await Visit.findById(id)
+        const wasAlreadyCheckedIn = preupdateVisit?.checkedIn;
         const visit = await Visit.findByIdAndUpdate(id, req.body.visit, {
             runValidators: true,
             new: true,
         });
         if (visit) {
+
+            // if assignedKennel was updated, reset indicator flag, and update occupant property on old and new
+            if (visit.kennelUpdatedFlag) {
+                visit.kennelUpdatedFlag = false;
+                await visit.save()
+                await Kennel.findByIdAndUpdate(visit.lastAssignedKennel._id, { occupant: null });
+                await Kennel.findByIdAndUpdate(visit.assignedKennel._id, { occupant: visit.guest._id });
+            }
+
+            // if checkedIn was flagged true and hadn't yet been checkedIn prior to this edit,
+            // add occupant property on assignedKennel
+            if (visit.checkedIn && !wasAlreadyCheckedIn) {
+                await Kennel.findByIdAndUpdate(visit.assignedKennel._id, {
+									occupant: visit.guest._id,
+								});
+                visit.checkedInBy = res.locals.currentUser.username;
+                console.log(visit.checkedInBy);
+                await visit.save();
+            }
+
+            // if checkedOut was flagged true, remove occupant property on assignedKennel
+            if (visit.checkedOut) {
+                await Kennel.findByIdAndUpdate(visit.assignedKennel._id, {
+									occupant: null,
+								});
+                visit.checkedOutBy = res.locals.currentUser.username;
+                console.log(visit.checkedOutBy)
+				await visit.save();
+            }
+
+
+
             req.flash("success", "Successfully updated visit.");
-            res.redirect(`/guest-records/${visit.guest._id}`);
+            res.redirect(`/visit-records/${visit._id}`);
         }
     };
 
@@ -173,6 +247,22 @@ module.exports.addServiceToVisit =
 module.exports.toggleServiceStatus =
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
+
+        const visitServicePopulate = [
+					{
+						path: "services",
+						model: "Service",
+					},
+					{
+						path: "servicesRendered",
+						model: "Service",
+					},
+				];
+
+        const preupdateVisit = await Visit.findById(id).populate(
+					visitServicePopulate
+				);
+
         var visitUpdateData;
         if (req.body.visit.clearServicesRenderedFlag) {
             visitUpdateData = req.body.visit;
@@ -185,7 +275,32 @@ module.exports.toggleServiceStatus =
             runValidators: true,
             new: true,
         });
-        if (visit) {
+
+        const populatedUpdatedVisit = await Visit.findById(id).populate(
+					visitServicePopulate
+				);
+
+        if (visit && preupdateVisit && populatedUpdatedVisit) {
+
+            // check for any newly completed/marked-pending services; update their completedBy and completionDate props
+            for (var service of populatedUpdatedVisit.servicesRendered) {
+                const test = (element: IServiceDoc) => element.name === service.name;
+                if (!preupdateVisit.servicesRendered.some(test)) {					
+                    populatedUpdatedVisit.servicesRenderedByMap.set(service._id, res.locals.currentUser.username);
+                    populatedUpdatedVisit.servicesRenderedDateMap.set(service._id, Date.now());
+                    await populatedUpdatedVisit.save();
+                    } 
+                }
+            // check for any newly marked-pending services; update their completedBy and completionDate props
+            for (var service of preupdateVisit.servicesRendered) {
+                const test = (element: IServiceDoc) => element.name === service.name;
+                if (!populatedUpdatedVisit.servicesRendered.some(test) ) {
+                        populatedUpdatedVisit.servicesRenderedByMap.delete(service._id);
+                        populatedUpdatedVisit.servicesRenderedDateMap.delete(service._id);
+                        await populatedUpdatedVisit.save();
+                    }       
+                }
+
             res.redirect(`/visit-records/${visit._id}`);
         } else {
             throw new AppError(400);
@@ -200,6 +315,11 @@ module.exports.deleteVisit =
         if (!deletedVisit) {
             throw new AppError(404);
         } else {
+            await Kennel.findByIdAndUpdate(
+                    deletedVisit.assignedKennel._id, {
+                    occupant: null,
+                    });
+
             req.flash("success", "Successfully deleted visit.");
             res.redirect(`/guest-records/${deletedVisit.guest._id}`);
         }

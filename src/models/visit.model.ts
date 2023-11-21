@@ -6,8 +6,10 @@ import {
 	formatDuration,
 	intervalToDuration,
 	differenceInDays,
+	isPast,
 	isFuture,
 } from "date-fns";
+import { boolean } from "joi";
 
 
 /*
@@ -34,6 +36,14 @@ const VisitSchema = new Schema({
 	assignedKennel: {
 		type: Schema.Types.ObjectId,
 		ref: "Kennel",
+	},
+	lastAssignedKennel: {
+		type: Schema.Types.ObjectId,
+		ref: "Kennel",
+	},
+	kennelUpdatedFlag: {
+		type: Boolean,
+		default: false,
 	},
 	startDate: {
 		type: Date,
@@ -66,40 +76,56 @@ const VisitSchema = new Schema({
 		type: Boolean,
 		default: false,
 	},
+	checkedInBy: {
+		type: String,
+		default: "",
+	},
 	checkedOut: {
 		type: Boolean,
 		default: false,
 	},
+	checkedOutBy: {
+		type: String,
+		default: "",
+	},
 	notes: {
 		type: String,
 	},
+	servicesRenderedByMap: {
+		type: Map,
+	},
+	servicesRenderedDateMap: {
+		type: Map,
+	}
 });
 
 interface IVisit {
 	guest: IGuestDoc["_id"];
 	number: number;
 	assignedKennel: IKennelDoc["_id"];
+	lastAssignedKennel?: IKennelDoc["_id"];
+	kennelUpdatedFlag: boolean;
 	startDate: Date;
 	endDate: Date;
 	services: Types.DocumentArray<IServiceDoc>;
 	servicesRendered: Types.DocumentArray<IServiceDoc>;
+	servicesRenderedByMap: Map<Types.DocumentArray<IServiceDoc>, string>;
+	servicesRenderedDateMap: Map<Types.DocumentArray<IServiceDoc>, Number>;
 	clearServicesRenderedFlag: boolean;
 	paid?: boolean;
 	notes?: string;
 	current: boolean;
 	checkedIn: boolean;
+	checkedInBy: string;
 	checkedOut: boolean;
+	checkedOutBy: string;
 }
 
 interface IVisitDoc extends IVisit, Document {}
 
 // returns whether visit is currently taking place
 VisitSchema.virtual("current").get(function () {
-	if (this.endDate) {
-		return isFuture(this.endDate)
-	} else {
-		return false;
-	}
+	return (this.checkedIn && !this.checkedOut)
 });
 
 // returns whether all services have been rendered

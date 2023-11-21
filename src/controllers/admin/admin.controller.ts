@@ -32,7 +32,7 @@ module.exports.index =
 			const title = "Pet Resort · Admin";
             var activeAdminTab = res.locals.activeAdminTab
                                         ? res.locals.activeAdminTab
-                                        : "dogServices";
+                                        : "employees";
 
 			const occupiedOnly: boolean = Boolean(req.query.occupied) || false;
 

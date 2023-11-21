@@ -24,14 +24,23 @@ module.exports.empDashboard =
         const title = "Pet Resort · Employee Dashboard";
         var user = "employee";
         var adminAccess: boolean = true;
+        const upcoming = req.query.upcoming || false;
 
         // pagination
         const page = Number(req.query.p) || 1;
         const visitsPerPage = 8;
 
         const allVisits = await Visit.find({})
-					.populate("guest")
 					.populate([
+                        {
+                            path: "guest",
+                            populate: [
+                                {
+                                    path: 'owner',
+                                    model: 'Client',
+                                }
+                            ]
+                        },
 						{
 							path: "assignedKennel",
 							model: "Kennel",
@@ -41,12 +50,10 @@ module.exports.empDashboard =
 					.skip((page - 1) * visitsPerPage)
 					.limit(visitsPerPage);
 
-
-
         const visits = allVisits.filter(visit => visit.current)
         const totalVisitCount = visits.length;
         const pageCount = Math.ceil(totalVisitCount / visitsPerPage);
-        var data = { title, user, adminAccess, visits, page, pageCount };
+        var data = { title, user, adminAccess, visits, page, pageCount, upcoming };
         res.render("employee/dashboard", { ...data });
 
 		//var data = { title, user, guests, activeGuestsTab };
@@ -70,7 +77,7 @@ module.exports.loginEmployee =
         if (redirectUrl) {
             res.redirect(redirectUrl);
         } else {
-            res.redirect("/employee");
+            res.redirect("/dashboard");
         }
     };
 

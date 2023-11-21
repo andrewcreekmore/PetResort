@@ -1,11 +1,23 @@
 <%- include('../../../partials/header') %>
 
-<h2 class="display-6 mb-3 text-center">Visit Records</h2>
+<h2 class="display-6 mb-3 text-center">Update Visit Record</h2>
 
-    <h1 class="display-3 text-center mb-3">Edit visit record</h1>
-    <div class="row mb-3"></div>
+    <div class="row mb-0"></div>
 
     <div class="container">
+
+    <!-- horizontal rule / divider -->
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-0">
+        </div>
+    </div> <!-- end of row -->
+
+    <!-- display any flash messages -->
+    <div class="w-50 mx-auto text-center mt-3">
+        <%- include('../../../partials/flash') %>
+    </div>
 
         <form class="validated-form align-items-center" action="/visit-records/<%=visit._id%>?_method=PUT" method="POST" novalidate>
 
@@ -28,33 +40,94 @@
                     <input type="text" class="form-control" id="guestName" value="<%= visit.guest.fullName %>" disabled readonly>
                 </div>
 
-                <!-- <div class="col-1"></div> -->
+                <!-- <div class="col-1 mb-3"> -->
+                    <label for="visitNum" class="form-label" hidden>Visit #</label>
+                    <input type="text" class="form-control" name="visit[number]" id="visitNum" 
+                    value="<%= visit.number %>" disabled readonly hidden>  
+                <!-- </div> -->
 
-                <div class="col-1 mb-3">
-                    <label for="visitNum" class="form-label">Visit #</label>
-                    <input type="text" class="form-control" name="visit[number]" id="visitNum" value="<%= visit.number %>" disabled readonly>  
-                </div>
-
-                <div class="col-3 mb-3">
+                <div class="col-4 mb-3">
                     <label for="daterange" class="form-label">Check-in / out dates</label>
                         <input type="text" class="form-control" id="daterange">
                 </div>
                 
+            </div> <!--  end of row -->
+
+            <div class="row">
+            <div class="col-3"></div>
+                <div class="col-4 mb-3 form-check">
+                    <input class="form-check-input" type="checkbox" name="visit[checkedIn]" id="checkedIn"
+                        <% if (visit.checkedIn) { %> checked
+                            <% } %>
+                           <% if (visit.checkedOut) { %>
+                                disabled
+                            <% } %>
+                            >
+                    <label class="form-check-label" for="checkedIn">
+                        Checked-in
+                    </label>
+                    </div>
+                    <div class="col-4 mb-3 form-check">
+                    <input class="form-check-input" type="checkbox" name="visit[checkedOut]" id="checkedOut"
+                        <% if (visit.checkedOut) { %> checked
+                            <% } %>
+                            <% if (!visit.checkedIn) { %>
+                                disabled
+                            <% } %>
+                            >
+                    <label class="form-check-label" for="checkedOut">
+                        Checked-out
+                    </label>
+                </div>
 
             </div> <!--  end of row -->
 
             <div class="row">
-                <div class="col-2"></div>
+                <!-- <div class="col-4"></div> -->
                 
-                <div class="col-8 mb-3">
-                    <label for="notesInput" class="form-label">Notes</label>
-                    <textarea class="form-control" id="notesInput" name="visit[notes]" rows="2" value="<%= visit.notes %>"></textarea>
+                <div class="col-3 mx-auto mb-1">
+                    <!-- <label for="notesInput" class="form-label">Notes</label>
+                    <textarea class="form-control" id="notesInput" name="visit[notes]" rows="2" value="<%= visit.notes %>"></textarea> -->
+
+                    <label for="assignedKennelInput" class="form-label">Kennel</label>
+                    <select class="form-select" aria-label="assignedKennel" id="assignedKennelInput" name="visit[assignedKennel]" required>
+                    <option selected disabled>Select...</option>
+                    <% for (kennel of unoccupiedKennels) { %>
+                        <option <% if (visit.assignedKennel.formatted_id === kennel.formatted_id) { %>
+                            selected
+                            <% } %>
+                            
+                            value="<%= kennel._id %>"><%= kennel.formatted_id %></option>
+                        <% } %>
+                    </select>
+                    <div id="assignedKennelInputFeedback" class="invalid-feedback">
+                        Kennel assignment is required. If no kennels are available, reschedule with the client.
+                    </div>
                 </div>
+
+                <div class="row">
+                    <span class="text-center">
+                        <p class="text-muted">&emsp;<i>weight: <%= visit.guest.weight %> lbs</i></p>
+                    </span>
+                </div> <!-- end of row-->
+
+                <!-- hidden kennelUpdatedFlag field -->
+                <input class="form-check-input" type="checkbox" name="visit[kennelUpdatedFlag]" id="kennelUpdatedFlagInput" value="true" hidden>
+                <!-- hidden lastAssignedKennel field -->
+                <input class="form-check-input" type="text" name="visit[lastAssignedKennel]" id="lastAssignedKennelInput" value="<%= visit.assignedKennel._id %>" hidden>
 
             </div>  <!--  end of row -->
 
+            <!-- horizontal rule / divider -->
+            <div class="row">
+                <div class="col-5"></div>
+                <div class="col-2">
+                    <hr class="mt-">
+                </div>
+            </div> <!-- end of row -->
+
             <div class="mx-auto mt-3 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" onclick="beforeSubmit()">Submit</button>
                 <button type="button" class="btn btn-outline-primary" onclick="customReset()">Revert Changes</button> 
                 <a href="/visit-records/<%= visit._id%>" class="btn btn-outline-primary">Back</a>
             </div>
@@ -71,6 +144,14 @@
         const startOriginalDateStr = `${String(startOriginalDate.getMonth() + 1)}/${String(startOriginalDate.getDate())}/${String(startOriginalDate.getFullYear())}`
         const endOriginalDate = new Date(document.getElementById('visitEndFormInput').value)
         const endOriginalDateStr = `${String(endOriginalDate.getMonth() + 1)}/${String(endOriginalDate.getDate())}/${String(endOriginalDate.getFullYear())}`
+
+        // storing original values of checked-in/out
+        var originalCheckedInValue = $("#checkedIn").is(':checked');
+        var originalCheckedOutValue = $("#checkedOut").is(':checked');
+
+        // storing original value of assigned kennel
+        var originalAssignedKennelValue = $('#assignedKennelInput').val();
+        console.log(originalAssignedKennelValue)
 
         $(document).ready(function() {
             // updating current 'active' navbar link
@@ -121,17 +202,42 @@
         })()
 
         // storing original (on load) form values for custom reset function
-        var visitNotesInputField = document.getElementById('notesInput');    
-        var originalVisitNotesValue = visitNotesInputField.value;
+        //var visitNotesInputField = document.getElementById('notesInput');    
+        //var originalVisitNotesValue = visitNotesInputField.value;
 
         // custom form reset
         customReset = function() {
             // notes field
-            visitNotesInputField.value = originalVisitNotesValue;
+            //visitNotesInputField.value = originalVisitNotesValue;
 
             // date range
             $('#daterange').data('daterangepicker').setStartDate(startOriginalDateStr);
             $('#daterange').data('daterangepicker').setEndDate(endOriginalDateStr)
+
+            // checked-in/out
+            $("#checkedIn").prop('checked', originalCheckedInValue);
+            $("#checkedOut").prop('checked', originalCheckedOutValue);
+
+            // assigned kennel
+            $('#assignedKennelInput').val(originalAssignedKennelValue);
         };
+
+        //
+        beforeSubmit = function() {
+
+            // setting checked in/out checkbox values, so will submit as false when unchecked
+            var valueToAssign = !$("#checkedIn").is(':checked') ? 'false' : 'true'
+            $("#checkedIn").prop('checked', true).val(valueToAssign);
+            valueToAssign = !$("#checkedOut").is(':checked') ? 'false' : 'true'
+            $("#checkedOut").prop('checked', true).val(valueToAssign);  
+
+            // setting hidden input flag based on change detected in assignedKennel
+            if ($('#assignedKennelInput').val() !== originalAssignedKennelValue) {
+                $('#kennelUpdatedFlagInput').prop('checked', true).val('true');
+                $('#lastAssignedKennelInput').val(originalAssignedKennelValue);
+                console.log('change detected to kennel; flag set!')
+            }
+
+        }
 
     </script>

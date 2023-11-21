@@ -70,7 +70,7 @@ interface IEmployee {
 	resetPasswordExpires?: Date;
 }
 
-interface IEmployeeDoc extends IEmployee, mongoose.PassportLocalDocument {}
+interface IEmployeeDoc extends IEmployee, mongoose.PassportLocalDocument, Document {}
 
 // full name virtual method
 EmployeeSchema.virtual("fullName").get(function () {
@@ -105,6 +105,7 @@ EmployeeSchema.virtual("formattedAddress").get(function () {
 const Employee = mongoose.model<IEmployeeDoc>("Employee", EmployeeSchema);
 
 export = Employee;
+
 
 //module.exports.Employee = mongoose.model<IEmployeeDoc>("Employee", EmployeeSchema);
 

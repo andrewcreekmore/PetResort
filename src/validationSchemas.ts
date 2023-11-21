@@ -56,12 +56,19 @@ module.exports.visitValidationSchema = Joi.object({
 		guest: Joi.string().required(),
 		number: Joi.number().required(),
 		startDate: Joi.date().required(),
-		endDate: Joi.date().greater(Joi.ref('startDate')).required(),
+		endDate: Joi.date().greater(Joi.ref("startDate")).required(),
 		services: Joi.object().optional(),
 		paid: Joi.bool().optional(),
 		notes: Joi.string().optional().allow(""),
-	})
-})
+		checkedIn: Joi.bool().optional(),
+		checkedInBy: Joi.string().optional().allow(""),
+		checkedOut: Joi.bool().optional(),
+		checkedOutBy: Joi.string().optional().allow(""),
+		assignedKennel: Joi.string().required(),
+		lastAssignedKennel: Joi.string().optional().allow(""),
+		kennelUpdatedFlag: Joi.bool().optional(),
+	}),
+}).options({ stripUnknown: true }); // ignore maps metadata for now
 
 module.exports.employeeValidationSchema = Joi.object({
 	employee: Joi.object({
@@ -98,7 +105,7 @@ module.exports.serviceValidationSchema = Joi.object({
 		price: Joi.number().required(),
 		description: Joi.string().optional().allow(""),
 		serviceType: Joi.string().required(),
-	}),
+	})
 });
 
 module.exports.kennelValidationSchema = Joi.object({

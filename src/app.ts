@@ -17,7 +17,8 @@ const clientRoutes = require("./routes/clients.route")
 const visitRoutes = require("./routes/visits.route")
 const adminRoutes = require("./routes/admin/admin.route");
 const employeeRoutes = require("./routes/admin/employees.route");
-const serviceRoutes = require("./routes/admin/services.route")
+const serviceRoutes = require("./routes/admin/services.route");
+const kennelRoutes = require("./routes/admin/kennels.route");
 
 
 /*
@@ -115,6 +116,7 @@ class App {
 		this.app.use("/visit-records", visitRoutes);
 		this.app.use("/employee-records", employeeRoutes);
 		this.app.use("/service-records", serviceRoutes);
+		this.app.use("/kennel-records", kennelRoutes);
 
 		// CUSTOMER ROUTES
 		//=====================

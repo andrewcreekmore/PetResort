@@ -21,7 +21,7 @@ const authOptions = { failureFlash: true, failureRedirect: "/login" };
 router.get("/", index.showHome);
 
 // employee dashboard
-router.get("/employee", isLoggedIn, catchAsync(index.empDashboard));
+router.get("/dashboard", isLoggedIn, catchAsync(index.empDashboard));
 
 router.route("/login")
 	// employee login - form entry

@@ -28,3 +28,8 @@ thead {
   color: rgb(139,185,254);
 }
 
+.form-check {
+    padding-top: 0.35em;
+    margin-top: 0;
+}
+

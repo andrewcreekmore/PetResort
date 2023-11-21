@@ -1,0 +1,72 @@
+<%- include('../../../partials/header') %>
+
+
+<h2 class="display-6 mb-3 text-center">Add new Kennel</h2>
+
+    <div class="row mb-3"></div> 
+
+    <div class="container">
+
+        <!-- horizontal rule / divider -->
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-0">
+            </div>
+        </div> <!-- end of row -->
+        
+        <form action="/kennel-records" method="POST" novalidate class="validated-form" >
+
+        <div class="row mx-auto">
+
+            <div class="col-4"></div>
+
+            <div class="col-1">
+                <label for="kennel_idInput" class="form-label">ID</label>
+                <input class="form-control" type="text" name="kennel[kennel_id]" value="<%= newKennelID %>" readonly disabled>
+
+                <!-- hidden kennel_id input that isn't disabled-->
+                <input class="form-control" type="text" name="kennel[kennel_id]" value="<%= newKennelID %>" readonly hidden>
+            </div>
+
+                <div class="col-3 mb-3">
+                    <label for="sizeInput" class="form-label">Size</label>
+                    <select class="form-select" aria-label="sizeInput" id="sizeInput" name="kennel[size]" required>
+                        <option selected value="" disabled>Select...</option>
+                        <option value="s">Small</option>
+                        <option value="m">Medium</option>
+                        <option value="l">Large</option>
+                    </select>
+                    <div id="sizeInputFeedback" class="invalid-feedback">
+                        Kennel size is required.
+                    </div>
+                </div>
+
+
+
+        </div>  <!--  end of row -->
+
+
+        <!-- horizontal rule / divider -->
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-3">
+            </div>
+        </div> <!-- end of row -->
+
+
+        <div class="row mb-3"></div>
+
+        <div class="mx-auto mt-1 text-center">
+            <button type="submit" class="btn btn-primary">Submit</button> 
+            <a href="/admin" class="btn btn-outline-primary">Back</a>
+        </div>
+        
+        </form>
+
+    </div> <!--  end of container -->
+
+
+
+    <%- include('../../../partials/footer') %>

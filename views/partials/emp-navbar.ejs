@@ -1,5 +1,5 @@
 <nav class="navbar sticky-top navbar-expand-lg">
-  <div class="container-fluid">
+  <div class="container-fluid" style="max-width: 960px;">
     <a class="navbar-brand" href="/">Pet Resort</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#empNavbar" aria-controls="empNavbar"aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -7,21 +7,10 @@
 
     <div class="collapse navbar-collapse" id="empNavbar">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbar-ul">
-        <li><a class="nav-link" id="navbar_dashboard" aria-current="page" href="/employee">Dashboard</a></li>
+        <li><a class="nav-link" id="navbar_dashboard" aria-current="page" href="/dashboard">Dashboard</a></li>
         <li><a class="nav-link" id="navbar_guest-records" href="/guest-records">Guests</a></li>
         <li><a class="nav-link" id="navbar_client-records" href="/client-records">Clients</a></li>
         <li><a class="nav-link" id="navbar_admin" aria-current="page" href="/admin" d>Admin</a></li>
-
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbar_recordsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Records
-        </a>
-          <ul class="dropdown-menu" aria-labelledby="navbar_recordsDropdown">
-            <li><a class="dropdown-item" href="/#">Kennels</a></li>
-            <li><a class="dropdown-item" href="/guest-records">Guests</a></li>
-            <li><a class="dropdown-item" href="/client-records">Clients</a></li>
-          </ul> -->
-
       </ul>
 
      <% if (!currentUser) { %>

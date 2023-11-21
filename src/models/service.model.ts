@@ -10,7 +10,7 @@ service.model.ts
 
 // create schema: service
 const ServiceSchema = new Schema({
-    petType: {
+	petType: {
 		type: String,
 		required: true,
 	},
@@ -32,7 +32,7 @@ const ServiceSchema = new Schema({
 	displayOrder: {
 		type: Number,
 		default: 1,
-	}
+	},
 });
 
 interface IService {

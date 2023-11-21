@@ -100,10 +100,8 @@ GuestSchema.virtual("current").get(function () {
 			(a, b) => a.endDate - b.endDate
 		);
 		
-		const mostRecentEndDate =
-			sortedVisitsArr[sortedVisitsArr.length - 1].endDate;
-		const result = isFuture(mostRecentEndDate);
-		return result;
+		const mostRecentVisit = sortedVisitsArr[sortedVisitsArr.length - 1];
+		return mostRecentVisit.checkedIn && !mostRecentVisit.checkedOut;
 
 	} else {
 		return false;

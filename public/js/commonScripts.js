@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     switch(currentPageRoute) {
 
-        case 'employee':
+        case 'dashboard':
             $('#navbar_dashboard').addClass('active');
             break;
             
@@ -20,6 +20,10 @@ $(document).ready(function() {
             break;
 
         case 'admin':
+            $('#navbar_admin').addClass('active');
+            break;
+
+        case 'kennel-records':
             $('#navbar_admin').addClass('active');
             break;
 

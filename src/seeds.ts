@@ -623,22 +623,74 @@ const guestVisitsSeed = [
 	{
 		guest: "Alvina",
 		visits: [
-			{ startDate: "2021-10-24", endDate: "2021-10-29", assignedKennel: "2" },
-			{ startDate: "2023-11-11", endDate: "2023-11-27", assignedKennel: "2" },
+			{
+				startDate: "2021-10-24",
+				endDate: "2021-10-29",
+				assignedKennel: "2",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "admin",
+				checkedOut: true,
+				checkedOutBy: "admin",
+			},
+			{
+				startDate: "2023-11-11",
+				endDate: "2023-11-27",
+				assignedKennel: "2",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "admin",
+			},
 		],
 	},
 	{
 		guest: "Eleanor Rigby",
 		visits: [
-			{ startDate: "2014-4-18", endDate: "2014-4-23", assignedKennel: "1" },
-			{ startDate: "2016-6-2", endDate: "2016-6-11", assignedKennel: "1" },
+			{
+				startDate: "2014-4-18",
+				endDate: "2014-4-23",
+				assignedKennel: "1",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "admin",
+				checkedOut: true,
+				checkedOutBy: "admin",
+			},
+			{
+				startDate: "2016-6-2",
+				endDate: "2016-6-11",
+				assignedKennel: "1",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "admin",
+				checkedOut: true,
+				checkedOutBy: "admin",
+			},
 		],
 	},
 	{
 		guest: "Blade Wolf",
 		visits: [
-			{ startDate: "2023-11-21", endDate: "2023-11-26", assignedKennel: "3" },
-			{ startDate: "2022-9-12", endDate: "2016-9-17", assignedKennel: "3" },
+			{
+				startDate: "2023-11-21",
+				endDate: "2023-11-26",
+				assignedKennel: "3",
+				paid: false,
+				checkedIn: true,
+				checkedInBy: "admin",
+				checkedOut: false,
+				checkedOutBy: "",
+			},
+			{
+				startDate: "2022-9-12",
+				endDate: "2022-9-17",
+				assignedKennel: "3",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "admin",
+				checkedOut: true,
+				checkedOutBy: "admin",
+			},
 		],
 	},
 ];
@@ -662,6 +714,13 @@ const addVisitsData = async () => {
 					startDate: guestVisitsSeed[i].visits[j].startDate,
 					endDate: guestVisitsSeed[i].visits[j].endDate,
 					clearServicesRenderedFlag: false,
+					paid: guestVisitsSeed[i].visits[j].paid,
+					checkedIn: guestVisitsSeed[i].visits[j].checkedIn,
+					checkedInBy: guestVisitsSeed[i].visits[j].checkedInBy,
+					checkedOut: guestVisitsSeed[i].visits[j].checkedOut,
+					checkedOutBy: guestVisitsSeed[i].visits[j].checkedOutBy,
+					servicesRenderedByMap: new Map(),
+					servicesRenderedDateMap: new Map(),
 				});
 				await newVisit.save();
 				guest.visits?.push(newVisit);
@@ -682,7 +741,7 @@ const addVisitsData = async () => {
 const visitServicesSeed = [
 	{
 		guest: "Alvina",
-		visits: [{ startDate: "2022-3-6" }, { startDate: "2021-10-24" }],
+		visits: [{ startDate: "2023-11-11" }, { startDate: "2021-10-24" }],
 		services: [
 			[
 				{ petType: "cat", name: "Nail Trim" },
@@ -690,10 +749,18 @@ const visitServicesSeed = [
 			],
 			[{ petType: "cat", name: "Full Service" }],
 		],
-		servicesRendered: [
-			[{ petType: "cat", name: "Nail Trim" }],
-			[],
+		servicesRendered: [[{ petType: "cat", name: "Nail Trim" }], []],
+	},
+	{
+		guest: "Blade Wolf",
+		visits: [{ startDate: "2023-11-21" },],
+		services: [
+			[
+				{ petType: "dog", name: "Ear Cleaning" },
+				{ petType: "dog", name: "Bath & Brush" },
+			],
 		],
+		servicesRendered: [[{ petType: "dog", name: "Ear Cleaning" }]],
 	},
 ];
 

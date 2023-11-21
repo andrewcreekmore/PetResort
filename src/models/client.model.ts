@@ -110,15 +110,6 @@ ClientSchema.virtual('mostRecentPet').get(function() {
 	}
 })
 
-// ClientSchema.virtual("current").get(function () {
-// 	if (this.pets.length === 0) {
-// 		return false;
-// 	} else {
-		
-
-// 	}
-// });
-
 
 // setup query middleware: delete owned pets (guests) when deleting client
 ClientSchema.post('findOneAndDelete', async function (deletedClient) {
