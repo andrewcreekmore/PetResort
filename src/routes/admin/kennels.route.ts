@@ -12,6 +12,7 @@ kennels.route.ts
 */
 
 const router = express.Router();
+const path = '/kennel-records'
 
 // require login for all kennel records routes
 router.all('*', isLoggedIn)
@@ -32,4 +33,4 @@ router
 	// kennel records: delete single record
 	.delete(catchAsync(kennels.deleteKennel));
 
-module.exports = router;
+module.exports = { router, path };

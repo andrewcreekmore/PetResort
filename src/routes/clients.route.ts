@@ -13,6 +13,7 @@ clients.route.ts
 
 // init router
 const router = express.Router();
+const path = '/client-records'
 
 // require login for all client records routes
 router.all('*', isLoggedIn)
@@ -37,4 +38,4 @@ router.route("/:id")
 // client records: update single record - form entry
 router.get("/:id/edit", catchAsync(clients.renderEditForm));
 
-module.exports = router;
+module.exports = { router, path };

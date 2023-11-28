@@ -16,6 +16,7 @@ guests.route.ts
 
 // init router
 const router = express.Router();
+const path = "/guest-records";
 
 // require login for all guest records routes
 router.all('*', isLoggedIn)
@@ -46,4 +47,4 @@ router.get("/:id/edit", catchAsync(guests.renderEditForm));
 // guest records: remove photo (reset to placeholder)
 router.put("/removePhoto/:id", catchAsync(guests.removePhoto));
 
-module.exports = router;
+module.exports = { router, path };

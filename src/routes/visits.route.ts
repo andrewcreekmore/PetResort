@@ -13,6 +13,7 @@ visits.route.ts
 
 // init router
 const router = express.Router();
+const path = '/visit-records'
 
 // require login for all visit records routes
 router.all('*', isLoggedIn)
@@ -46,4 +47,4 @@ router.get("/:id/edit", catchAsync(visits.renderEditForm));
 
 
 
-module.exports = router;
+module.exports = { router, path };

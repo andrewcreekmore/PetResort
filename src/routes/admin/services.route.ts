@@ -16,14 +16,10 @@ service.route.ts
 
 // init router
 const router = express.Router();
+const path = '/service-records'
 
 // require login for all service records routes
 router.all('*', isLoggedIn)
-
-// service route constants
-const servicesDir = "employee/records/services";
-var user = "employee";
-var adminAccess: boolean = true;
 
 // add new service - form entry
 router.get("/new", services.renderNewForm);
@@ -40,4 +36,4 @@ router.route("/:id")
 	// service records: delete single record
 	.delete(catchAsync(services.deleteService));
 
-module.exports = router;
+module.exports = { router, path };

@@ -20,11 +20,7 @@ admin.route.ts
 
 // init router
 const router = express.Router();
-
-// admin route constants
-const adminDir = "employee/admin";
-var user = "employee";
-var adminAccess: boolean = true;
+const path = '/admin';
 
 // require login for all admin routes
 router.all('*', isLoggedIn)
@@ -53,4 +49,4 @@ router.route("/resetDirect/:id")
     // admin reset emp password DIRECTLY (from admin tools emp record) - edit on server
     .post(catchAsync(admin.directResetPassword));
 
-module.exports = router;
+module.exports = { router, path };

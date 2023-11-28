@@ -12,6 +12,7 @@ employee.route.ts
 */
 
 const router = express.Router();
+const path = '/employee-records'
 
 // require login for all employee records routes
 router.all('*', isLoggedIn)
@@ -33,4 +34,4 @@ router.route("/:id")
 // employee records: update single record - form entry
 router.get("/:id/edit", catchAsync(employees.renderEditForm));
 
-module.exports = router;
+module.exports = { router, path };

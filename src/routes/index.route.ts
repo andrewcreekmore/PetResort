@@ -13,6 +13,7 @@ index.route.ts
 
 // init router
 const router = express.Router();
+const path = '/';
 
 // index route constants
 const authOptions = { failureFlash: true, failureRedirect: "/login" };
@@ -42,4 +43,4 @@ router.get("/logout", index.logoutEmployee);
 // customer portal
 router.get("/customer", index.customerHome);
 
-module.exports = router;
+module.exports = { router, path };
