@@ -174,25 +174,5 @@ class App {
 	}
 }
 
-// setup environment (if dev)
-if (process.env.NODE_ENV !== "production") {
-	require("dotenv").config();
-}
-
-// setup cloud storage for uploaded images
-cloudinary.config({
-	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-	api_key: process.env.CLOUDINARY_KEY,
-	api_secret: process.env.CLOUDINARY_SECRET,
-});
-
-// instantiate server app
-const envPort = process.env.PORT || 8080;
-const app = new App({
-	port: Number(envPort),
-	middlewares: allMiddlewares,
-	routes: allRoutes,
-});
-
 
 export default App;
