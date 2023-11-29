@@ -50,8 +50,8 @@ class App {
 	private initMiddleware(middlewares: {
 		forEach: (arg0: (middleware: any) => void) => void;
 	}) {
-
-		this.app.set("trust proxy", 1); 
+		// trust first proxy (Heroku: allow HTTPS)
+		this.app.set("trust proxy", 1);
 
 		// run on every request:
 		middlewares.forEach((middleware) => {

@@ -87,7 +87,7 @@ module.exports.logoutEmployee =
         req.logout(function (err) {
             if (err) return next(err);
             req.flash("success", "Goodbye!");
-            res.redirect("/employee");
+            res.redirect("/login");
         });
     };
 
