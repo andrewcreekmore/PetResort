@@ -16,13 +16,6 @@ seeds.ts
 */
 
 
-// setup connection logging + connect to database
-connect().then(() => console.log("Connection to database is open."));
-connect().catch((err) => console.log(err));
-async function connect() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/petResort");
-}
-
 const seedEmployees = [
 	{
 		firstName: "GLaDOS",
@@ -804,12 +797,38 @@ const addServicesData = async () => {
 	}
 }
 
+// setup connection logging + connect to database
+connect().then(() => console.log("Connection to database is open."));
+//connect().catch((err) => console.log(err));
+var dbUrl: string = "" + process.env.DB_URL // "mongodb://127.0.0.1:27017/petResort";
+async function connect() {
+		try {
+			await mongoose.connect(dbUrl);
+			const db = mongoose.connection;
+			//db.on("error", console.error.bind(console, "connection error:"));
+			db.once("open", () => {
+				//console.log("Database connected.");
+				// execute seed function
+				seedDB().then(() =>
+					addVisitsData().then(() =>
+						addServicesData().then(() => {
+							mongoose.connection.close();
+							console.log("Connection to database closed.");
+						})
+					)
+				)
+			});
+		} catch (error) {
+			console.error(error);
+		}
+}
+
 // execute seed function
-seedDB().then(() => 
-	addVisitsData().then(() => 
-		addServicesData().then(() => {
-			mongoose.connection.close();
-			console.log("Connection to database closed.");
-		})
-	)
-)
+// seedDB().then(() => 
+// 	addVisitsData().then(() => 
+// 		addServicesData().then(() => {
+// 			mongoose.connection.close();
+// 			console.log("Connection to database closed.");
+// 		})
+// 	)
+// )
