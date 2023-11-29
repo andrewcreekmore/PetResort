@@ -53,15 +53,18 @@ const storeFlashMessages = (req: Request, res: Response, next: NextFunction) => 
 // setting up mongoStore for session
 // + session options config
 //=====================
-var dbUrl: string = "mongodb://127.0.0.1:27017/petResort";
-if (process.env.NODE_ENV === "production" && process.env.DB_URL) {
-	dbUrl = process.env.DB_URL;
-}
+var dbUrl: string = process.env.DB_URL || "mongodb://127.0.0.1:27017/petResort";
+// if (process.env.NODE_ENV === "production" && process.env.DB_URL) {
+// 	dbUrl = process.env.DB_URL;
+// }
+
+const sessionSecret = process.env.SESSION_SECRET || 'tempSecret';
+
 const sessionStore = MongoStore.create({
 	mongoUrl: dbUrl,
 	touchAfter: 24 * 60 * 60,
 	crypto: {
-		secret: "tempSecret",
+		secret: sessionSecret,
 	},
 });
 
@@ -69,10 +72,11 @@ sessionStore.on("error", function (err) {
 	console.log("Session store error: ", err);
 });
 
+
 const sessionConfig = {
 	store: sessionStore,
 	name: "session",
-	secret: "tempSecret",
+	secret: sessionSecret,
 	resave: false,
 	saveUninitialized: true,
 	cookie: {

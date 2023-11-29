@@ -102,10 +102,10 @@ class App {
 	private initDatabase() {
 
 		// determine which db to connect to (dev/production)
-		var dbUrl: string = "mongodb://127.0.0.1:27017/petResort";
-		if (process.env.NODE_ENV === "production" && process.env.DB_URL) {
-			dbUrl = process.env.DB_URL;
-		}
+		var dbUrl: string = process.env.DB_URL || "mongodb://127.0.0.1:27017/petResort";
+		// if (process.env.NODE_ENV === "production" && process.env.DB_URL) {
+		// 	dbUrl = process.env.DB_URL;
+		// }
 
 		// connect to database + register models/schemas
 		mongoose.connect(dbUrl);

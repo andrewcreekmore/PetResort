@@ -12,12 +12,10 @@ server.ts
 ===========================================================================
 */
 
-// setup environment (dev)
+// setup environment (if dev)
 if (process.env.NODE_ENV !== "production") {
 	require("dotenv").config();
 }
-
-
 
 // setup cloud storage for uploaded images
 cloudinary.config({
