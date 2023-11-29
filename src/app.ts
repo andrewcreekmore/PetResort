@@ -99,7 +99,7 @@ class App {
 	}
 
 	// setup app database
-	private initDatabase() {
+	private async initDatabase() {
 
 		// determine which db to connect to (dev/production)
 		var dbUrl: string = process.env.DB_URL || "mongodb://127.0.0.1:27017/petResort";
@@ -107,8 +107,13 @@ class App {
 		// 	dbUrl = process.env.DB_URL;
 		// }
 
+		// async function connect() {
+		// 	await mongoose.connect(dbUrl);
+		// }
+
 		// connect to database + register models/schemas
-		mongoose.connect(dbUrl);
+		await mongoose.connect(dbUrl);
+		//mongoose.connect(dbUrl);
 		const db = mongoose.connection;
 		db.on("error", console.error.bind(console, "connection error:"));
 		db.once("open", () => {
