@@ -162,7 +162,7 @@ class App {
 
 	// define listener
 	public listen() {
-		this.app.listen(this.port, () => {
+		this.app.listen(process.env.PORT, () => {
 			console.log(
 				`Server is running at http://localhost:${this.port}; ctrl + C to stop.`
 			);
