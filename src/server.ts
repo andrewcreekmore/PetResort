@@ -25,7 +25,7 @@ cloudinary.config({
 });
 
 // instantiate server app
-const envPort = process.env.PORT;
+const envPort = process.env.PORT || 8080;
 const app = new App({
 	port: Number(envPort),
 	middlewares: allMiddlewares,

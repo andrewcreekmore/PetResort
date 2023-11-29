@@ -34,12 +34,12 @@ class App {
 		// setup templating engine
 		this.app.set("view engine", "ejs");
 
+		// setup database
+		this.initDatabase();
+
 		// setup middleware and routes
 		this.initMiddleware(appInitParams.middlewares);
 		this.initRoutes(appInitParams.routes);
-
-		// setup database
-		this.initDatabase();
 	}
 
 	// setup app middleware
