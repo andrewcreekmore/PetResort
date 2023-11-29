@@ -47,8 +47,9 @@ class App {
 	}
 
 	// setup app middleware
-	private initMiddleware(middlewares: { forEach: (arg0: (middleware: any) => void) => void; }) {
-
+	private initMiddleware(middlewares: {
+		forEach: (arg0: (middleware: any) => void) => void;
+	}) {
 		// run on every request:
 		middlewares.forEach((middleware) => {
 			this.app.use(middleware);
@@ -61,11 +62,12 @@ class App {
 	}
 
 	// setup routing
-	private initRoutes(routes: { forEach: (arg0: (route: any) => void) => void; }) {
-
+	private initRoutes(routes: {
+		forEach: (arg0: (route: any) => void) => void;
+	}) {
 		routes.forEach((route) => {
-					this.app.use(route.path, route.router);
-				});
+			this.app.use(route.path, route.router);
+		});
 
 		// CUSTOMER ROUTES
 		//=====================
@@ -104,9 +106,9 @@ class App {
 
 	// setup app database
 	private async initDatabase() {
-
 		// determine which db to connect to (dev/production)
-		var dbUrl: string = process.env.DB_URL || "mongodb://127.0.0.1:27017/petResort";
+		var dbUrl: string =
+			process.env.DB_URL || "mongodb://127.0.0.1:27017/petResort";
 		// if (process.env.NODE_ENV === "production" && process.env.DB_URL) {
 		// 	dbUrl = process.env.DB_URL;
 		// }
@@ -122,11 +124,8 @@ class App {
 			db.once("open", () => {
 				console.log("Database connected.");
 				registerSchemas();
-				this.listen();
 			});
-		}
-
-		catch (error) {
+		} catch (error) {
 			console.error(error);
 		}
 
@@ -151,7 +150,7 @@ class App {
 		// 		registerSchemas();
 		// 	});
 		// }
-		
+
 		// DEVELOPMENT
 		// connect to database + setup logging
 		// mongoose.connect("mongodb://127.0.0.1:27017/petResort");
@@ -166,7 +165,7 @@ class App {
 
 	// define listener
 	public listen() {
-		this.app.listen(this.port, () => {
+		this.app.listen(this.port, '0.0.0.0', () => {
 			console.log(
 				`Server is running at http://localhost:${this.port}; ctrl + C to stop.`
 			);
