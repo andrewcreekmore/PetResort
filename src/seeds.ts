@@ -798,8 +798,8 @@ const addServicesData = async () => {
 }
 
 // setup connection logging + connect to database
-//connect().then(() => console.log("Connection to database is open."));
-//connect().catch((err) => console.log(err));
+connect().then(() => console.log("Connection to database is open."));
+connect().catch((err) => console.log(err));
 
 async function connect() {
 		try {
@@ -823,8 +823,6 @@ async function connect() {
 			console.error(error);
 		}
 }
-
-connect();
 
 // execute seed function
 // seedDB().then(() => 
