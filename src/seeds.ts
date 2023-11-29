@@ -797,39 +797,34 @@ const addServicesData = async () => {
 	}
 }
 
-// setup connection logging + connect to database
-connect().then(() => console.log("Connection to database is open."));
-connect().catch((err) => console.log(err));
+
+
+
+require("dotenv").config();
+console.log(process.env.DB_URL);
 
 async function connect() {
-		try {
-			var dbUrl: string = "" + process.env.DB_URL; // "mongodb://127.0.0.1:27017/petResort";
-			await mongoose.connect(dbUrl);
-			const db = mongoose.connection;
-			//db.on("error", console.error.bind(console, "connection error:"));
-			db.once("open", () => {
-				console.log("Database connected.");
-				// execute seed function
-				seedDB().then(() =>
-					addVisitsData().then(() =>
-						addServicesData().then(() => {
-							mongoose.connection.close();
-							console.log("Connection to database closed.");
-						})
-					)
-				);
-			});
-		} catch (error) {
-			console.error(error);
-		}
-}
+	if (process.env.DB_URL) {
+		var dbUrl: string = process.env.DB_URL; // "mongodb://127.0.0.1:27017/petResort";
+
+		await mongoose.connect(dbUrl);
+		const db = mongoose.connection;
+		db.once("open", () => {
+			console.log("Database connected.");
+		});
+	}
+};
+
+// connect to database
+connect().then(() => console.log("Attempting to connect..."));
+connect().catch((err) => console.log(err));
 
 // execute seed function
-// seedDB().then(() => 
-// 	addVisitsData().then(() => 
-// 		addServicesData().then(() => {
-// 			mongoose.connection.close();
-// 			console.log("Connection to database closed.");
-// 		})
-// 	)
-// )
+seedDB().then(() => 
+	addVisitsData().then(() => 
+		addServicesData().then(() => {
+			mongoose.connection.close();
+			console.log("Connection to database closed.");
+		})
+	)
+)
