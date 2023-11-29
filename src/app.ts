@@ -111,15 +111,29 @@ class App {
 		// 	await mongoose.connect(dbUrl);
 		// }
 
+		try {
+			await mongoose.connect(dbUrl);
+			const db = mongoose.connection;
+			//db.on("error", console.error.bind(console, "connection error:"));
+			db.once("open", () => {
+				console.log("Database connected.");
+				registerSchemas();
+				this.listen();
+			});
+		}
+
+		catch (error) {
+			console.error(error);
+		}
+
 		// connect to database + register models/schemas
-		await mongoose.connect(dbUrl);
 		//mongoose.connect(dbUrl);
-		const db = mongoose.connection;
-		db.on("error", console.error.bind(console, "connection error:"));
-		db.once("open", () => {
-			console.log("Database connected.");
-			registerSchemas();
-		});
+		// const db = mongoose.connection;
+		// db.on("error", console.error.bind(console, "connection error:"));
+		// db.once("open", () => {
+		// 	console.log("Database connected.");
+		// 	registerSchemas();
+		// });
 
 		// PRODUCTION
 		// if (process.env.DB_URL) {
