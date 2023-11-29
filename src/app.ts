@@ -50,6 +50,9 @@ class App {
 	private initMiddleware(middlewares: {
 		forEach: (arg0: (middleware: any) => void) => void;
 	}) {
+
+		this.app.set("trust proxy", 1); 
+
 		// run on every request:
 		middlewares.forEach((middleware) => {
 			this.app.use(middleware);
