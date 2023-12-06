@@ -1,8 +1,6 @@
 <%- include('../../../partials/header') %>
 
-<h2 class="display-6 mb-3 text-center">Guest Records</h2>
-
-    <h1 class="display-3 text-center mb-3">Edit guest record</h1>
+<h2 class="display-6 mb-0 text-center">Edit Guest Record</h2>
 
     <!-- horizontal rule / divider -->
     <div class="row">
@@ -13,7 +11,7 @@
     </div> <!-- end of row -->
 
     <!-- display any flash messages -->
-    <div class="w-50 mx-auto text-center mt-3">
+    <div class="w-50 mx-auto text-center mt-0">
         <%- include('../../../partials/flash') %>
     </div>
 
@@ -137,9 +135,8 @@
                     <div class="col-8">
                     
                         <label for="imageFileInput" class="form-label">
-                            <i>Current photo: </i>                        
-                            <!-- <a href="#"  data-toggle="tooltip" 
-                            title="<img src='<%= guest.image.url %>' width='500px'>">Preview</a> --> <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="<img crossorigin="anonymous" src='<%= guest.image.url %>' width='500px'>">Preview</button> 
+                            <i>Current photo: &nbsp; </i>                        
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="<img crossorigin='anonymous' src='<%= guest.image.url %>' width='350px'>">Preview</button> 
                         </label>
 
                         <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#removePhotoModal"> Remove</button>

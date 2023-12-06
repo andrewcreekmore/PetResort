@@ -1,6 +1,6 @@
 <%- include('../../../partials/header') %>
 
-<h2 class="display-6 text-center">Employee Record</h2>
+<!-- <h2 class="display-6 text-center">Employee Record</h2> -->
 
 <!-- display any flash messages -->
 <div class="w-50 mx-auto text-center mt-3">
@@ -20,26 +20,29 @@
 
                         <div class="card-body">
                             <h3 class="card-title"><%= employee.fullName %></h3>
-                            <h6 class="card-subtitle mb-2 text-muted"><%= employee.role %>  </h6>
+                            <h6 class="card-subtitle mb-2 text-muted"><small><%= employee.role %> &bullet; <a href="tel:<%= employee.phoneNumber %>" class="contact-card-muted-link"><%= employee.formattedPhone %></small></a></h6>
                             <!-- <br></br> -->
                             <ul class="list-group list-group-flush mb-3">
 
-                                <li class="list-group-item"><i>Email: &emsp;  </i> <%= employee.email %></li>
-                                <li class="list-group-item"><i>Phone: &nbsp; &nbsp; </i> <%= employee.formattedPhone %> </li>
-                                <li class="list-group-item"><i>Address: &nbsp; </i> 
+                                <li class="list-group-item bs-body-color"><i>Email: &nbsp; &nbsp;&nbsp;  </i>
+                                    <small><a class="contact-card-link"  href="mailto:<%=employee.email %>"> <%= employee.email %></a></small>
+                                </li>
+                                <li class="list-group-item"><i>Address: &nbsp; </i> <small>
                                     <% if (employee.address.streetAddress) { %>
                                         <%= employee.formattedAddress%>
-                                    <br>  &nbsp; &emsp; &emsp; &emsp;   <%=employee.address.city %>, <%=employee.address.state %> <br> &nbsp; &emsp; &emsp; &emsp;
+                                    <br>  &nbsp; &emsp; &emsp; &emsp; &nbsp;   <%=employee.address.city %>, 
+                                    <% const state = stateInfo.find((element) => element.name === employee.address.state) %>
+                                    <%= state.abbreviation %> <br> &nbsp; &emsp; &emsp; &emsp; &nbsp;
                                      <%=employee.address.zip %> </br>  
                                      <% } %>
-                                    </li>
+                                   </small> </li>
 
                                 </ul>
                                 <!-- edit and delete buttons -->
                                 <div class="text-center">
-                                    <a href="/employee-records/<%=employee._id%>/edit" class="btn btn-primary">Edit</a> 
+                                    <a href="/employee-records/<%=employee._id%>/edit" class="btn btn-primary btn-sm">Edit</a> 
 
-                                    <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
+                                    <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                                     </svg> Delete</a></button>
@@ -52,10 +55,11 @@
                 </div>
             </div>
     
-    <h4 class="display-12 text-center" style="padding-top: 25px;">Login Credentials</h4>
+    <!-- <h4 class="display-12 text-center" style="padding-top: 25px;">Login Credentials</h4> -->
+    <p class="lead text-center" style="padding-top: 25px;">Login Credentials</p>
 
     <!-- billing summary: account credit / balance -->
-    <div class="table-responsive my-3" style="max-height: 600px">
+    <div class="table-responsive mb-3 mt-1" style="max-height: 600px">
         <table class="table table-hover">
         <thead>
             <tr>
@@ -68,10 +72,10 @@
         </thead>
         <tbody>
                     <tr>
-                    <td valign="middle" style="text-align: center"><%= employee.username  %></td>
+                    <td valign="middle" style="text-align: center"><small><%= employee.username  %></small></td>
 
-                    <td valign="middle" style="text-align: center"><%= employee.adminAccess %></td>
-                    <td valign="middle" style="text-align: center"><a href="/resetDirect/<%= employee._id %>" class="btn btn-outline-primary btn-sm">Reset</a></td>
+                    <td valign="middle" style="text-align: center"><small><%= employee.adminAccess %></small></td>
+                    <td valign="middle" style="text-align: center"><small><a href="/admin/resetDirect/<%= employee._id %>" class="btn btn-outline-primary btn-sm">Reset</a></small></td>
                   
                     </tr>
         </tbody>

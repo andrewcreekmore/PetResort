@@ -18,12 +18,12 @@ seeds.ts
 
 const seedEmployees = [
 	{
-		firstName: "GLaDOS",
+		firstName: "_GLaDOS",
 		lastName: "_",
 		role: "Owner",
 		adminAccess: true,
-		username: 'admin',
-		password: 'admin',
+		username: "admin",
+		password: "admin",
 		phoneNumber: 5707903431,
 		email: "admin@aperture.com",
 		address: {
@@ -33,6 +33,120 @@ const seedEmployees = [
 			zip: 18201,
 		},
 	},
+	{
+		firstName: "Heather",
+		lastName: "Mason",
+		role: "Manager",
+		adminAccess: true,
+		username: "hmason",
+		password: "alessa",
+		phoneNumber: 2673502559,
+		email: "bread@valtiel.org",
+		address: {
+			streetAddress: "4946 Valley Dr",
+			city: "Silent Hill",
+			state: "Pennsylvania",
+			zip: 18640,
+		},
+	},
+	{
+		firstName: "B.J.",
+		lastName: "Blazkowicz",
+		role: "CSR",
+		adminAccess: false,
+		username: "blazko",
+		password: "killthenazis",
+		phoneNumber: 4025522235,
+		email: "terrorbilly@osa.gov",
+		address: {
+			streetAddress: "1533 Commerce Blvd",
+			city: "Mesquite",
+			state: "Texas",
+			zip: 75150,
+		},
+	},
+	{
+		firstName: "Chloe",
+		lastName: "Frazer",
+		role: "CSR",
+		adminAccess: false,
+		username: "cfrazer",
+		password: "lostlegacy",
+		phoneNumber: 9252712160,
+		email: "ganesh@shoreline.org",
+		address: {
+			streetAddress: "4048 Water St",
+			city: "Oakland",
+			state: "California",
+			zip: 94612,
+		},
+	},
+	{
+		firstName: "Alex",
+		lastName: "Casey",
+		role: "CSR",
+		adminAccess: false,
+		username: "acasey",
+		password: "maximumpayne",
+		phoneNumber: 3478818217,
+		email: "payne@nypd.gov",
+		address: {
+			streetAddress: "1144 Redbud Dr",
+			apartment: "4A",
+			city: "Brooklyn",
+			state: "New York",
+			zip: 11227,
+		},
+	},
+	{
+		firstName: "Flynn",
+		lastName: "Taggart",
+		role: "Groomer",
+		adminAccess: false,
+		username: "ftaggart",
+		password: "unionaerospace",
+		phoneNumber: 9528546136,
+		email: "doomslayer@uac.org",
+		address: {
+			streetAddress: "4351 Orchard St",
+			city: "Bloomington",
+			state: "Minnesota",
+			zip: 55431,
+		},
+	},
+	{
+		firstName: "Seb",
+		lastName: "Castellanos",
+		role: "Groomer",
+		adminAccess: false,
+		username: "scastellanos",
+		password: "evilwithin",
+		phoneNumber: 4154834342,
+		email: "seb@kcpd.gov",
+		address: {
+			streetAddress: "3191 Palmer Rd",
+			city: "Krimson City",
+			state: "Ohio",
+			zip: 43085,
+		},
+	},
+
+	// {
+	// 	firstName: "",
+	// 	lastName: "",
+	// 	role: "CSR",
+	// 	adminAccess: false,
+	// 	username: "",
+	// 	password: "",
+	// 	phoneNumber: 0,
+	// 	email: "",
+	// 	address: {
+	// 		streetAddress: "",
+	// 		city: "",
+	// 		state: "",
+	// 		zip: 0,
+	// 	},
+	// },
 ];
 
 const seedGuests = [
@@ -256,19 +370,6 @@ const seedClients = [
 			zip: 48226,
 		},
 	},
-	// {
-	// 	firstName: "B.J.",
-	// 	lastName: "Blazkowicz",
-	// 	phoneNumber: 4025522235,
-	// 	email: "terrorbilly@osa.gov",
-	// 	address: {
-	// 		streetAddress: "1533 Commerce Blvd",
-	// 		apartment: "",
-	// 		city: "Mesquite",
-	// 		state: "Texas",
-	// 		zip: 75150,
-	// 	},
-	// },
 	{
 		firstName: "Jill",
 		lastName: "Valentine",
@@ -282,32 +383,6 @@ const seedClients = [
 			zip: 63052,
 		},
 	},
-	// {
-	// 	firstName: "Flynn",
-	// 	lastName: "Taggart",
-	// 	phoneNumber: 9528546136,
-	// 	email: "slayer@uac.org",
-	// 	address: {
-	// 		streetAddress: "4351 Orchard St",
-	// 		apartment: "",
-	// 		city: "Bloomington",
-	// 		state: "Minnesota",
-	// 		zip: 55431,
-	// 	},
-	// },
-	// {
-	// 	firstName: "Seb",
-	// 	lastName: "Castellanos",
-	// 	phoneNumber: 4154834342,
-	// 	email: "seb@kcpd.gov",
-	// 	address: {
-	// 		streetAddress: "3191 Palmer Rd",
-	// 		apartment: "",
-	// 		city: "Krimson City",
-	// 		state: "Ohio",
-	// 		zip: 43085,
-	// 	},
-	// },
 	{
 		firstName: "Ellie",
 		lastName: "Williams",
@@ -321,32 +396,6 @@ const seedClients = [
 			zip: 83001,
 		},
 	},
-	// {
-	// 	firstName: "Alex",
-	// 	lastName: "Casey",
-	// 	phoneNumber: 3478818217,
-	// 	email: "payne@nypd.gov",
-	// 	address: {
-	// 		streetAddress: "1144 Redbud Dr",
-	// 		apartment: "4A",
-	// 		city: "Brooklyn",
-	// 		state: "New York",
-	// 		zip: 11227,
-	// 	},
-	// },
-	// {
-	// 	firstName: "Chloe",
-	// 	lastName: "Frazer",
-	// 	phoneNumber: 9252712160,
-	// 	email: "ganesh@shoreline.org",
-	// 	address: {
-	// 		streetAddress: "4048 Water St",
-	// 		apartment: "",
-	// 		city: "Oakland",
-	// 		state: "California",
-	// 		zip: 94612,
-	// 	},
-	// },
 	{
 		firstName: "Albert",
 		lastName: "Wesker",
@@ -408,15 +457,16 @@ const seedServices = [
 		petType: "cat",
 		name: "Nail Trim",
 		price: 10,
-		description: "",
+		description: "Nails carefully trimmed and electronically filed.",
 		serviceType: "basic",
 		displayOrder: 1,
 	},
 	{
 		petType: "dog",
-		name: "Nail Grind & Trim",
-		price: 15,
-		description: "",
+		name: "Nail Buff & Trim",
+		price: 10,
+		description:
+			"Nails carefully buffed and trimmed for a smooth and rounded finish.",
 		serviceType: "basic",
 		displayOrder: 1,
 	},
@@ -424,7 +474,8 @@ const seedServices = [
 		petType: "cat",
 		name: "Haircut",
 		price: 10,
-		description: "",
+		description:
+			"Keeps your long-haired feline trimmed to reduce matting and ease maintenance.",
 		serviceType: "basic",
 		displayOrder: 1,
 	},
@@ -432,7 +483,8 @@ const seedServices = [
 		petType: "dog",
 		name: "Haircut",
 		price: 15,
-		description: "",
+		description:
+			"Reduces matting and eases mainteance. Includes sanitary trim.",
 		serviceType: "basic",
 		displayOrder: 1,
 	},
@@ -440,15 +492,15 @@ const seedServices = [
 		petType: "cat",
 		name: "Ear Cleaning",
 		price: 10,
-		description: "",
+		description: "Thorough yet gentle ear cleaning to prevent infection.",
 		serviceType: "basic",
 		displayOrder: 1,
 	},
 	{
 		petType: "dog",
 		name: "Ear Cleaning",
-		price: 15,
-		description: "",
+		price: 10,
+		description: "Thorough yet gentle ear cleaning to prevent infection.",
 		serviceType: "basic",
 		displayOrder: 1,
 	},
@@ -456,7 +508,8 @@ const seedServices = [
 		petType: "cat",
 		name: "Bath & Brush",
 		price: 10,
-		description: "",
+		description:
+			"Special de-shed rejuvenating shampoo and conditioner and a coat brushing to bring out softness and shine.",
 		serviceType: "basic",
 		displayOrder: 1,
 	},
@@ -464,7 +517,8 @@ const seedServices = [
 		petType: "dog",
 		name: "Bath & Brush",
 		price: 15,
-		description: "",
+		description:
+			"Special de-shed rejuvenating shampoo and conditioner and a coat brushing to bring out softness and shine.",
 		serviceType: "basic",
 		displayOrder: 1,
 	},
@@ -488,11 +542,29 @@ const seedServices = [
 	},
 	// add-on service packages
 	{
+		petType: "cat",
+		name: "Deluxe",
+		price: 10,
+		description:
+			"Base service PLUS premium shampoo & conditioner, teeth brushing & breath freshener, cologne spritz, and bandana or bow.",
+		serviceType: "add-on",
+		displayOrder: 3,
+	},
+	{
 		petType: "dog",
 		name: "Deluxe",
 		price: 10,
 		description:
 			"Base service PLUS premium shampoo & conditioner, teeth brushing & breath freshener, cologne spritz, and bandana or bow.",
+		serviceType: "add-on",
+		displayOrder: 3,
+	},
+	{
+		petType: "cat",
+		name: "Luxury",
+		price: 10,
+		description:
+			"Deluxe service PLUS luxury shampoo, conditioner & spritz, paw & nose balm and premium face wash.",
 		serviceType: "add-on",
 		displayOrder: 3,
 	},
@@ -600,15 +672,44 @@ const seedDB = async () => {
 	// delete all kennels
 	await Kennel.deleteMany({});
 	// add seedKennels
-	for (var i = 0; i < seedKennels.length; i++) {
+	// for (var i = 0; i < seedKennels.length; i++) {
+	// 	const kennel = new Kennel({
+	// 		kennel_id: seedKennels[i].kennel_id,
+	// 		size: seedKennels[i].size,
+	// 	});
+	// 	await kennel.save();
+	// }
+
+	var seededKennelCount = 0;
+
+	for (var i = 1; i < 11; i++) {
 		const kennel = new Kennel({
-			kennel_id: seedKennels[i].kennel_id,
-			size: seedKennels[i].size,
+			kennel_id: i,
+			size: 's',
 		});
 		await kennel.save();
+		seededKennelCount++;
 	}
 
-	console.log(`Added ${seedKennels.length} kennel records.`);
+	for (var i = 11; i < 21; i++) {
+		const kennel = new Kennel({
+			kennel_id: i,
+			size: "m",
+		});
+		await kennel.save();
+		seededKennelCount++;
+	}
+
+	for (var i = 21; i < 26; i++) {
+		const kennel = new Kennel({
+			kennel_id: i,
+			size: "l",
+		});
+		await kennel.save();
+		seededKennelCount++;
+	}
+
+	console.log(`Added ${seededKennelCount} kennel records.`);
 };
 
 // ADDING VISITS RECORDS TO SEEDED GUESTS
@@ -627,8 +728,8 @@ const guestVisitsSeed = [
 				checkedOutBy: "admin",
 			},
 			{
-				startDate: "2023-11-11",
-				endDate: "2023-11-27",
+				startDate: "2023-11-27",
+				endDate: "2023-12-10",
 				assignedKennel: "2",
 				paid: true,
 				checkedIn: true,
@@ -665,9 +766,9 @@ const guestVisitsSeed = [
 		guest: "Blade Wolf",
 		visits: [
 			{
-				startDate: "2023-11-21",
-				endDate: "2023-11-26",
-				assignedKennel: "3",
+				startDate: "2023-11-29",
+				endDate: "2023-12-11",
+				assignedKennel: "21",
 				paid: false,
 				checkedIn: true,
 				checkedInBy: "admin",
@@ -677,12 +778,27 @@ const guestVisitsSeed = [
 			{
 				startDate: "2022-9-12",
 				endDate: "2022-9-17",
-				assignedKennel: "3",
+				assignedKennel: "21",
 				paid: true,
 				checkedIn: true,
 				checkedInBy: "admin",
 				checkedOut: true,
 				checkedOutBy: "admin",
+			},
+		],
+	},
+	{
+		guest: "Cerebus",
+		visits: [
+			{
+				startDate: "2024-8-11",
+				endDate: "2024-8-27",
+				assignedKennel: "",
+				paid: false,
+				checkedIn: false,
+				checkedInBy: "",
+				checkedOut: false,
+				checkedOutBy: "",
 			},
 		],
 	},
@@ -719,7 +835,8 @@ const addVisitsData = async () => {
 				guest.visits?.push(newVisit);
 
 				// add Guest as property on corresponding Kennel if occupancy is current
-				if (isFuture(+(newVisit.endDate)) && kennel) {
+				//if (isFuture(+(newVisit.endDate)) && kennel) {
+				if (newVisit.current && kennel) {
 					kennel.occupant = guest
 					await kennel.save();
 				}
@@ -797,15 +914,15 @@ const addServicesData = async () => {
 	}
 }
 
-
-
+// CONNECTING / SEEDING
+//=====================
 
 require("dotenv").config();
-console.log(process.env.DB_URL);
 
 async function connect() {
 	if (process.env.DB_URL) {
-		var dbUrl: string = process.env.DB_URL; // "mongodb://127.0.0.1:27017/petResort";
+		var dbUrl: string = "mongodb://127.0.0.1:27017/petResort"; // dev
+		//var dbUrl: string = process.env.DB_URL; // production
 
 		await mongoose.connect(dbUrl);
 		const db = mongoose.connection;

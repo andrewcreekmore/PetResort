@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Guest } from "../models/guest.model";
 import { Visit } from "../models/visit.model";
+import 	{ isFuture } from "date-fns";
 
 /*
 ===========================================================================
@@ -49,15 +50,18 @@ module.exports.empDashboard =
 					.sort({ endDate: -1 })
 					.skip((page - 1) * visitsPerPage)
 					.limit(visitsPerPage);
-
-        const visits = allVisits.filter(visit => visit.current)
+        
+        // current only (default)
+        if (!upcoming) {
+            var visits = allVisits.filter((visit) => visit.current);
+        } else {
+            visits = allVisits.filter((visit) => isFuture(+(visit.startDate)));
+        }
+        
         const totalVisitCount = visits.length;
         const pageCount = Math.ceil(totalVisitCount / visitsPerPage);
         var data = { title, user, adminAccess, visits, page, pageCount, upcoming };
         res.render("employee/dashboard", { ...data });
-
-		//var data = { title, user, guests, activeGuestsTab };
-        //res.render("employee/records/guests/index", { ...data });
     };
 
 // employee login - form entry

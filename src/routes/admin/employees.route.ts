@@ -2,7 +2,7 @@ import express = require("express");
 import catchAsync = require("../../utils/catchAsync");
 import { validateEmployee } from "../../validationFunctions";
 const employees = require("../../controllers/admin/employees.controller");
-const { isLoggedIn } = require("../../middleware");
+const { isLoggedIn, isAdmin } = require("../../middleware");
 
 /*
 ===========================================================================
@@ -18,20 +18,20 @@ const path = '/employee-records'
 router.all('*', isLoggedIn)
 
 // registration of new employees - form entry
-router.get("/new", employees.renderNewForm);
+router.get("/new", isAdmin, employees.renderNewForm);
 
 // registration of new employees - add on server
-router.post("/", validateEmployee, catchAsync(employees.createEmployee));
+router.post("/", isAdmin, validateEmployee, catchAsync(employees.createEmployee));
 
 router.route("/:id")
 	// employee records: view single record details
-	.get(catchAsync(employees.showDetails))
+	.get(isAdmin, catchAsync(employees.showDetails))
 	// employee records: update single record - edit on server
-	.put(validateEmployee, catchAsync(employees.updateEmployee))
+	.put(isAdmin, validateEmployee, catchAsync(employees.updateEmployee))
     // employee records: delete single record
-    .delete(catchAsync(employees.deleteEmployee));
+    .delete(isAdmin, catchAsync(employees.deleteEmployee));
 
 // employee records: update single record - form entry
-router.get("/:id/edit", catchAsync(employees.renderEditForm));
+router.get("/:id/edit", isAdmin, catchAsync(employees.renderEditForm));
 
 module.exports = { router, path };

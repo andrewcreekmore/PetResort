@@ -9,7 +9,7 @@ const admin = require("../../controllers/admin/admin.controller");
 import catchAsync = require("../../utils/catchAsync");
 import nodemailer = require('nodemailer');
 import crypto = require('crypto');
-const { isLoggedIn }  = require("../../middleware");
+const { isLoggedIn, isAdmin }  = require("../../middleware");
 
 /*
 ===========================================================================
@@ -22,14 +22,11 @@ admin.route.ts
 const router = express.Router();
 const path = '/admin';
 
-// require login for all admin routes
-router.all('*', isLoggedIn)
-
 // for ajax setting of activeAdminTab
 router.post("/setActiveTab", admin.setActiveTab);
 
 // admin tools index
-router.get("/", catchAsync(admin.index));
+router.get("/", isLoggedIn, catchAsync(admin.index));
 
 router.route("/forgot")
 	// reset emp password - form entry (request email with link)

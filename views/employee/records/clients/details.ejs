@@ -1,16 +1,17 @@
 <%- include('../../../partials/header') %>
 
-<h2 class="display-6 text-center">Client Record</h2>
+<!-- <h2 class="display-6 text-center">Client Record</h2> -->
 
 <!-- display any flash messages -->
 <div class="w-50 mx-auto text-center mt-3">
     <%- include('../../../partials/flash') %>
 </div>
 
+
 <div class="row">
     <div class="col-8 offset-2">
 
-            <div class="card my-3"> 
+            <div class="card mb-3"> 
 
                 <div class="row g-0 d-flex flex-wrap align-items-center">
                     <div class="col-md-4">
@@ -20,42 +21,40 @@
 
                         <div class="card-body">
                             <h3 class="card-title"><%= singleClient.fullName %></h3>
-                            <h6 class="card-subtitle mb-2 text-muted"><%= singleClient.formattedPhone %> 
+                            <h6 class="card-subtitle mb-2 text-muted"><small><a class="contact-card-muted-link" href="tel:<%= singleClient.phoneNumber %>"><%= singleClient.formattedPhone %> </small></a>
                                 <% if (singleClient.email) { %> 
-                                    &bullet;
+                                    <small>&bullet;</small>
                                 <% } %> 
-                            <%= singleClient.email %> </h6>
-                            <!-- <br></br> -->
+                            <small><a href="mailto:<%= singleClient.email %>" class="contact-card-muted-link"><%= singleClient.email %> </small></a></h6>
+                            
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><i>Pets: &nbsp; </i>
-                                    <ul>
-                                    <% for (i = 0; i < singleClient.pets.length; i++) { %>
-                                        <li><a href="/guest-records/<%= singleClient.pets[i]._id %>">
-                                            <%= singleClient.pets[i].name %>
-                                            <!-- <% if (singleClient.pets.length > i + 1) { %>
-                                                ,
-                                            <% } %> -->
-                                        </a></li>
-                                    <% } %></h6>
-                                    </ul>
+                                     <% for (i = 0; i < singleClient.pets.length; i++) { %>
+                                       <% if (i > 0) { %>
+                                        <br>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <% } %>
+                                       &nbsp; &nbsp; &nbsp;
+                                            <small><a href="/guest-records/<%= singleClient.pets[i]._id %>"><%= singleClient.pets[i].name %></a></small>
+                                        <% } %>
                                 </li>
-                                <!-- <li class="list-group-item"><i>Phone: &nbsp; </i> <%= singleClient.formattedPhone %></li>
-                                <li class="list-group-item"><i>Email: &nbsp; </i> <%= %> </li> -->
-                                <li class="list-group-item"><i>Address: &nbsp; </i> 
+
+                                <li class="list-group-item"><i>Address: &nbsp; </i> <small>
                                     <% if (singleClient.address.streetAddress) { %>
                                         <%= singleClient.formattedAddress%>
-                                    <br>  &nbsp; &emsp; &emsp; &emsp;   <%=singleClient.address.city %>, <%=singleClient.address.state %> 
-                                     <%=singleClient.address.zip %>   </br>
+                                    <br>  &nbsp; &emsp; &emsp; &emsp; &nbsp;   <%=singleClient.address.city %>, 
+                                    <% const state = stateInfo.find((element) => element.name === singleClient.address.state) %>
+                                    <%=state.abbreviation %> <br>
+                                    &nbsp; &emsp; &emsp; &emsp; &nbsp; <%=singleClient.address.zip %>   </br>
                                      <% } %>
-                                    </li>
-                                <li class="list-group-item"><i>Notes: &nbsp; </i> <%= %> </li>
+                                   </small> </li>
+                                <li class="list-group-item"><i>Notes: &nbsp; </i><small> <%= singleClient.notes %> </small></li>
                                 <li class="list-group-item"> </li>
                                 </ul>
                                 <!-- edit and delete buttons -->
                                 <div class="text-center">
-                                    <a href="/client-records/<%=singleClient._id%>/edit" class="btn btn-primary">Edit</a> 
+                                    <a href="/client-records/<%=singleClient._id%>/edit" class="btn btn-primary btn-sm">Edit</a> 
 
-                                    <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
+                                    <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                                     </svg> Delete</a></button>
@@ -103,7 +102,7 @@
 
 </div> <!--end of container -->
 
-    <h4 class="display-9 ">Pets' Visit History</h4>
+    <h4 class="display-9 ">Pets' Visit Records</h4>
     <!-- record visit history display for all of clients' pets -->
     <div class="table-responsive my-3" style="max-height: 600px">
         <table class="table table-striped table-hover">
@@ -128,11 +127,11 @@
                 <% const sortedVisitsArr = sortedPetsArr[i].visits.sort((b, a) => a.endDate - b.endDate)%>
                 <% for(j = 0; j < sortedVisitsArr.length; j++) { %>
                     <tr>
-                    <td valign="middle" style="text-align: center;"><a href="/guest-records/<%= sortedPetsArr[i]._id %>"> <%= sortedPetsArr[i].name %></a></td>
-                    <td valign="middle" style="text-align: center;"> <%= sortedVisitsArr[j].number %></td>
-                    <td valign="middle" style="text-align: center;"> <%= sortedVisitsArr[j].formatDate('startDate') %></td>
-                    <td valign="middle" style="text-align: center;"> <%= sortedVisitsArr[j].formatDate('endDate') %></td>
-                    <td valign="middle" style="text-align: center;"> <%= sortedVisitsArr[j].duration %></td>
+                    <td valign="middle" style="text-align: center;"><a href="/guest-records/<%= sortedPetsArr[i]._id %>"> <small><%= sortedPetsArr[i].name %></small></a></td>
+                    <td valign="middle" style="text-align: center;"><small> <%= sortedVisitsArr[j].number %></small></td>
+                    <td valign="middle" style="text-align: center;"><small> <%= sortedVisitsArr[j].formatDateMonthFirst('startDate') %></small></td>
+                    <td valign="middle" style="text-align: center;"><small> <%= sortedVisitsArr[j].formatDateMonthFirst('endDate') %></small></td>
+                    <td valign="middle" style="text-align: center;"><small> <%= sortedVisitsArr[j].duration %></small></td>
 
     
                     <% const paidStr = sortedVisitsArr[j].paid? 'Paid' : 'Unpaid' %>
@@ -143,12 +142,12 @@
                         <% totalCost += sortedVisitsArr[j].services[l].price  %>
                     <% } %>
                     
-                    <td valign="middle" style="text-align: center;"> $<%= totalCost %> <span <% if (!sortedVisitsArr[j].paid) { %>
+                    <td valign="middle" style="text-align: center;"><small>$<%= totalCost %></small> <span <% if (!sortedVisitsArr[j].paid) { %>
                         style='color: crimson'
                     <% } else { %>
                         style='color: green'
-                    <% } %>>(<%= paidStr %>)</span></td>
-                    <td  style="text-align: center;"> <a href="/visit-records/<%=sortedVisitsArr[j]._id%>" class="btn btn-outline-primary btn-sm">Details</a> </td>
+                    <% } %>><small>(<%= paidStr %>)</span></small></td>
+                    <td  style="text-align: center;"> <a href="/visit-records/<%=sortedVisitsArr[j]._id%>" class="btn btn-outline-primary btn-sm"><small>Details</small></a> </td>
                     <% } %>
                     </tr>
             <% } %>
@@ -161,7 +160,7 @@
                 <% } %>
 
             <% if (clientPetVisitsTally === 0) { %>
-            <div class="text-center my-3"><i>No pet visit history to display.</i></div>
+            <div class="text-center my-3"><i>No pet visit records to display.</i></div>
             <% } %>
 
     </div>

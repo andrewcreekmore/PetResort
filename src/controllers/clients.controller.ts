@@ -134,7 +134,7 @@ module.exports.showDetails =
             req.flash("error", `Couldn't find that client.`);
             return res.redirect("/client-records");
         } else {
-            var data = { title, user, singleClient };
+            var data = { title, user, singleClient, stateInfo };
             res.render(clientRecordsDir + "/details", { ...data });
         }
     };

@@ -13,13 +13,12 @@ employees.controller.ts
 // employee records route constants
 const employeesDir = "employee/records/employees";
 var user = "employee";
-var adminAccess: boolean = true;
 
 // registration of new employees - form entry
 module.exports.renderNewForm = 
     (req: Request, res: Response) => {
         const title = "Pet Resort · Admin";
-        var data = { title, user, adminAccess };
+        var data = { title, user };
         req.session.activeAdminTab = "employees";
         res.render(employeesDir + "/new", { ...data, stateInfo });
     };
@@ -54,7 +53,7 @@ module.exports.showDetails =
 			req.flash("error", `Couldn't find that employee.`);
 			return res.redirect("/admin");
 		} else {
-			var data = { title, user, employee };
+			var data = { title, user, employee, stateInfo };
 			res.render(employeesDir + "/details", { ...data });
 		}
 	};

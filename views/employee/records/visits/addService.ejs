@@ -1,12 +1,54 @@
 <%- include('../../../partials/header') %>
 
-<h2 class="display-6 text-center">Visit Record: Add Service</h2>
+<h2 class="display-6 text-center">Visit: Add/Remove Services</h2>
+    <!-- horizontal rule / divider -->
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-3">
+        </div>
+    </div> <!-- end of row -->
 
 <div class="container mt-3">
-    <form action="/visit-records/add-service/<%=visit._id%>?_method=PUT" method="POST" novalidate class="validated-form" >  
+    <form action="/visit-records/add-service/<%=visit._id%>?_method=PUT" method="POST" novalidate class="validated-form" > 
+
+                <div class="row">
+                <div class="col-2"></div>
+
+                <div class="col-4 ">
+                    <label for="guestName" class="form-label">Guest</label>
+            
+                    <input type="text" class="form-control" id="guestName" value="<%= visit.guest.fullName %>" disabled readonly>
+                </div>
+
+
+                <div class="col-4">
+                    <label for="daterange" class="form-label">Check-in / out dates</label>
+
+                    <% var formattedStartDate = `${String(visit.startDate.getMonth() + 1)}/${String(visit.startDate.getDate())}/${String(visit.startDate.getFullYear())}` %>
+
+                    <% var formattedEndDate = `${String(visit.endDate.getMonth() + 1)}/${String(visit.endDate.getDate())}/${String(visit.endDate.getFullYear())}` %>
+                        <input type="text" class="form-control" id="daterange" value="<%=formattedStartDate %> - <%= formattedEndDate %>" disabled readonly>
+                </div>
+                
+            </div> <!--  end of row -->
+
+        <!-- horizontal rule / divider -->
+    <div class="row mt-3">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-3">
+        </div>
+    </div> <!-- end of row -->
+        
+    <div class="row mx-auto">
+
+        <div class="col-2"></div>
+
+        <div class="col-3">
 
         <!-- basic (relevant, i.e., matching petType) services --> 
-        <h4>Basic Services</h4>
+        <p class="lead">Basic Services</p>
 
         <% for (i = 0; i < relevantServices.length; i++) {%> 
             <% var makeHiddenInput = false; %>
@@ -41,8 +83,12 @@
             
             <% } %>
 
+            </div>
+
+            <div class="col-3">
+
            <!-- packages (full-service)-->
-            <h4>Packages</h4>
+            <p class="lead">Packages</p>
             <% for (i = 0; i < relevantServices.length; i++) {%> 
                 <% if (relevantServices[i].serviceType === 'package') { %>
                     <div class="form-check">
@@ -69,16 +115,57 @@
             
             <% } %>
 
-            <!-- check for add-ons (only on dogs)-->
-            <% if (visit.guest.petType === 'dog') { %>
-                <h4>Add-ons</h4>
-                <% } %>
-
-            <div class="mx-auto mt-3 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-outline-primary">Revert Changes</button> 
-                <a href="/visit-records/<%= visit._id%>" class="btn btn-outline-primary">Back</a>
             </div>
+
+            <div class="col-3">
+
+                <!-- check for add-ons -->
+
+                <p class="lead">Add-ons</p>
+                <% for (i = 0; i < relevantServices.length; i++) {%> 
+                    <% if (relevantServices[i].serviceType === 'add-on') { %>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="serviceCheckbox<%=i%>" name="visit[services]" value="<%= relevantServices[i]._id %>" 
+                        <% // checking if this service is in the visit's services arr; checking box if so %>
+                        <% const test = (element) => element.name === relevantServices[i].name %>
+                        <% if (visit.services.some(test)) { %>
+                            checked 
+                            <% // checking if this service is in the visit's renderedServices arr; disabling if so %>
+                            <% var match = visit.services.find((element) => element.name === relevantServices[i].name) %>
+                            <% const test2 = (element) => element.name === match.name %>
+                            <% if (visit.servicesRendered.some(test2)) { %>
+                                disabled
+                                <% } %>
+                        <% } %>
+                        
+                        >
+                        <label class="form-check-label" for="serviceCheckbox<%=i%>">
+                            <%= relevantServices[i].name %>
+                        </label>
+                    </div>
+
+
+                        <% } %>
+                    <% } %>
+
+            </div>
+
+        </div> <!-- end of row-->
+
+        <!-- horizontal rule / divider -->
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-4">
+            </div>
+        </div> <!-- end of row -->
+
+        <div class="mx-auto mt-1 text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-outline-primary">Revert Changes</button> 
+            <a href="/visit-records/<%= visit._id%>" class="btn btn-outline-primary">Back</a>
+        </div>
 
     </form>
 

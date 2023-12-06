@@ -24,7 +24,7 @@
         <div class="col-sm-5 offset-sm-8 mx-auto">
             <div class="row">
                 <div class="mb-3">
-                    <input type="password" class="form-control" name="password" id="passwordInput" placeholder="New password" aria-label="password" required>
+                    <input type="password" class="form-control" name="password" id="passwordInput" placeholder="New password" aria-label="password" autocomplete="new-password" aria-autocomplete="none" required>
                     <div id="validationServerPasswordFeedback" class="invalid-feedback">
                         New password is required.
                     </div>
@@ -33,7 +33,7 @@
 
             <div class="row">
                 <div class="mb-3">
-                    <input type="password" class="form-control" name="passwordConfirm" id="passwordConfirmInput" placeholder="Confirm new password" aria-label="passwordConfirm" required>
+                    <input type="password" class="form-control" name="passwordConfirm" id="passwordConfirmInput" placeholder="Confirm new password" aria-label="passwordConfirm" autocomplete="new-password" aria-autocomplete="none" required>
                     <div id="validationServerPasswordFeedback" class="invalid-feedback">
                         Password confirmation is required.
                     </div>
@@ -51,7 +51,7 @@
 
         <div class="mt-3 text-center">
             <button type="submit" class="btn btn-primary">Submit</button> 
-            <a href="/admin/employee-records/<%= employee._id %>" class="btn btn-outline-primary">Back</a>
+            <a href="/employee-records/<%= employee._id %>" class="btn btn-outline-primary">Back</a>
         </div>
     </form>
 

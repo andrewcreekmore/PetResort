@@ -12,14 +12,13 @@ services.controller.ts
 // service route constants
 const servicesDir = "employee/records/services";
 var user = "employee";
-var adminAccess: boolean = true;
 
 // add new service - form entry
 module.exports.renderNewForm = 
     (req: Request, res: Response) => {
         const title = "Pet Resort · Admin";
         const petType = JSON.parse(JSON.stringify(req.query.petType));
-        var data = { title, user, adminAccess, petType };
+        var data = { title, user, petType };
         req.session.activeAdminTab = petType === 'cat' ? "catServices" : "dogServices";
         res.render(servicesDir + "/new", { ...data });
     };

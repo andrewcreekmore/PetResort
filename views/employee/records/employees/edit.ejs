@@ -2,7 +2,7 @@
 
 <script src="https://unpkg.com/imask"></script>
 
-<h2 class="display-6 text-center">Edit employee record</h2>
+<h2 class="display-6 text-center">Edit Employee Record</h2>
 
 <div class="container mt-3">
 
@@ -10,12 +10,12 @@
     <div class="row">
         <div class="col-5"></div>
         <div class="col-2">
-            <hr class="mt-3">
+            <hr class="mt-1">
         </div>
     </div> <!-- end of row -->
 
     <!-- display any flash messages -->
-    <div class="w-50 mx-auto text-center mt-3">
+    <div class="w-50 mx-auto text-center mt-1">
         <%- include('../../../partials/flash') %>
     </div>
 
@@ -56,6 +56,9 @@
                 <option value="CSR" <% if (employee.role === 'CSR') { %>
                     selected
                     <% } %>>Customer Service</option>
+                <option value="Groomer" <% if (employee.role === 'Groomer') { %>
+                    selected
+                    <% } %>>Groomer</option>
                 </select>
             </div>
 
@@ -72,7 +75,7 @@
 
     <div class="mx-auto text-center">
 
-            <label for="adminAccess" class="form-label">Admin Access</label> <br> &nbsp; &nbsp;
+            <label for="adminAccess" class="form-label">Admin Access?</label>&nbsp;  &nbsp;
             <div class="form-check form-check-inline mt-1">
                 <input class="form-check-input" type="radio" name="employee[adminAccess]" id="adminAccessOption1" value="true" required <% if (employee.adminAccess) { %>
                 checked
@@ -171,7 +174,7 @@
                          <option <% if (employee.address.state === stateInfo[i].name) { %>
                                 selected
                                 <% } %>
-                        ><%= stateInfo[i].name %></option>
+                        value="<%= stateInfo[i].name %>"><%= stateInfo[i].abbreviation %></option>
                         <% } %>
                     
                 </select>
@@ -203,8 +206,8 @@
         <div class="row mb-3"></div>
 
         <div class="mx-auto mt-3 text-center">
-            <button type="submit" class="btn btn-primary" onclick="beforeSubmit()">Submit</button> 
-            <button type="button" class ="btn btn-outline-primary" onclick="customReset()">Revert Changes </button>
+            <button type="submit" id="submitButton" class="btn btn-primary">Submit</button> 
+            <button type="button" id="resetButton" class ="btn btn-outline-primary">Revert Changes </button>
             <a href="/employee-records/<%=employee._id%>" class="btn btn-outline-primary">Back</a>
         </div>
 
@@ -213,6 +216,11 @@
 </div> <!-- end of container-->
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("submitButton").addEventListener("click", beforeSubmit);
+        document.getElementById("resetButton").addEventListener("click", customReset);
+        });
 
         // input mask for tel input
         const element = document.getElementById('phoneInput');

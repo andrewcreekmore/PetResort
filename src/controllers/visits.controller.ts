@@ -22,8 +22,6 @@ const user = "employee";
 // visit records: view single record details
 module.exports.index =
     async (req: Request, res: Response, next: NextFunction) => {
-        const title = "Pet Resort · Visit Records";
-        var user = "employee";
         const { id } = req.params;
         const visit = await Visit.findById(id)
             .populate("guest")
@@ -44,8 +42,6 @@ module.exports.index =
 // visit records: create new record - form entry
 module.exports.renderNewForm =
     async (req: Request, res: Response, next: NextFunction) => {
-        const title = "Pet Resort · Visit Records";
-        var user = "employee";
         const { id } = req.params;
 
         const allKennels = await Kennel.find({});
@@ -116,10 +112,7 @@ module.exports.createVisit =
 // visit records: update single record - form entry
 module.exports.renderEditForm = 
     async (req: Request, res: Response, next: NextFunction) => {
-        const title = "Pet Resort · Visit Records";
-        var user = "employee";
         const { id } = req.params;
-
         const visit = await Visit.findById(id)
             .populate('assignedKennel')
             .populate([
@@ -210,13 +203,19 @@ module.exports.updateVisit =
 // visit records: add service to record - form entry
 module.exports.renderAddServiceForm =
     async (req: Request, res: Response, next: NextFunction) => {
-        const title = "Pet Resort · Visit Records";
-        var user = "employee";
         const { id } = req.params;
         const visit = await Visit.findById(id)
-            .populate("guest")
-            .populate("services")
-            .populate("servicesRendered");
+					.populate("services")
+					.populate("servicesRendered")
+					.populate([
+                        {
+                            path: "guest",
+                            populate: {
+                                path: "owner",
+                                model: "Client",
+                            }
+                        }
+                    ])
         if (visit) {
             const relevantServices = await Service.find({
                 petType: visit.guest.type,
@@ -239,7 +238,7 @@ module.exports.addServiceToVisit =
             new: true,
         });
         if (visit) {
-            res.redirect(`/guest-records/${visit.guest._id}`);
+            res.redirect(`/visit-records/${visit._id}`);
         }
     };
 

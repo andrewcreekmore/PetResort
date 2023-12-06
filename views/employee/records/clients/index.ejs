@@ -71,10 +71,10 @@
                                 </a>
                             </td>
                             <td>
-                                <a class="contact-link" href="tel:<%= client.phoneNumber %>"><%= client.formattedPhone %></a>
+                                <a class="contact-link" href="tel:<%= client.phoneNumber %>"><small><%= client.formattedPhone %></a></small>
                             </td>
                             <td>
-                                <a class="contact-link" href="mailto:<%= client.email %>"><%= client.email %></a>
+                                <a class="contact-link" href="mailto:<%= client.email %>"><small><%= client.email %></a></small>
                             </td>
                             <td>
 
@@ -89,16 +89,16 @@
                                         <% if (currentGuests.some(containsThisPet)) { %>
                                             <% numCurrentPets++ %>
 
-                                                <a href="/guest-records/<%=client.pets[i]._id %>" style="text-decoration: none;">
-                                                <%=client.pets[i].name%><% if (i < numCurrentPets - 1){%><span style="color: white">,</span>
+                                                <a href="/guest-records/<%=client.pets[i]._id %>">
+                                                <small><%=client.pets[i].name%></small><% if (i < numCurrentPets - 1){%><span style="color: white">,</span>
                                                     <% } %> 
                                                 </a>
                                         <% } %>
 
                                     <% } else { %>
 
-                                            <a href="/guest-records/<%=client.pets[i]._id %>" style="text-decoration: none;">
-                                                    <%=client.pets[i].name%><% if (i < client.pets.length - 1){%><span style="color: white">,</span>
+                                            <a href="/guest-records/<%=client.pets[i]._id %>">
+                                                    <small><%=client.pets[i].name%></small><% if (i < client.pets.length - 1){%><span style="color: white">,</span>
                                                         <% } %> 
                                             </a>
 

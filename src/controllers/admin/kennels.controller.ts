@@ -12,7 +12,6 @@ kennels.controller.ts
 // kennel records route constants
 const kennelsDir = "employee/records/kennels";
 var user = "employee";
-var adminAccess: boolean = true;
 
 // registration of new employees - form entry
 module.exports.renderNewForm = 
@@ -21,7 +20,7 @@ module.exports.renderNewForm =
 
         const newKennelID = await Kennel.count({}) + 1;
 
-        var data = { title, user, adminAccess, newKennelID };
+        var data = { title, user, newKennelID };
         req.session.activeAdminTab = "kennels";
         res.render(kennelsDir + "/new", { ...data });
     };

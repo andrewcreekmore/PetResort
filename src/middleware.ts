@@ -7,6 +7,7 @@ import passport = require("passport");
 import mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 import MongoStore = require("connect-mongo");
+const { IEmployeeDoc } = require("./models/employee.model");
 
 /*
 ===========================================================================
@@ -27,6 +28,20 @@ module.exports.isLoggedIn = (req: Request, res: Response, next: NextFunction) =>
     next();
 }
 
+module.exports.isAdmin = (req: Request, res: Response, next: NextFunction) => {
+
+	const user: typeof IEmployeeDoc = req.user;
+    if (!user.adminAccess) {
+        req.session.returnTo = req.originalUrl;
+        req.flash(
+					"error",
+					"You must have administrator privileges to access that page."
+				);
+        return res.redirect('/admin');
+	}
+    next();
+}
+
 module.exports.storeReturnTo = (req: Request, res: Response, next: NextFunction) => {
 	if (req.session.returnTo) {
 		res.locals.returnTo = req.session.returnTo;
@@ -40,7 +55,6 @@ module.exports.storeReturnTo = (req: Request, res: Response, next: NextFunction)
 const storeActive = (req: Request, res: Response, next: NextFunction) => {
 	res.locals.currentUser = req.user;
 	res.locals.activeAdminTab = req.session.activeAdminTab;
-	res.locals.activeGuestsTab = req.session.activeGuestsTab;
 	next();
 };
 
@@ -95,15 +109,20 @@ const scriptSrcUrls = [
 	"https://stackpath.bootstrapcdn.com/",
 	"https://cdnjs.cloudflare.com/",
 	"https://cdn.jsdelivr.net",
+	"https://unpkg.com/imask",
 ];
 
 const styleSrcUrls = [
 	"https://stackpath.bootstrapcdn.com/",
 ];
 
+const connectSrcUrls = [
+
+];
+
 const contentSecurityPolicyConfig = {
 	directives: {
-		defaultSrc: [],
+		defaultSrc: ["'self'"],
 		connectSrc: ["'self'"],
 		scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
 		styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],

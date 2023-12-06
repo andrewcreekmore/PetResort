@@ -3,7 +3,7 @@ import AppError = require("../../utils/appError");
 import { Service } from "../../models/service.model";
 import Employee = require("../../models/employee.model");
 const { IEmployeeDoc } = require("../../models/employee.model");
-import { Kennel } from "../../models/kennel.model";
+import { IKennelDoc, Kennel } from "../../models/kennel.model";
 import nodemailer = require("nodemailer");
 import crypto = require("crypto");
 
@@ -17,7 +17,6 @@ admin.controller.ts
 // admin route constants
 const adminDir = "employee/admin";
 var user = "employee";
-var adminAccess: boolean = true;
 
 // for ajax setting of activeAdminTab
 module.exports.setActiveTab =
@@ -39,8 +38,8 @@ module.exports.index =
 			// pagination
             var page = Number(req.query.p) || 1;
 
-			const itemsPerPage =
-				activeAdminTab === "dogServices" || "catServices" ? 5 : 8;
+			const itemsPerPage = 8;
+				//activeAdminTab === "dogServices" || "catServices" ? 6 : 8;
 
             const totalDogServiceCount = await Service.count( { petType: 'dog' });
             const dogServices = await Service.find({ petType: 'dog'})
@@ -56,14 +55,24 @@ module.exports.index =
 			const allEmployees = await Employee.find({})
 				.skip((page - 1) * itemsPerPage)
 				.limit(itemsPerPage);
-            const totalKennelCount = await Kennel.count({});
+            var totalKennelCount = await Kennel.count({});
 			var allKennels = await Kennel.find({})
 				.populate("occupant")
 				.skip((page - 1) * itemsPerPage)
 				.limit(itemsPerPage);
 
+
+            function compareFn(a: IKennelDoc, b: IKennelDoc)  {
+                if (a.occupant) return 1;
+                else if (b.occupant) return -1;
+                return 0;
+            }
+
 			if (occupiedOnly) {
-				allKennels = allKennels.filter((kennel) => kennel.occupant);
+                var unlimitedKennels = await Kennel.find({}).populate("occupant");
+                var sortedKennels = unlimitedKennels.sort(compareFn);
+				allKennels = sortedKennels.filter((kennel) => kennel.occupant);
+                totalKennelCount = allKennels.length;
 			}
 
 			const kennelsPageCount = Math.ceil(totalKennelCount / itemsPerPage);
@@ -74,7 +83,6 @@ module.exports.index =
 			var data = {
 				title,
 				user,
-				adminAccess,
 				dogServices,
                 catServices,
 				allEmployees,

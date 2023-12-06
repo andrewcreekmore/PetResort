@@ -1,3 +1,7 @@
+a {
+  text-decoration: none;
+}
+
 thead {
   position: sticky;
   top: -1px;
@@ -28,8 +32,23 @@ thead {
   color: rgb(139,185,254);
 }
 
+.contact-card-link {
+  color: #dee2e6;
+}
+
+.contact-card-link:hover {
+    color: rgb(139,185,254);
+}
+
+.contact-card-muted-link {
+  color: #aeb2b6;
+}
+
+.contact-card-muted-link:hover {
+    color: rgb(139,185,254);
+}
+
 .form-check {
     padding-top: 0.35em;
     margin-top: 0;
 }
-

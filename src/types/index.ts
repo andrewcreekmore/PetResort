@@ -6,6 +6,5 @@ declare module "express-session" {
 	interface Session {
 		returnTo: string;
 		activeAdminTab: string;
-		activeGuestsTab: string;
 	}
 }

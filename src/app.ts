@@ -109,21 +109,17 @@ class App {
 
 	// setup app database
 	private async initDatabase() {
-		// determine which db to connect to (dev/production)
-		var dbUrl: string =
-			process.env.DB_URL || "mongodb://127.0.0.1:27017/petResort";
-		// if (process.env.NODE_ENV === "production" && process.env.DB_URL) {
-		// 	dbUrl = process.env.DB_URL;
-		// }
 
-		// async function connect() {
-		// 	await mongoose.connect(dbUrl);
-		// }
+		// determine which db to connect to (dev/production)
+		var dbUrl: string =  "mongodb://127.0.0.1:27017/petResort";
+		if (process.env.NODE_ENV === "production" && process.env.DB_URL) {
+			dbUrl = process.env.DB_URL;
+		}
 
 		try {
+			// connect to database + register models/schemas
 			await mongoose.connect(dbUrl);
 			const db = mongoose.connection;
-			//db.on("error", console.error.bind(console, "connection error:"));
 			db.once("open", () => {
 				console.log("Database connected.");
 				registerSchemas();
@@ -131,39 +127,6 @@ class App {
 		} catch (error) {
 			console.error(error);
 		}
-
-		// connect to database + register models/schemas
-		//mongoose.connect(dbUrl);
-		// const db = mongoose.connection;
-		// db.on("error", console.error.bind(console, "connection error:"));
-		// db.once("open", () => {
-		// 	console.log("Database connected.");
-		// 	registerSchemas();
-		// });
-
-		// PRODUCTION
-		// if (process.env.DB_URL) {
-		// 	const dbUrl: string = process.env.DB_URL;
-		// 	mongoose.connect(dbUrl);
-		// 	const db = mongoose.connection;
-		// 	db.on("error", console.error.bind(console, "connection error:"));
-		// 	db.once("open", () => {
-		// 		console.log("Database connected.");
-		// 		// ensure all models/schemas are registered
-		// 		registerSchemas();
-		// 	});
-		// }
-
-		// DEVELOPMENT
-		// connect to database + setup logging
-		// mongoose.connect("mongodb://127.0.0.1:27017/petResort");
-		// const db = mongoose.connection;
-		// db.on("error", console.error.bind(console, "connection error:"));
-		// db.once("open", () => {
-		// 	console.log("Database connected.");
-		// 	// ensure all models/schemas are registered
-		// 	registerSchemas();
-		// });
 	}
 
 	// define listener

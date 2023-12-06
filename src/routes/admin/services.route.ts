@@ -5,7 +5,7 @@ const Service = require("../../models/service.model");
 const services = require("../../controllers/admin/services.controller");
 import { validateService } from "../../validationFunctions";
 import catchAsync = require("../../utils/catchAsync");
-const { isLoggedIn } = require("../../middleware");
+const { isLoggedIn, isAdmin } = require("../../middleware");
 
 /*
 ===========================================================================
@@ -22,18 +22,19 @@ const path = '/service-records'
 router.all('*', isLoggedIn)
 
 // add new service - form entry
-router.get("/new", services.renderNewForm);
+router.get("/new", isAdmin, services.renderNewForm);
 
 // service records: create new record - add on server
-router.post("/", validateService, catchAsync(services.createService));
+router.post("/", isAdmin, validateService, catchAsync(services.createService));
 
 // service records: update single record - form entry
-router.get("/:id/edit", catchAsync(services.renderEditForm));
+router.get("/:id/edit", isAdmin, catchAsync(services.renderEditForm));
 
-router.route("/:id")
+router
+	.route("/:id")
 	// service records: update single record - edit on server
-	.put(validateService, catchAsync(services.updateService))
+	.put(isAdmin, validateService, catchAsync(services.updateService))
 	// service records: delete single record
-	.delete(catchAsync(services.deleteService));
+	.delete(isAdmin, catchAsync(services.deleteService));
 
 module.exports = { router, path };

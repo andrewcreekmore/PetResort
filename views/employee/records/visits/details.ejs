@@ -47,6 +47,7 @@
             <th scope="col" style="text-align: center;">End Date</th>
             <th scope="col" style="text-align: center;">Checked-out by:</th>
             <th scope="col" style="text-align: center;">Kennel</th>
+            <th scope="col" style="text-align: center;"></th>
         
             </tr>
         </thead>
@@ -54,13 +55,34 @@
 
                 <tr>
                 <!-- <td valign="middle" style="text-align: center;"> <%= visit.number %></a></td> -->
-                <td valign="middle" style="text-align: center;"> <%= visit.formatDateMonthFirst('startDate') %></td>
-                <td valign="middle" style="text-align: center;"> <%= visit.checkedInBy %></a></td>
-                <td valign="middle" style="text-align: center;"> <%= visit.formatDateMonthFirst('endDate') %></td>
-                <td valign="middle" style="text-align: center;"> <%= visit.checkedOutBy %></a></td>
+                <td valign="middle" style="text-align: center;"><small> <%= visit.formatDateMonthFirst('startDate') %></small></td>
+                <td valign="middle" style="text-align: center;">
+                    <% if (visit.checkedInBy !== "") { %>
+                    <small><%= visit.checkedInBy %></a></small>
+                    <% } else { %>
+                        <small>TBD</small>
+                        <% } %>
+                </td>
+                <td valign="middle" style="text-align: center;"><small><%= visit.formatDateMonthFirst('endDate') %></small></td>
+                <td valign="middle" style="text-align: center;">
+                    <% if (visit.checkedOutBy !== "") { %>
+                    <small> <%= visit.checkedOutBy %></a></small>
+                    <% } else { %>
+                        <small>TBD</small>
+                        <% } %>
+                </td>
 
-                <td valign="middle" style="text-align: center;"><%= visit.assignedKennel.formatted_id %></td>
+                <td valign="middle" style="text-align: center;">
+                    <% if (visit.assignedKennel) { %>
+                        <small><%= visit.assignedKennel.formatted_id %></small>
+                        <% } else { %>
+                           <small> TBD </small>
+                            <% } %>
+                    </td>
 
+                <td valign="middle" style="text-align: center;">
+                    <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm"><small>Update</small></a> 
+                </td>
                 
                 </tr>
        
@@ -68,33 +90,10 @@
         </table>
     </div>
 
-        <div class="text-center">
+        <!-- <div class="text-center">
            <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm">Update</a> 
-        </div>
-
-    <!-- visit notes field card -->
-    <!-- <div class="container h-100 d-flex justify-content-center align-items-center mb-3">
-        <div class="card" style="width: 35rem;">
-            <div class="card-body">-->
-                
-            <!-- <h5 class="card-title">Card title</h5> -->
-            <!-- <h6 class="card-subtitle mb-2"><b>Visit Notes</b></h6>
-            <p class="card-text"> <% if (visit.notes) { %>  
-                <%= visit.notes %>
-                <% } else { %>
-                    <i>No notes to display.</i>
-                    <% } %>
-            
-                </p>
-            
-            </div>
         </div> -->
-    <!--</div> -->
 
-
-
-
-    <!-- <h4 class="display-9 ">Service Record</h4> -->
     <!-- service record table -->
     <div class="table-responsive my-3" style="max-height: 600px">
         <table class="table table-striped table-hover">
@@ -114,10 +113,10 @@
 
         <% for (i = 0; i < visit.services.length; i++) { %>
             <tbody>
-                <td style="text-align: center;"><%= visit.services[i].name %></td>
-                <td style="text-align: center;">$<%= visit.services[i].price %></td>
+                <td style="text-align: center; vertical-align: middle;"><small><%= visit.services[i].name %></small></td>
+                <td style="text-align: center;"><small>$<%= visit.services[i].price %></small></td>
 
-                <td style="text-align: center;">
+                <td style="text-align: center; vertical-align: middle;">
                     <% var statusStr = 'Complete' %>
                     <!-- if service not present in servicesRendered arr... -->
                     <% const test = (element) => element.name === visit.services[i].name  %>
@@ -125,17 +124,19 @@
                         style='color: crimson'
                         <% statusStr = 'Pending' %>
                         <% } %>
-                    ><%= statusStr %></span></td>     
+                    ><small><%= statusStr %></span></small></td>     
                 </td>
 
-                <td style="text-align: center;">
+                <td style="text-align: center; vertical-align: middle;">
                     <% if (visit.servicesRenderedByMap) { %>
                         <% if(visit.servicesRenderedByMap.has(String(visit.services[i]._id))) { %>
-                            <%= visit.servicesRenderedByMap.get(String(visit.services[i]._id)) %>
+                            <small><%= visit.servicesRenderedByMap.get(String(visit.services[i]._id)) %></small>
+                            <% } else { %>
+                            <small>TBD</small>
                             <% } %>
                         <% } %>
                     </td>
-                <td style="text-align: center;">
+                <td style="text-align: center; vertical-align: middle;">
                     <% if (visit.servicesRenderedDateMap) { %>
                         <% if(visit.servicesRenderedDateMap.has(String(visit.services[i]._id))) { %>
                         <% const cDate = new Date(visit.servicesRenderedDateMap.get(String(visit.services [i]._id))) %>
@@ -143,7 +144,9 @@
                             <% formattedDate += `${`0${cDate.getDate()}`.slice(-2)}-`  %>
                             <% formattedDate += `${cDate.getFullYear()}` %>
                             <%= formattedDate %>
-                        <% } %>
+                        <% } else { %>
+                            <small>TBD</small>
+                            <% } %>
                     <% } %>
                 </td>
                 <td style="text-align: right;"> 
@@ -162,7 +165,7 @@
                                 value="<%= visit.servicesRendered[j]._id %>">
                                 <% } %>
 
-                            <button type="submit" class="btn btn-outline-primary btn-sm">Mark Complete</a> </td>
+                            <button type="submit" class="btn btn-outline-primary btn-sm"><small>Mark Complete</small></a> </td>
                         
                         <!-- service is currently Complete: toggle to Pending -->
                         <% } else { %>
@@ -215,16 +218,15 @@
                 <th scope="col" style="text-align: center;">Base Rate</th>
                 <th scope="col" style="text-align: center;">Base Cost</th>
                 <th scope="col" style="text-align: center;">Services Cost</th>
-                <!-- <th scope="col" style="text-align: center;">Discounts/Credits</th> -->
                 <th scope="col" style="text-align: center;">Total Visit Cost</th>
                 <th scope="col" style="text-align: center;">Status</th>
         
             </tr>
         </thead>
             <tbody>
-                <td style="text-align: center;"><%= visit.duration %></td>
+                <td style="text-align: center;"><small><%= visit.duration %></small></td>
 
-                <td valign="middle" style="text-align: center;">$<%= visit.rate %>/day</td>
+                <td valign="middle" style="text-align: center;"><small>$<%= visit.rate %> / day</small></td>
 
                 <% const paidStr = visit.paid? 'Paid' : 'Unpaid' %>
                 <!-- tallying total cost of visit  -->
@@ -235,17 +237,16 @@
                     <% totalCost += visit.services[i].price  %>
                 <% } %>
 
-                <td valign="middle" style="text-align: center;">$<%= visit.baseCost %></td>
-                <td valign="middle" style="text-align: center;">$<%= serviceCost %></td>
-                <!-- <td valign="middle" style="text-align: center;"> $<%=  %>0 </td> -->
+                <td valign="middle" style="text-align: center;"><small>$<%= visit.baseCost %></small></td>
+                <td valign="middle" style="text-align: center;"><small>$<%= serviceCost %></small></td>
                 
-                <td valign="middle" style="text-align: center;"> $<%= totalCost %> </td>
+                <td valign="middle" style="text-align: center;"><small> $<%= totalCost %></small></td>
                 
                 <td valign="middle" style="text-align: center;"><span <% if (!visit.paid) { %>
                     style='color: crimson'
                 <% } else { %>
                     style='color: green'
-                <% } %>><%= paidStr %></span></td>
+                <% } %>><small><%= paidStr %></span></small></td>
 
                 <!-- <td  style="text-align: right;"> <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> </td> -->
 

@@ -52,6 +52,7 @@
                 <option selected disabled>Choose...</option>
                 <option value="Manager">Manager</option>
                 <option value="CSR">Customer Service</option>
+                <option value="Groomer">Groomer</option>
                 </select>
             </div>
 
@@ -162,7 +163,7 @@
             <div class="col-2"></div>
             <div class="col-4 mb-3">
                 <label for="usernameInput" class="form-label">Username</label>
-                <input type="text" class="form-control" name="employee[username]" id="usernameInput" placeholder="newEmployee123" aria-label="username" required>
+                <input type="text" class="form-control" name="employee[username]" id="usernameInput" placeholder="newEmployee123" aria-label="username" autocomplete="new-password" aria-autocomplete="none" required>
                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
                     Username is required.
                 </div>
@@ -170,7 +171,7 @@
 
             <div class="col-4 mb-3">
                 <label for="passwordInput" class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" id="passwordInput" placeholder="" aria-label="password" required>
+                <input type="password" class="form-control" name="password" id="passwordInput" placeholder="" aria-label="password" autocomplete="new-password" aria-autocomplete="none" required>
                 <div id="validationServerPasswordFeedback" class="invalid-feedback">
                     Password is required.
                 </div>

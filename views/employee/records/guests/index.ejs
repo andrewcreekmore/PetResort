@@ -66,18 +66,18 @@
                             <% for(let guest of guests) { %>
                                 <tr>
                                     <td>
-                                        <a href="/guest-records/<%= guest._id %>" style="text-decoration: none;">
+                                        <a href="/guest-records/<%= guest._id %>">
                                         <%= guest.name %></a>
                                     </td>
-                                    <td><%= guest.type %></td>
-                                    <td><%= guest.breed %></td>
+                                    <td><small><%= guest.type %></small></td>
+                                    <td><small><%= guest.breed %></small></td>
                                     <td>
-                                        <a href="/client-records/<%= guest.owner._id %>" style="text-decoration: none;">
-                                        <%= guest.owner.fullName %>
+                                        <a href="/client-records/<%= guest.owner._id %>">
+                                        <small><%= guest.owner.fullName %></small>
                                     </td>
                                     <td>
                                         <% if (guest.current) { %>
-                                            <%= guest.visits[0].assignedKennel.formatted_id%>
+                                            <small><%= guest.visits[0].assignedKennel.formatted_id%></small>
                                         <% } %>
                                     </td>
                                 </tr>

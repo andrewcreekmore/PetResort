@@ -2,7 +2,7 @@ import express = require("express");
 import catchAsync = require("../../utils/catchAsync");
 import { validateKennel } from "../../validationFunctions";
 const kennels = require("../../controllers/admin/kennels.controller");
-const { isLoggedIn } = require("../../middleware");
+const { isLoggedIn, isAdmin } = require("../../middleware");
 
 /*
 ===========================================================================
@@ -18,19 +18,19 @@ const path = '/kennel-records'
 router.all('*', isLoggedIn)
 
 // registration of new kennels - form entry
-router.get("/new", kennels.renderNewForm);
+router.get("/new", isAdmin, kennels.renderNewForm);
 
 // registration of new kennels - add on server
-router.post("/", catchAsync(kennels.createKennel));
+router.post("/", isAdmin, catchAsync(kennels.createKennel));
 
 // service records: update single record - form entry
-router.get("/:id/edit", catchAsync(kennels.renderEditForm));
+router.get("/:id/edit", isAdmin, catchAsync(kennels.renderEditForm));
 
 router
 	.route("/:id")
 	// kennel records: update single record - edit on server
-	.put(catchAsync(kennels.updateKennel))
+	.put(isAdmin, catchAsync(kennels.updateKennel))
 	// kennel records: delete single record
-	.delete(catchAsync(kennels.deleteKennel));
+	.delete(isAdmin, catchAsync(kennels.deleteKennel));
 
 module.exports = { router, path };
