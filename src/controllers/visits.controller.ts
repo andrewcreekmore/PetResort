@@ -135,7 +135,7 @@ module.exports.renderEditForm =
             return res.redirect("/guest-records");
         } else {
             const allKennels = await Kennel.find({})
-            const currentKennel = await Kennel.find({ kennel_id: visit.assignedKennel.kennel_id })
+
             var unoccupiedKennels = [];
 
             for (var kennel of allKennels) {
@@ -144,14 +144,19 @@ module.exports.renderEditForm =
                 }
             }
 
-            if (currentKennel.length > 0) {
-                const test = (element: IKennelDoc) =>
-									element.kennel_id === visit.assignedKennel.kennel_id; 
-                if (!unoccupiedKennels.some(test)) {
-                    unoccupiedKennels.push(currentKennel[0]);
+            if (visit.assignedKennel) {
+                const currentKennel = await Kennel.find({
+									kennel_id: visit.assignedKennel.kennel_id,
+								});
+
+                if (currentKennel.length > 0) {
+                    const test = (element: IKennelDoc) => element.kennel_id === visit.assignedKennel.kennel_id; 
+                    if (!unoccupiedKennels.some(test)) {
+                        unoccupiedKennels.push(currentKennel[0]);
+                    }
                 }
             }
-
+            
 			var recordName = "Visit #" + visit.number;
 			var breadcrumbs = req.session.breadcrumbs;
 

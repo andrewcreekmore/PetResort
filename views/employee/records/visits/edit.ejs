@@ -95,7 +95,7 @@
                     <select class="form-select" aria-label="assignedKennel" id="assignedKennelInput" name="visit[assignedKennel]" required>
                     <option selected disabled>Select...</option>
                     <% for (kennel of unoccupiedKennels) { %>
-                        <option <% if (visit.assignedKennel.formatted_id === kennel.formatted_id) { %>
+                        <option <% if (visit.assignedKennel && visit.assignedKennel.formatted_id === kennel.formatted_id) { %>
                             selected
                             <% } %>
                             
@@ -116,7 +116,10 @@
                 <!-- hidden kennelUpdatedFlag field -->
                 <input class="form-check-input" type="checkbox" name="visit[kennelUpdatedFlag]" id="kennelUpdatedFlagInput" value="true" hidden>
                 <!-- hidden lastAssignedKennel field -->
-                <input class="form-check-input" type="text" name="visit[lastAssignedKennel]" id="lastAssignedKennelInput" value="<%= visit.assignedKennel._id %>" hidden>
+                <input class="form-check-input" type="text" name="visit[lastAssignedKennel]" id="lastAssignedKennelInput" value=" <% if (visit.assignedKennel) { %>
+                    <%= visit.assignedKennel._id %>
+                    <% } %>
+                    " hidden>
 
             </div>  <!--  end of row -->
 
