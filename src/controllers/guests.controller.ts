@@ -13,7 +13,7 @@ guests.controller.ts
 
 // guest route constants
 const guestRecordsDir = "employee/records/guests";
-const title = "Pet Resort · Guest Records";
+const title = "PetResort · Guest Records";
 const user = "employee";
 
 // guest records: view all / index
@@ -74,7 +74,8 @@ module.exports.renderNewForm =
     async (req: Request, res: Response, next: NextFunction) => {
         var allClients = await Client.find({});
         if (allClients) {
-            var data = { title, user, allClients };
+            var breadcrumbs = req.session.breadcrumbs;
+            var data = { title, user, allClients, breadcrumbs };
             res.render(guestRecordsDir + "/new", { ...data });
         } else {
             throw new AppError(400);
@@ -137,8 +138,10 @@ module.exports.showDetails =
             req.flash("error", `Couldn't find that guest.`);
             return res.redirect("/guest-records");
         } else {
+            var recordName = guest.name;
+            var breadcrumbs = req.session.breadcrumbs;
             var bUseAltImgPath = false;
-            var data = { title, user, guest, bUseAltImgPath };
+            var data = { title, user, guest, bUseAltImgPath, recordName, breadcrumbs };
             res.render(guestRecordsDir + "/details", { ...data });
         }
     };
@@ -153,7 +156,9 @@ module.exports.renderEditForm =
             req.flash("error", `Couldn't find that guest.`);
             return res.redirect("/guest-records");
         } else {
-            var data = { title, user, guest, allClients };
+            var recordName = guest.name;
+            var breadcrumbs = req.session.breadcrumbs;
+            var data = { title, user, guest, allClients, recordName, breadcrumbs };
             res.render(guestRecordsDir + "/edit", { ...data });
         }
     };

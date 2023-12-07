@@ -1,5 +1,7 @@
 <%- include('../../../partials/header') %>
 
+<%- include('../../../partials/breadcrumbs') %>
+
 <h2 class="display-6 mb-1 text-center">Visit Record</h2>
 
     <!-- horizontal rule / divider -->
@@ -272,20 +274,15 @@
 
 </div> <!--end of container -->
 
-
-
-        <!-- delete button -->
+    <!-- delete button -->
     <div class="text-center mt-3">
 
-
-
     </div>
-
 
     <!-- back (return to index) button -->
-    <div class="mx-auto mt-3">
+    <!-- <div class="mx-auto mt-3">
         <a href="/guest-records/<%=visit.guest._id%>" class="btn btn-outline-primary"><- Guest Record</a>
-    </div>
+    </div> -->
 
         <!-- delete record Modal pop-up -->
     <div class="modal fade" id="deleteVisitModal" tabindex="-1" aria-labelledby="deleteVisitModalLabel" aria-hidden="true">

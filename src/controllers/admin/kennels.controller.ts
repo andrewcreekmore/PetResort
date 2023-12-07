@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import AppError = require("../../utils/appError");
-import { Kennel } from "../../models/kennel.model";
+import { IKennelDoc, Kennel } from "../../models/kennel.model";
 
 /*
 ===========================================================================
@@ -16,11 +16,10 @@ var user = "employee";
 // registration of new employees - form entry
 module.exports.renderNewForm = 
     async (req: Request, res: Response, next: NextFunction) => {
-        const title = "Pet Resort · Admin";
-
+        const title = "PetResort · Admin";
         const newKennelID = await Kennel.count({}) + 1;
-
-        var data = { title, user, newKennelID };
+		var breadcrumbs = req.session.breadcrumbs;
+        var data = { title, user, newKennelID, breadcrumbs };
         req.session.activeAdminTab = "kennels";
         res.render(kennelsDir + "/new", { ...data });
     };
@@ -44,7 +43,7 @@ module.exports.createKennel =
 // kennel records: update single record - form entry
 module.exports.renderEditForm =
     async (req: Request, res: Response, next: NextFunction) => {
-		const title = "Pet Resort · Kennel Records";
+		const title = "PetResort · Kennel Records";
 		var user = "employee";
 		const { id } = req.params;
 		const kennel = await Kennel.findById(id);
@@ -52,7 +51,9 @@ module.exports.renderEditForm =
 			req.flash("error", `Couldn't find that kennel.`);
 			return res.redirect("/admin");
 		} else {
-			var data = { title, user, kennel };
+            var recordName = kennel.kennel_id + '-' + kennel.size.toUpperCase();
+			var breadcrumbs = req.session.breadcrumbs;
+			var data = { title, user, kennel, recordName, breadcrumbs };
 			req.session.activeAdminTab = 'kennels';
 			res.render(kennelsDir + "/edit", { ...data });
 		}

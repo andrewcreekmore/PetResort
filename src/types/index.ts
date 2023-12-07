@@ -6,5 +6,6 @@ declare module "express-session" {
 	interface Session {
 		returnTo: string;
 		activeAdminTab: string;
+		breadcrumbs: Array<object>;
 	}
 }

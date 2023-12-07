@@ -17,8 +17,9 @@ var user = "employee";
 // registration of new employees - form entry
 module.exports.renderNewForm = 
     (req: Request, res: Response) => {
-        const title = "Pet Resort · Admin";
-        var data = { title, user };
+        const title = "PetResort · Admin";
+        var breadcrumbs = req.session.breadcrumbs;
+        var data = { title, user, breadcrumbs };
         req.session.activeAdminTab = "employees";
         res.render(employeesDir + "/new", { ...data, stateInfo });
     };
@@ -43,7 +44,7 @@ module.exports.createEmployee =
 // employee records: view single record details
 module.exports.showDetails =
     async (req: Request, res: Response, next: NextFunction) => {
-		const title = "Pet Resort · Employee Records";
+		const title = "PetResort · Employee Records";
 		var user = "employee";
         req.session.activeAdminTab = "employees";
 		const { id } = req.params;
@@ -53,7 +54,9 @@ module.exports.showDetails =
 			req.flash("error", `Couldn't find that employee.`);
 			return res.redirect("/admin");
 		} else {
-			var data = { title, user, employee, stateInfo };
+            var recordName = employee.firstName + ' ' + employee.lastName;
+            var breadcrumbs = req.session.breadcrumbs;
+			var data = { title, user, employee, stateInfo, recordName, breadcrumbs };
 			res.render(employeesDir + "/details", { ...data });
 		}
 	};
@@ -61,7 +64,7 @@ module.exports.showDetails =
 // employee records: update single record - form entry
 module.exports.renderEditForm =
     async (req: Request, res: Response, next: NextFunction) => {
-        const title = "Pet Resort · Employee Records";
+        const title = "PetResort · Employee Records";
         var user = "employee";
         req.session.activeAdminTab = "employees";
         const { id } = req.params;
@@ -71,7 +74,9 @@ module.exports.renderEditForm =
             
             return res.redirect("/admin");
         } else {
-            var data = { title, user, employee, stateInfo };
+            var recordName = employee.firstName + " " + employee.lastName;
+            var breadcrumbs = req.session.breadcrumbs;
+            var data = { title, user, employee, stateInfo, recordName, breadcrumbs };
             res.render(employeesDir + "/edit", { ...data });
         }
     };

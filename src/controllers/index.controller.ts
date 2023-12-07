@@ -13,7 +13,7 @@ index.controller.ts
 // home page
 module.exports.showHome = 
     (req: Request, res: Response) => {
-        const title = "Pet Resort · Home";
+        const title = "PetResort · Home";
         const user = "NONE";
         const data = { title, user };
         res.render("home", { ...data });
@@ -22,7 +22,7 @@ module.exports.showHome =
 // employee dashbaord
 module.exports.empDashboard = 
     async (req: Request, res: Response, next: NextFunction) => {
-        const title = "Pet Resort · Employee Dashboard";
+        const title = "PetResort · Employee Dashboard";
         var user = "employee";
         var adminAccess: boolean = true;
         const upcoming = req.query.upcoming || false;
@@ -67,7 +67,7 @@ module.exports.empDashboard =
 // employee login - form entry
 module.exports.renderLoginForm = 
     (req: Request, res: Response) => {
-        const title = "Pet Resort · Employee Login";
+        const title = "PetResort · Employee Login";
         var user = "employee";
         var data = { title, user };
         res.render("employee/login", { ...data });
@@ -98,7 +98,7 @@ module.exports.logoutEmployee =
 // customer portal
 module.exports.customerHome = 
     (req: Request, res: Response) => {
-        const title = "Pet Resort · Customer Home";
+        const title = "PetResort · Customer Home";
         var user = "customer";
         var data = { title, user };
         res.render("customer/customerPortal", { ...data });

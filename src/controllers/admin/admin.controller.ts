@@ -28,7 +28,7 @@ module.exports.setActiveTab =
 // admin tools index/home
 module.exports.index = 
     async (req: Request, res: Response, next: NextFunction) => {
-			const title = "Pet Resort · Admin";
+			const title = "PetResort · Admin";
             var activeAdminTab = res.locals.activeAdminTab
                                         ? res.locals.activeAdminTab
                                         : "employees";
@@ -101,7 +101,7 @@ module.exports.index =
 // reset emp password - form entry (request email with link)
 module.exports.renderForgotForm = 
     (req: Request, res: Response) => {
-        const title = "Pet Resort · Reset Password";
+        const title = "PetResort · Reset Password";
         var data = { title, user };
         res.render(adminDir + "/forgot", { ...data });
     };
@@ -173,7 +173,7 @@ module.exports.renderResetPasswordForm =
             req.flash("error", "Password reset token is invalid or has expired.");
             return res.redirect("/admin/forgot");
         }
-        const title = "Pet Resort · Reset Password";
+        const title = "PetResort · Reset Password";
         var token = req.params.token;
         var data = { title, user, token };
         res.render(adminDir + "/reset", { ...data });
@@ -256,7 +256,7 @@ module.exports.renderDirectResetPasswordForm =
             req.flash('error', 'Employee not found.');
             return res.redirect(`/admin/employee-records/${id}`);
         } else {
-                const title = "Pet Resort · Reset Password";
+                const title = "PetResort · Reset Password";
                 var data = { title, user, employee };
                 res.render(adminDir + "/resetDirect", { ...data });
             }

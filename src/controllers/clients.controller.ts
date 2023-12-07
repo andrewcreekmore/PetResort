@@ -14,7 +14,7 @@ clients.controller.ts
 
 // client route constants
 const clientRecordsDir = "employee/records/clients";
-const title = "Pet Resort · Client Records";
+const title = "PetResort · Client Records";
 const user = "employee";
 
 // client records: view all / index
@@ -94,7 +94,8 @@ module.exports.index =
 // client records: create new record - form entry
 module.exports.renderNewForm = 
     (req: Request, res: Response) => {
-        var data = { title, user, stateInfo };
+        var breadcrumbs = req.session.breadcrumbs;
+        var data = { title, user, stateInfo, breadcrumbs };
         res.render(clientRecordsDir + "/new", { ...data });
     };
 
@@ -134,7 +135,9 @@ module.exports.showDetails =
             req.flash("error", `Couldn't find that client.`);
             return res.redirect("/client-records");
         } else {
-            var data = { title, user, singleClient, stateInfo };
+            var recordName = singleClient.firstName + ' ' + singleClient.lastName;
+            var breadcrumbs = req.session.breadcrumbs;
+            var data = { title, user, singleClient, stateInfo, recordName, breadcrumbs };
             res.render(clientRecordsDir + "/details", { ...data });
         }
     };
@@ -162,7 +165,9 @@ module.exports.renderEditForm =
             req.flash("error", `Couldn't find that client.`);
             return res.redirect("/client-records");
         } else {
-            var data = { title, user, singleClient, stateInfo };
+            var recordName = singleClient.firstName + ' ' + singleClient.lastName;
+            var breadcrumbs = req.session.breadcrumbs;
+            var data = { title, user, singleClient, stateInfo, recordName, breadcrumbs };
             res.render(clientRecordsDir + "/edit", { ...data });
         }
     };

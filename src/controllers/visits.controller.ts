@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import AppError = require("../utils/appError");
-import { Visit } from "../models/visit.model";
+import { IVisitDoc, Visit } from "../models/visit.model";
 import { Guest } from "../models/guest.model";
 import { IServiceDoc, Service } from "../models/service.model";
 import { Kennel, IKennelDoc } from "../models/kennel.model";
@@ -16,7 +16,7 @@ visits.controller.ts
 
 // visit route constants
 const visitRecordsDir = "employee/records/visits";
-const title = "Pet Resort · Visit Records";
+const title = "PetResort · Visit Records";
 const user = "employee";
 
 // visit records: view single record details
@@ -34,7 +34,10 @@ module.exports.index =
         } else {
             const guest = await Guest.findById(visit.guest).populate("owner");
             var bUseAltImgPath = false;
-            var data = { title, user, visit, guest, bUseAltImgPath };
+            var recordName = "Visit #" + visit.number;
+            var record_id = visit.guest._id;
+            var breadcrumbs = req.session.breadcrumbs;
+            var data = { title, user, visit, guest, bUseAltImgPath, recordName, record_id, breadcrumbs };
             res.render(visitRecordsDir + "/details", { ...data });
         }
     };
@@ -59,6 +62,7 @@ module.exports.renderNewForm =
             var bUseAltImgPath = true;
             var today = new Date();
             var tomorrow = dateFns.addDays(today, 1);
+			var breadcrumbs = req.session.breadcrumbs;
             var data = {
                 title,
                 user,
@@ -68,6 +72,7 @@ module.exports.renderNewForm =
                 today,
                 tomorrow,
                 unoccupiedKennels,
+                breadcrumbs,
             };
             res.render(visitRecordsDir + "/new", { ...data });
         } else {
@@ -147,7 +152,10 @@ module.exports.renderEditForm =
                 }
             }
 
-            var data = { title, user, visit, unoccupiedKennels };
+			var recordName = "Visit #" + visit.number;
+			var breadcrumbs = req.session.breadcrumbs;
+
+            var data = { title, user, visit, unoccupiedKennels, recordName, breadcrumbs };
             res.render(visitRecordsDir + "/edit", { ...data });
         }
     };
@@ -221,7 +229,9 @@ module.exports.renderAddServiceForm =
                 petType: visit.guest.type,
             });
             if (relevantServices) {
-                var data = { title, user, visit, relevantServices };
+                var recordName = "Visit #" + visit.number;
+                var breadcrumbs = req.session.breadcrumbs;
+                var data = { title, user, visit, relevantServices, recordName, breadcrumbs };
                 res.render(visitRecordsDir + "/addService", { ...data });
             }
         } else {

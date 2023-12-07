@@ -77,7 +77,7 @@ class App {
 
 		// services
 		this.app.get("/services", (req: Request, res: Response) => {
-			const title = "Pet Resort · Services";
+			const title = "PetResort · Services";
 			const user = "customer";
 			const data = { title, user };
 			res.render("customer/services", { ...data });

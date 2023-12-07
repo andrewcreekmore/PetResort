@@ -1,0 +1,56 @@
+<div class="mt-3">
+    <small>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+
+        <% for (i = 0; i <  breadcrumbs.length; i++) { %>
+
+            <% if (breadcrumbs[i].breadcrumbUrl === 'makeGuestDetailLink') { %>
+                <li class="breadcrumb-item">
+                    <a href="/guest-records/<%= visit.guest._id %>"><%= visit.guest.name %></a>
+                </li>
+                <% i++ %> <!-- skip forward -->
+            <% } %>
+
+            <% if (breadcrumbs[i].breadcrumbUrl === 'addServicesPage') { %>
+                <li class="breadcrumb-item">
+                    <a href="/visit-records/<%= visit._id %>">Visit #<%= visit.number %></a>
+                </li>
+
+                <li class="breadcrumb-item active">
+                    Edit
+                </li>
+                <% break; %> <!-- skip forward -->
+            <% } %>
+
+            <!-- active breadcrumb -->
+            <% if (i === breadcrumbs.length - 1) { %>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <% if (breadcrumbs[i].breadcrumbName === 'recordName?') { %>
+                        <%= recordName %>
+                    <% } else { %>
+                        <%= breadcrumbs[i].breadcrumbName %>
+                        <% } %>
+                </li>
+                <% } else { %>
+                <!-- parent breadcrumbs -->
+                    <li class="breadcrumb-item">
+                        <a href="<%= breadcrumbs[i].breadcrumbUrl %>">
+                            <% if (breadcrumbs[i].breadcrumbName === 'recordName?') { %>
+                                <%= recordName %>
+                            <% } else { %>
+                                <%= breadcrumbs[i].breadcrumbName %>
+                                <% } %>
+                        </a>
+                    </li>
+                <% } %>
+            <% } %>
+
+             
+
+
+
+    </ol>
+    </nav>
+    </small>
+</div>

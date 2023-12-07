@@ -1,8 +1,10 @@
 <%- include('../../../partials/header') %>
 
+<%- include('../../../partials/breadcrumbs') %>
+
 <script src="https://unpkg.com/imask"></script>
 
-<h2 class="display-6 mb-3 text-center">Edit client record</h2>
+<h2 class="display-6 mb-0 text-center">Edit client record</h2>
 
     <!-- horizontal rule / divider -->
     <div class="row">
@@ -13,6 +15,11 @@
     </div> <!-- end of row -->
 
     <div class="row mb-3"></div>
+
+    <!-- display any flash messages -->
+    <div class="w-50 mx-auto text-center mt-0">
+        <%- include('../../../partials/flash') %>
+    </div>
 
     <div class="container">
 

@@ -16,9 +16,10 @@ var user = "employee";
 // add new service - form entry
 module.exports.renderNewForm = 
     (req: Request, res: Response) => {
-        const title = "Pet Resort · Admin";
+        const title = "PetResort · Admin";
         const petType = JSON.parse(JSON.stringify(req.query.petType));
-        var data = { title, user, petType };
+		var breadcrumbs = req.session.breadcrumbs;
+        var data = { title, user, petType, breadcrumbs };
         req.session.activeAdminTab = petType === 'cat' ? "catServices" : "dogServices";
         res.render(servicesDir + "/new", { ...data });
     };
@@ -41,7 +42,7 @@ module.exports.createService =
 // service records: update single record - form entry
 module.exports.renderEditForm =
     async (req: Request, res: Response, next: NextFunction) => {
-		const title = "Pet Resort · Service Records";
+		const title = "PetResort · Service Records";
 		var user = "employee";
 		const { id } = req.params;
 		const service = await Service.findById(id);
@@ -49,7 +50,9 @@ module.exports.renderEditForm =
 			req.flash("error", `Couldn't find that service.`);
 			return res.redirect("/admin");
 		} else {
-			var data = { title, user, service };
+			var recordName = service.name + ' (' + service.petType + ')';
+			var breadcrumbs = req.session.breadcrumbs;
+			var data = { title, user, service, recordName, breadcrumbs };
 			req.session.activeAdminTab =
 				service.petType === "cat" ? "catServices" : "dogServices";
 			res.render(servicesDir + "/edit", { ...data });
