@@ -68,8 +68,10 @@
                         <%if (visit.services.length > i + 1) { _%>
                             <% appendStr = ',' %>
                         <% } %>
-
-                        <small><%= visit.services[i].name %></span><%= appendStr %></small>
+                        
+                        <% var addonStr = visit.services[i].serviceType === 'add-on' ? ' add-on' : '' %>
+                        <small><%= visit.services[i].name %></span><%= addonStr %><%= appendStr %>
+                        </small>
         
                     <% } %>
 

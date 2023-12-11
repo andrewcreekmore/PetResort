@@ -115,7 +115,10 @@
 
         <% for (i = 0; i < visit.services.length; i++) { %>
             <tbody>
-                <td style="text-align: center; vertical-align: middle;"><small><%= visit.services[i].name %></small></td>
+                <td style="text-align: center; vertical-align: middle;">
+                    <% var addonStr = visit.services[i].serviceType === 'add-on' ? '+ ' : '' %>
+                    <small><%= addonStr %><%= visit.services[i].name %></small>
+                </td>
                 <td style="text-align: center;"><small>$<%= visit.services[i].price %></small></td>
 
                 <td style="text-align: center; vertical-align: middle;">
@@ -145,7 +148,7 @@
                             <% let formattedDate = `${`0${cDate.getMonth() + 1}`.slice(-2)}-` %>
                             <% formattedDate += `${`0${cDate.getDate()}`.slice(-2)}-`  %>
                             <% formattedDate += `${cDate.getFullYear()}` %>
-                            <%= formattedDate %>
+                            <small><%= formattedDate %></small>
                         <% } else { %>
                             <small>TBD</small>
                             <% } %>
@@ -188,8 +191,14 @@
                                     value="true">
                                 <% } %>
                        
+                            <% var buttonClass = visit.checkedOut? 'btn-outline-secondary' : 'btn-outline-primary' %>
+                            <button type="submit" class="btn <%= buttonClass %> btn-sm"
+                        
+                            <% if (visit.checkedOut) { %>
+                                disabled
+                                <% } %>
 
-                            <button type="submit" class="btn btn-outline-primary btn-sm">Mark Pending</a> </td>
+                            ><small>Mark Pending</small></a> </td>
                             <% } %>
 
                     </form>
@@ -199,11 +208,16 @@
         </table>
 
         <% if (visit.services.length === 0) { %>
-            <div class="text-center my-3"><i>No services to display.</i></div>
+            <div class="text-center my-3"><i><small>No services to display.</small></i></div>
             <% } %>
 
         <div class="text-center">
-           <a href="/visit-records/add-service/<%=visit._id%>" class="btn btn-outline-primary btn-sm">Add/remove services</a> 
+           <% var buttonClass = visit.checkedOut? 'btn-outline-secondary' : 'btn-outline-primary' %>
+           <a href="/visit-records/add-service/<%=visit._id%>" class="btn <%= buttonClass %> btn-sm 
+                <% if (visit.checkedOut) { %>
+                    disabled
+                    <% } %>
+            ">Add/remove services</a> 
         </div>
         
     </div>
@@ -250,25 +264,27 @@
                     style='color: green'
                 <% } %>><small><%= paidStr %></span></small></td>
 
-                <!-- <td  style="text-align: right;"> <a href="/visit-records/<%=visit._id%>/edit" class="btn btn-outline-primary btn-sm">Edit</a> </td> -->
-
             </tbody>
         </table>
     </div>
 
-    <div class="text-center">
-        <!-- button: collect payment -->
-        <% var buttonClass = visit.paid? 'btn-secondary' : 'btn-primary' %>
-        <button class="btn <%= buttonClass %>"<% if (visit.paid) { %>
-         disabled
-        <% } %> >Collect Payment
-        </button>
+    <div class="mx-auto text-center">
+                <!-- button: collect payment (marks visit as paid) -->
+                <form style="display: inline-block;" action="/visit-records/markVisitPaid/<%=visit._id%>?_method=PUT" method="POST" novalidate class="validated-form" >
 
-        <!-- button: delete visit -->
-        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteVisitModal">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-        </svg> Delete Visit</a></button>
+                    <% var buttonClass = visit.paid? 'btn-secondary' : 'btn-primary' %>
+                    <button type="submit" class="btn <%= buttonClass %>"<% if (visit.paid) { %>
+                    disabled
+                    <% } %> >Collect Payment
+                    </button>
+
+                </form>
+
+                <!-- button: delete visit -->
+                <button style="display: inline-block;" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteVisitModal">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 20 20">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg> Delete Visit</a></button>
     </div>
 
 

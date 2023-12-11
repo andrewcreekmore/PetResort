@@ -45,25 +45,28 @@ module.exports.index =
 			var guests = await Guest.find({ name: regex })
 				.populate("owner")
 				.populate(populateVisits);
-		} else { // find all
+		} else if (!currentOnly) { // find all
             var totalGuestCount = await Guest.count({});
             var guests = await Guest.find({})
                 .populate("owner")
                 .populate(populateVisits)
                 .skip((page - 1) * guestsPerPage)
                 .limit(guestsPerPage);
+        } else { // current only
+            var allGuests = await Guest.find({})
+                .populate("owner")
+                .populate(populateVisits)
+            const filteredGuests = allGuests.filter((guest) => guest.current);
+            guests = await Guest.find({
+							_id: { $in: filteredGuests },
+						})
+                .populate("owner")
+                .populate(populateVisits)
+                .skip((page - 1) * guestsPerPage)
+                .limit(guestsPerPage);
+            var totalGuestCount = guests.length;
         }
 
-        // sorting by recency, then filtering to current only if needed
-        var sortedGuests = guests.sort(
-                        (b, a) => a.mostRecentVisit.valueOf() - b.mostRecentVisit.valueOf()
-                    );
-        if (currentOnly) {
-            sortedGuests = sortedGuests.filter(guest => guest.current);
-            var totalGuestCount = sortedGuests.length;
-        }
-
-        guests = sortedGuests;
         const pageCount = Math.ceil(totalGuestCount / guestsPerPage);
         var data = { title, user, guests, page, pageCount, currentOnly, isSearch };
         res.render(guestRecordsDir + "/index", { ...data });

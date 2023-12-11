@@ -7,7 +7,6 @@ import { IKennelDoc, Kennel } from "./models/kennel.model";
 import Employee = require("./models/employee.model");
 import { isFuture } from "date-fns";
 
-
 /*
 ===========================================================================
 seeds.ts
@@ -672,14 +671,6 @@ const seedDB = async () => {
 	// delete all kennels
 	await Kennel.deleteMany({});
 	// add seedKennels
-	// for (var i = 0; i < seedKennels.length; i++) {
-	// 	const kennel = new Kennel({
-	// 		kennel_id: seedKennels[i].kennel_id,
-	// 		size: seedKennels[i].size,
-	// 	});
-	// 	await kennel.save();
-	// }
-
 	var seededKennelCount = 0;
 
 	for (var i = 1; i < 11; i++) {
@@ -723,17 +714,30 @@ const guestVisitsSeed = [
 				assignedKennel: "2",
 				paid: true,
 				checkedIn: true,
-				checkedInBy: "admin",
+				checkedInBy: "cfrazer",
 				checkedOut: true,
-				checkedOutBy: "admin",
+				checkedOutBy: "blazko",
 			},
 			{
-				startDate: "2023-11-27",
-				endDate: "2023-12-10",
-				assignedKennel: "2",
+				startDate: "2022-11-27",
+				endDate: "2022-12-4",
+				assignedKennel: "4",
 				paid: true,
 				checkedIn: true,
-				checkedInBy: "admin",
+				checkedInBy: "ftaggart",
+				checkedOut: true,
+				checkedOutBy: "acasey",
+			},
+			// CURRENT
+			{
+				startDate: "2023-12-9",
+				endDate: "2023-12-23",
+				assignedKennel: "6",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "hmason",
+				checkedOut: false,
+				checkedOutBy: "",
 			},
 		],
 	},
@@ -741,24 +745,45 @@ const guestVisitsSeed = [
 		guest: "Eleanor Rigby",
 		visits: [
 			{
-				startDate: "2014-4-18",
-				endDate: "2014-4-23",
+				startDate: "2018-4-18",
+				endDate: "2018-4-23",
 				assignedKennel: "1",
 				paid: true,
 				checkedIn: true,
-				checkedInBy: "admin",
+				checkedInBy: "blazko",
 				checkedOut: true,
-				checkedOutBy: "admin",
+				checkedOutBy: "scastellanos",
 			},
 			{
-				startDate: "2016-6-2",
-				endDate: "2016-6-11",
+				startDate: "2019-6-2",
+				endDate: "2019-6-11",
 				assignedKennel: "1",
 				paid: true,
 				checkedIn: true,
-				checkedInBy: "admin",
+				checkedInBy: "acasey",
 				checkedOut: true,
-				checkedOutBy: "admin",
+				checkedOutBy: "cfrazer",
+			},
+			{
+				startDate: "2020-11-20",
+				endDate: "2020-11-26",
+				assignedKennel: "6",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "hmason",
+				checkedOut: true,
+				checkedOutBy: "ftaggart",
+			},
+			// FUTURE
+			{
+				startDate: "2024-11-20",
+				endDate: "2024-11-26",
+				assignedKennel: "",
+				paid: false,
+				checkedIn: false,
+				checkedInBy: "",
+				checkedOut: false,
+				checkedOutBy: "",
 			},
 		],
 	},
@@ -766,14 +791,14 @@ const guestVisitsSeed = [
 		guest: "Blade Wolf",
 		visits: [
 			{
-				startDate: "2023-11-29",
-				endDate: "2023-12-11",
-				assignedKennel: "21",
-				paid: false,
+				startDate: "2020-2-17",
+				endDate: "2020-2-22",
+				assignedKennel: "20",
+				paid: true,
 				checkedIn: true,
-				checkedInBy: "admin",
-				checkedOut: false,
-				checkedOutBy: "",
+				checkedInBy: "hmason",
+				checkedOut: true,
+				checkedOutBy: "acasey",
 			},
 			{
 				startDate: "2022-9-12",
@@ -781,9 +806,20 @@ const guestVisitsSeed = [
 				assignedKennel: "21",
 				paid: true,
 				checkedIn: true,
-				checkedInBy: "admin",
+				checkedInBy: "blazko",
 				checkedOut: true,
-				checkedOutBy: "admin",
+				checkedOutBy: "scastellanos",
+			},
+			// CURRENT
+			{
+				startDate: "2023-12-11",
+				endDate: "2023-12-29",
+				assignedKennel: "21",
+				paid: false,
+				checkedIn: true,
+				checkedInBy: "acasey",
+				checkedOut: false,
+				checkedOutBy: "",
 			},
 		],
 	},
@@ -791,14 +827,306 @@ const guestVisitsSeed = [
 		guest: "Cerebus",
 		visits: [
 			{
+				startDate: "2020-3-2",
+				endDate: "2020-3-6",
+				assignedKennel: "22",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "acasey",
+				checkedOut: true,
+				checkedOutBy: "hmason",
+			},
+			// FUTURE
+			{
 				startDate: "2024-8-11",
-				endDate: "2024-8-27",
+				endDate: "2024-8-23",
+				assignedKennel: "22",
+				paid: false,
+				checkedIn: false,
+				checkedInBy: "",
+				checkedOut: false,
+				checkedOutBy: "",
+			},
+		],
+	},
+	{
+		guest: "Sif",
+		visits: [
+			{
+				startDate: "2019-7-3",
+				endDate: "2019-7-14",
+				assignedKennel: "24",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "ftaggart",
+				checkedOut: true,
+				checkedOutBy: "acasey",
+			},
+			{
+				startDate: "2019-9-7",
+				endDate: "2019-9-11",
+				assignedKennel: "21",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "scastellanos",
+				checkedOut: true,
+				checkedOutBy: "blazko",
+			},
+			{
+				startDate: "2020-1-9",
+				endDate: "2020-1-14",
+				assignedKennel: "23",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "cfrazer",
+				checkedOut: true,
+				checkedOutBy: "hmason",
+			},
+			// CURRENT
+			{
+				startDate: "2023-12-11",
+				endDate: "2023-12-28",
+				assignedKennel: "23",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "blazko",
+				checkedOut: false,
+				checkedOutBy: "",
+			},
+		],
+	},
+	{
+		guest: "Dogmeat",
+		visits: [
+			{
+				startDate: "2021-2-9",
+				endDate: "2021-2-15",
+				assignedKennel: "19",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "blazko",
+				checkedOut: true,
+				checkedOutBy: "cfrazer",
+			},
+			{
+				startDate: "2022-4-2",
+				endDate: "2021-4-8",
+				assignedKennel: "13",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "cfrazer",
+				checkedOut: true,
+				checkedOutBy: "acasey",
+			},
+			// CURRENT
+			{
+				startDate: "2023-12-9",
+				endDate: "2023-12-29",
+				assignedKennel: "15",
+				paid: false,
+				checkedIn: true,
+				checkedInBy: "scastellanos",
+				checkedOut: false,
+				checkedOutBy: "",
+			},
+		],
+	},
+	{
+		guest: "Sweet Shalquoir",
+		visits: [
+			{
+				startDate: "2018-5-13",
+				endDate: "2018-5-19",
+				assignedKennel: "3",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "scastellanos",
+				checkedOut: true,
+				checkedOutBy: "acasey",
+			},
+			{
+				startDate: "2021-9-16",
+				endDate: "2021-9-27",
+				assignedKennel: "1",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "cfrazer",
+				checkedOut: true,
+				checkedOutBy: "hmason",
+			},
+			// FUTURE
+			{
+				startDate: "2024-3-11",
+				endDate: "2024-3-16",
 				assignedKennel: "",
 				paid: false,
 				checkedIn: false,
 				checkedInBy: "",
 				checkedOut: false,
 				checkedOutBy: "",
+			},
+		],
+	},
+	{
+		guest: "KEI-9",
+		visits: [
+			{
+				startDate: "2017-7-12",
+				endDate: "2017-7-23",
+				assignedKennel: "17",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "blazko",
+				checkedOut: true,
+				checkedOutBy: "ftaggart",
+			},
+			{
+				startDate: "2019-10-4",
+				endDate: "2019-10-15",
+				assignedKennel: "15",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "acasey",
+				checkedOut: true,
+				checkedOutBy: "scastellanos",
+			},
+			{
+				startDate: "2020-4-9",
+				endDate: "2020-4-21",
+				assignedKennel: "20",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "ftaggart",
+				checkedOut: true,
+				checkedOutBy: "hmason",
+			},
+			// CURRENT
+			{
+				startDate: "2023-12-10",
+				endDate: "2023-12-28",
+				assignedKennel: "20",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "hmason",
+				checkedOut: false,
+				checkedOutBy: "",
+			},
+		],
+	},
+	{
+		guest: "Nemesis",
+		visits: [
+			{
+				startDate: "2018-1-10",
+				endDate: "2018-1-22",
+				assignedKennel: "23",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "blazko",
+				checkedOut: true,
+				checkedOutBy: "acasey",
+			},
+			{
+				startDate: "2019-3-7",
+				endDate: "2019-3-16",
+				assignedKennel: "20",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "scastellanos",
+				checkedOut: true,
+				checkedOutBy: "ftaggart",
+			},
+			{
+				startDate: "2020-9-17",
+				endDate: "2020-9-23",
+				assignedKennel: "22",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "hmason",
+				checkedOut: true,
+				checkedOutBy: "cfrazer",
+			},
+			// CURRENT
+			{
+				startDate: "2023-12-8",
+				endDate: "2023-12-26",
+				assignedKennel: "22",
+				paid: false,
+				checkedIn: true,
+				checkedInBy: "cfrazer",
+				checkedOut: false,
+				checkedOutBy: "",
+			},
+		],
+	},
+	{
+		guest: "Alice",
+		visits: [
+			{
+				startDate: "2020-5-3",
+				endDate: "2020-5-11",
+				assignedKennel: "13",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "hmason",
+				checkedOut: true,
+				checkedOutBy: "acasey",
+			},
+			{
+				startDate: "2021-3-1",
+				endDate: "2021-3-6",
+				assignedKennel: "17",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "scastellanos",
+				checkedOut: true,
+				checkedOutBy: "cfrazer",
+			},
+			{
+				startDate: "2023-2-9",
+				endDate: "2023-2-14",
+				assignedKennel: "13",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "blazko",
+				checkedOut: true,
+				checkedOutBy: "ftaggart",
+			},
+			// FUTURE
+			{
+				startDate: "2024-11-20",
+				endDate: "2024-11-26",
+				assignedKennel: "",
+				paid: false,
+				checkedIn: false,
+				checkedInBy: "",
+				checkedOut: false,
+				checkedOutBy: "",
+			},
+		],
+	},
+	{
+		guest: "Sniffer",
+		visits: [
+			{
+				startDate: "2019-7-4",
+				endDate: "2019-7-9",
+				assignedKennel: "14",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "ftaggart",
+				checkedOut: true,
+				checkedOutBy: "acasey",
+			},
+			{
+				startDate: "2021-8-11",
+				endDate: "2021-8-23",
+				assignedKennel: "12",
+				paid: true,
+				checkedIn: true,
+				checkedInBy: "blazko",
+				checkedOut: true,
+				checkedOutBy: "cfrazer",
 			},
 		],
 	},
@@ -835,7 +1163,6 @@ const addVisitsData = async () => {
 				guest.visits?.push(newVisit);
 
 				// add Guest as property on corresponding Kennel if occupancy is current
-				//if (isFuture(+(newVisit.endDate)) && kennel) {
 				if (newVisit.current && kennel) {
 					kennel.occupant = guest
 					await kennel.save();
@@ -851,26 +1178,46 @@ const addVisitsData = async () => {
 const visitServicesSeed = [
 	{
 		guest: "Alvina",
-		visits: [{ startDate: "2023-11-11" }, { startDate: "2021-10-24" }],
+		visits: [{ number: 3 }, { number: 2 }, { number: 1 }],
 		services: [
 			[
 				{ petType: "cat", name: "Nail Trim" },
 				{ petType: "cat", name: "Bath & Brush" },
 			],
+			[
+				{ petType: "cat", name: "Nail Trim" },
+				{ petType: "cat", name: "Haircut" },
+			],
 			[{ petType: "cat", name: "Full Service" }],
 		],
-		servicesRendered: [[{ petType: "cat", name: "Nail Trim" }], []],
+		servicesRendered: [
+			[{ petType: "cat", name: "Nail Trim" }],
+			[],
+			[]
+		],
 	},
 	{
 		guest: "Blade Wolf",
-		visits: [{ startDate: "2023-11-21" },],
+		visits: [{ number: 3 }, { number: 2 }, { number: 1 }],
 		services: [
 			[
 				{ petType: "dog", name: "Ear Cleaning" },
 				{ petType: "dog", name: "Bath & Brush" },
 			],
+			[
+				{ petType: "dog", name: "Full Service" },
+				{ petType: "dog", name: "Deluxe" },
+			],
+			[
+				{ petType: "dog", name: "Haircut" },
+				{ petType: "dog", name: "Bath & Brush" },
+			],
 		],
-		servicesRendered: [[{ petType: "dog", name: "Ear Cleaning" }]],
+		servicesRendered: [
+			[{ petType: "dog", name: "Ear Cleaning" }],
+			[],
+			[]
+		],
 	},
 ];
 
@@ -881,7 +1228,8 @@ const addServicesData = async () => {
 		if (guest) {
 			for (var j = 0; j < visitServicesSeed[i].visits.length; j++) {
 				const visit = await Visit.findOne({
-					startDate: visitServicesSeed[i].visits[j].startDate,
+					guest: guest._id,
+					number: visitServicesSeed[i].visits[j].number,
 				});
 
 				if (visit) {
@@ -894,6 +1242,10 @@ const addServicesData = async () => {
 						
 						if (service) {
 							visit.services.push(service);
+
+							if (visit.checkedOut) {
+								visitServicesSeed[i].servicesRendered[j].push(service);
+							}
 						}
 					}
 					// adding services rendered
@@ -905,8 +1257,40 @@ const addServicesData = async () => {
 
 						if (service) {
 							visit.servicesRendered.push(service);
+
+							const possibleGroomers = 
+							['ftaggart', 'scastellanos', 'cfrazer', 'hmason', 'acasey', 'blazko']
+				
+							function randIntInRange(min: number, max: number) {
+								return Math.floor(Math.random() * (max - min + 1)) + min;
+							}
+
+							function randDateInRange(from: Date, to: Date) {
+								const fromTime = from.getTime();
+								const toTime = to.getTime();
+								
+								// ensure no future dates
+								const possibleMax = [toTime, new Date()]
+								var minMax = possibleMax.reduce(function (a, b) {
+									return a < b ? a : b;
+								});
+
+								return new Date(fromTime + Math.random() * (+minMax - fromTime));
+							}
+
+							visit.servicesRenderedByMap.set(
+								service._id,
+								possibleGroomers[randIntInRange(0, possibleGroomers.length - 1)]
+							);
+
+							var startDate = new Date(+visit.startDate)
+							var endDate = new Date(+visit.endDate)
+							
+							var completionDate = randDateInRange(startDate, endDate);
+							visit.servicesRenderedDateMap.set(service._id, +completionDate);
 						}
 					}	
+					
 					await visit.save();
 				}
 			}

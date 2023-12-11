@@ -53,30 +53,31 @@ module.exports.index =
             var clients = await Client.find(findParams)
 							.populate("address")
 							.populate(populatePets);
-        } else {
+        } else if (!currentOnly) { // all
             var totalClientCount = await Client.count({});
             var clients = await Client.find({})
                 .populate("address")
                 .populate(populatePets)
                 .skip((page - 1) * clientsPerPage)
                 .limit(clientsPerPage);
-        }
-
-        // sorting by recency, then filtering to current only if needed
-        var sortedClients = clients.sort(
-            (b: IClientDoc, a: IClientDoc) =>
-                a.mostRecentPet.mostRecentVisit.valueOf() - b.mostRecentPet.mostRecentVisit.valueOf()
-        );
-        if (currentOnly) {
-            sortedClients = sortedClients.filter((client) => client.mostRecentPet.current);
-            var totalClientCount = sortedClients.length;
+        } else { // current only
+            var allClients = await Client.find({}).populate(populatePets);
+            const filteredClients = allClients.filter((client) => client.mostRecentPet.current);
+            clients = await Client.find({
+                _id: { $in: filteredClients },
+                })
+                .populate("address")
+                .populate(populatePets)
+                .skip((page - 1) * clientsPerPage)
+                .limit(clientsPerPage);
+            var totalClientCount = clients.length;
         }
 
         // for populating pets <td> if currentGuests includes them
         var allGuests = await Guest.find({}).populate('visits')
         var currentGuests = allGuests.filter((guest) => guest.current);
         
-        clients = sortedClients;
+        //clients = sortedClients;
         var pageCount = Math.ceil(totalClientCount / clientsPerPage);
         var data = {
             title,

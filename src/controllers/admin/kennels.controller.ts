@@ -52,7 +52,9 @@ module.exports.renderEditForm =
 			return res.redirect("/admin");
 		} else {
             var recordName = kennel.kennel_id + '-' + kennel.size.toUpperCase();
-			var breadcrumbs = req.session.breadcrumbs;
+			var breadcrumbs: Array<any> = req.session.breadcrumbs;
+			// kennels have no details page to link to; instead will link to self (edit) 
+			breadcrumbs[1].breadcrumbUrl = null;
 			var data = { title, user, kennel, recordName, breadcrumbs };
 			req.session.activeAdminTab = 'kennels';
 			res.render(kennelsDir + "/edit", { ...data });

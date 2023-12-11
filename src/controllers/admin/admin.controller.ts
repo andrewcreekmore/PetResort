@@ -37,9 +37,7 @@ module.exports.index =
 
 			// pagination
             var page = Number(req.query.p) || 1;
-
 			const itemsPerPage = 8;
-				//activeAdminTab === "dogServices" || "catServices" ? 6 : 8;
 
             const totalDogServiceCount = await Service.count( { petType: 'dog' });
             const dogServices = await Service.find({ petType: 'dog'})
@@ -257,7 +255,10 @@ module.exports.renderDirectResetPasswordForm =
             return res.redirect(`/admin/employee-records/${id}`);
         } else {
                 const title = "PetResort · Reset Password";
-                var data = { title, user, employee };
+                var breadcrumbs: Array<any> = req.session.breadcrumbs;
+                breadcrumbs[0].breadcrumbName = 'adminPasswordReset';
+                var recordName = employee.fullName;
+                var data = { title, employee, breadcrumbs, recordName };
                 res.render(adminDir + "/resetDirect", { ...data });
             }
     };

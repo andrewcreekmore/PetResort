@@ -33,6 +33,8 @@ router
 
 // visit records: toggle service status - edit on server
 router.put("/toggleServiceStatus/:id", catchAsync(visits.toggleServiceStatus));
+// visit records: toggle service status - edit on server
+router.put("/markVisitPaid/:id", catchAsync(visits.markVisitPaid));
 
 router.route("/:id")
 	// visit records: view single record details

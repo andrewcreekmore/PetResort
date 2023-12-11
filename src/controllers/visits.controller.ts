@@ -62,6 +62,7 @@ module.exports.renderNewForm =
             var bUseAltImgPath = true;
             var today = new Date();
             var tomorrow = dateFns.addDays(today, 1);
+            var recordName = guest.name;
 			var breadcrumbs = req.session.breadcrumbs;
             var data = {
                 title,
@@ -72,6 +73,7 @@ module.exports.renderNewForm =
                 today,
                 tomorrow,
                 unoccupiedKennels,
+                recordName,
                 breadcrumbs,
             };
             res.render(visitRecordsDir + "/new", { ...data });
@@ -315,6 +317,21 @@ module.exports.toggleServiceStatus =
                     }       
                 }
 
+            res.redirect(`/visit-records/${visit._id}`);
+        } else {
+            throw new AppError(400);
+        }
+    };
+
+// visit records: toggle service status - edit on server
+module.exports.markVisitPaid =
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        const visit = await Visit.findById(id)
+
+        if (visit) {
+            visit.paid = true;
+            await visit.save();
             res.redirect(`/visit-records/${visit._id}`);
         } else {
             throw new AppError(400);

@@ -5,7 +5,36 @@
 
         <% for (i = 0; i <  breadcrumbs.length; i++) { %>
 
+            <!-- special case : unique behavior -->
+            <!-- (adding new visit to guest; i.e., reaching visit-records via guest-records) -->
+            <% if (breadcrumbs[0].breadcrumbName === 'Visits' && breadcrumbs[1].breadcrumbName === 'New') { %>
+                <li class="breadcrumb-item">
+                    <a href="/guest-records/">Guests</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/guest-records/<%= guest._id %>"><%= guest.name %></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    New Visit
+                </li>
+                <% break; %>
+            <% } %>
+
+            <% if (breadcrumbs[0].breadcrumbName === 'adminPasswordReset') { %>
+                <li class="breadcrumb-item">
+                    <a href="/admin/">Employees</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/employee-records/<%= employee._id %>"><%= employee.fullName %></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Reset Password
+                </li>
+                <% break; %>
+            <% } %>
+
             <% if (breadcrumbs[i].breadcrumbUrl === 'makeGuestDetailLink') { %>
+
                 <li class="breadcrumb-item">
                     <a href="/guest-records/<%= visit.guest._id %>"><%= visit.guest.name %></a>
                 </li>

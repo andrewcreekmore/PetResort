@@ -1,4 +1,3 @@
-<%-// include('partials/header') %>
 
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -10,36 +9,35 @@
     <link rel="stylesheet" href = "/css/home.css">
 </head>
 
-<body class="d-flex text-center text-white bg-dark">
+<body class="d-flex text-center text-white bg-dark" style="display: flex; flex-direction: column;">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
             <div>
-                <%- include('partials/cust-navbar') %>
+                <%- include('partials/emp-navbar') %>
             </div>
         </header>
 
-    <h1 class="display-1 text-center text-primary">PetResort</h1>
-    <h2 class="display-6 text-center">boarding & grooming</h2>
+    <div class="content" style="flex: 1 0 auto; padding-top: 60px;">
 
-    <div class="d-grid gap-2 col-6 mx-auto">
-            <main class="px-3 text-center">
-                <p class="lead mt-3 mb-3"> Welcome to PetResort! <br>
-                <div class="row col-7 mx-auto">
-                    <a href="/customer" class="btn btn-lg btn-secondary font-weight-bold border-white mt-3">Our Services</a>
-                </div>
-                <div class="row col-7 mx-auto">
-                    <a href="/dashboard" class="btn btn-lg btn-secondary font-weight-bold border-white mt-3">Employee Dashboard</a>
-                </div>
-            </main>
-    </div>
+        <div class="logo-header" >
+            <!-- <h1 class="display-1 text-center text-primary" style="text-shadow: 2px 2px gray;">PetResort</h1>
+            <h2 class="display-6 text-center" style="text-shadow: 2px 2px gray;">boarding & grooming</h2> -->
+            <img src="https://res.cloudinary.com/doawnm5zz/image/upload/v1702311294/PetResort/pr_350_x_350_px_orftew.png" class="img-fluid" alt="...">
+        </div>
 
+        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top: -60px;">
+                <main class="px-3 text-center">
+                    <p class="lead mt-3 mb-3" style="text-shadow: 2px 2px gray;"> Employee Portal <br>        
+                    <!-- <a href="/login" class="btn btn-secondary border-white mt-5">Log In</a>  -->
+        
+                </main>
+        </div>
 
-    <footer class="mt-auto text-white-50">
-        <p>&copy; 2023 PetResort </p>
+    </div> <!-- end of 'content' -->
+
+    <footer class="footer text-center text-white-50" style="flex-shrink: 0;">
+        <p><small>&copy; PetResort 2023</small></p>
     </footer>
-
-
-    </div>
 
     <script src="/js/jquery-3.7.1.min.js"></script>
     <script src="/js/bootstrap.bundle.js"></script>

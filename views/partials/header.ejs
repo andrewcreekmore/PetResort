@@ -12,12 +12,10 @@
 <body class="d-flex flex-column vh-100">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
-    <% if(user === 'employee') { %>
         <%- include('emp-navbar') %>
-    <% } else if(user === 'customer') { %>
-        <%- include('cust-navbar') %>
-    <% } %>
 
     <div class="container mt-0" style="max-width: 960px;">
+
+    <div class="content" style="flex: 1 0 auto;">
         
         
