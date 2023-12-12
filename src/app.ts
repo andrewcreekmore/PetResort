@@ -72,17 +72,6 @@ class App {
 			this.app.use(route.path, route.router);
 		});
 
-		// CUSTOMER ROUTES
-		//=====================
-
-		// services
-		this.app.get("/services", (req: Request, res: Response) => {
-			const title = "PetResort · Services";
-			const user = "customer";
-			const data = { title, user };
-			res.render("customer/services", { ...data });
-		});
-
 		// ERROR HANDLING
 		//=====================
 

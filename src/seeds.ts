@@ -533,7 +533,7 @@ const seedServices = [
 		name: "Nail Buff & Trim",
 		price: 10,
 		description:
-			"Nails carefully buffed and trimmed for a smooth and rounded finish.",
+			"Nails carefully buffed and trimmed for a smooth, rounded finish.",
 		serviceType: "basic",
 		displayOrder: 1,
 	},
@@ -613,7 +613,7 @@ const seedServices = [
 		name: "Deluxe",
 		price: 10,
 		description:
-			"Base service PLUS premium shampoo & conditioner, teeth brushing & breath freshener, cologne spritz, and bandana or bow.",
+			"Base service PLUS premium shampoo & conditioner, teeth brushing & breath freshener, spritz, and bandana or bow.",
 		serviceType: "add-on",
 		displayOrder: 3,
 	},
@@ -622,7 +622,7 @@ const seedServices = [
 		name: "Deluxe",
 		price: 10,
 		description:
-			"Base service PLUS premium shampoo & conditioner, teeth brushing & breath freshener, cologne spritz, and bandana or bow.",
+			"Base service PLUS premium shampoo & conditioner, teeth brushing & breath freshener, spritz, and bandana or bow.",
 		serviceType: "add-on",
 		displayOrder: 3,
 	},
