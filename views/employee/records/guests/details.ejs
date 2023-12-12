@@ -35,10 +35,18 @@
             <!-- sorted by most recent visit -->
             <% const sortedVisitsArr = [...guest.visits].sort((b, a) => a.endDate - b.endDate)%>
             <% for(let visit of sortedVisitsArr) { %>
-                <tr>
+
+                <tr <% if (visit.upcoming) { %>
+                        style="font-style: italic;"
+                        <% } %>>
+                <% var styleStr = visit.upcoming? ' font-style: italic;' : '' %>
                 <td valign="middle" style="text-align: center;"><small> <%= visit.number %></small></a></td>
-                <td valign="middle" style="text-align: center;"><small> <%= visit.formatDateMonthFirst('startDate') %></small></td>
-                <td valign="middle" style="text-align: center;"><small> <%= visit.formatDateMonthFirst('endDate') %></small></td>
+                <td valign="middle" style="text-align: center;"><small>
+                    <%= visit.formatDateMonthFirst('startDate') %></small>
+                </td>
+                <td valign="middle" style="text-align: center;"><small>
+                    <%= visit.formatDateMonthFirst('endDate') %></small>
+                </td>
                 <td valign="middle" style="text-align: center;">
                     <small><%= visit.duration %></small> <% if (visit.duration > 1) { %>
                        <small> days </small>
@@ -60,17 +68,19 @@
                         <!-- if service not present in servicesRendered arr... -->
                         <% const test = (element) => element.name === visit.services[i].name  %>
                         
-                        <span <% if (!visit.servicesRendered.some(test)) { %>
-                            style='color: crimson'
-                            <% } %>
-                            >
-
                         <%if (visit.services.length > i + 1) { _%>
                             <% appendStr = ',' %>
                         <% } %>
                         
                         <% var addonStr = visit.services[i].serviceType === 'add-on' ? ' add-on' : '' %>
-                        <small><%= visit.services[i].name %></span><%= addonStr %><%= appendStr %>
+                        <a href="#" <% if (!visit.servicesRendered.some(test)) { %>
+                            style="color: crimson"
+                            <% } else { %>
+                                style="color: #dee2e6"
+                                <% } %>
+                         data-bs-toggle="tooltip" data-bs-placement="top" 
+                        title="<%= visit.services[i].description %>">
+                        <small><%= visit.services[i].name %><%= addonStr %><span style="color: #dee2e6"><%= appendStr %></span></a>
                         </small>
         
                     <% } %>
@@ -89,7 +99,7 @@
                 <% } else { %>
                     style='color: green'
                 <% } %>><small>(<%= paidStr %>)</span></small></td>
-                <td  style="text-align: center; vertical-align: middle;"> <a href="/visit-records/<%=visit._id%>" class="btn btn-outline-primary btn-sm"><small>Details</small></a> </td>
+                <td  style="text-align: center; vertical-align: middle; font-style: normal;"> <a href="/visit-records/<%=visit._id%>" class="btn btn-outline-primary btn-sm"><small>Details</small></a> </td>
     
                 </tr>
             <% } %>

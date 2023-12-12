@@ -61,6 +61,17 @@ const ClientSchema: Schema = new Schema({
 		default: 0,
 		min: 0,
 	},
+	image: {
+		url: {
+			type: String,
+			default:
+				"https://res.cloudinary.com/doawnm5zz/image/upload/v1702403502/PetResort/user_okivqa.png",
+		},
+		filename: {
+			type: String,
+			default: "user.png",
+		},
+	},
 });
 
 interface IClient {
@@ -71,6 +82,7 @@ interface IClient {
 	address?: object;
 	pets: Types.DocumentArray<IGuestDoc>;
 	mostRecentPet: IGuestDoc;
+	image?: object;
 }
 
 interface IClientDoc extends IClient, Document {}

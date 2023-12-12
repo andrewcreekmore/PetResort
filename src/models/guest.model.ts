@@ -44,12 +44,13 @@ const GuestSchema: Schema = new Schema({
 	image: {
 		url: {
 			type: String,
-			default: "../img/pawPrint.png",
+			default:
+				"https://res.cloudinary.com/doawnm5zz/image/upload/v1702403491/PetResort/pawPrint_tj5awj.png",
 		},
 		filename: {
 			type: String,
-			default: 'pawPrint.png',
-		}
+			default: "pawPrint.png",
+		},
 	},
 	notes: {
 		type: String,

@@ -46,6 +46,14 @@ module.exports.empDashboard =
 					},
 				];
 
+        // collecting dashboard metadata
+        var currentVisits = await Visit.find( {checkedIn: true, checkedOut: false })
+        var occupancy = currentVisits.length;
+            var pendingServiceCount = 0;
+            for (var visit of currentVisits) {
+                pendingServiceCount += (visit.services.length - visit.servicesRendered.length)
+            }
+
         if (!upcoming) {
             // current only (default)
             var visits = await Visit.find({ checkedIn: true, checkedOut: false })
@@ -53,7 +61,7 @@ module.exports.empDashboard =
                 .sort({ endDate: -1 })
                 .skip((page - 1) * visitsPerPage)
                 .limit(visitsPerPage);
-				} else { // upcoming
+				} else { // upcoming only
                     var today = new Date();
                     var visits = await Visit.find({ startDate: { $gt: today } })
                         .populate(populateParams)
@@ -64,7 +72,7 @@ module.exports.empDashboard =
         
         const totalVisitCount = visits.length;
         const pageCount = Math.ceil(totalVisitCount / visitsPerPage);
-        var data = { title, adminAccess, visits, page, pageCount, upcoming };
+        var data = { title, adminAccess, visits, page, pageCount, upcoming, occupancy, pendingServiceCount };
         res.render("employee/dashboard", { ...data });
     };
 

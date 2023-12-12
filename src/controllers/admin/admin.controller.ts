@@ -53,25 +53,34 @@ module.exports.index =
 			const allEmployees = await Employee.find({})
 				.skip((page - 1) * itemsPerPage)
 				.limit(itemsPerPage);
-            var totalKennelCount = await Kennel.count({});
-			var allKennels = await Kennel.find({})
-				.populate("occupant")
-				.skip((page - 1) * itemsPerPage)
-				.limit(itemsPerPage);
 
+            if (!occupiedOnly) {
+                var totalKennelCount = await Kennel.count({});
+                var kennels = await Kennel.find({})
+                    .populate("occupant")
+                    .skip((page - 1) * itemsPerPage)
+                    .limit(itemsPerPage);
+            } else { // occupied kennels only
 
-            function compareFn(a: IKennelDoc, b: IKennelDoc)  {
-                if (a.occupant) return 1;
-                else if (b.occupant) return -1;
-                return 0;
-            }
+                function compareFn(a: IKennelDoc, b: IKennelDoc) {
+                    if (a.occupant) return 1;
+                    else if (b.occupant) return -1;
+                    return 0;
+                }
 
-			if (occupiedOnly) {
                 var unlimitedKennels = await Kennel.find({}).populate("occupant");
                 var sortedKennels = unlimitedKennels.sort(compareFn);
-				allKennels = sortedKennels.filter((kennel) => kennel.occupant);
-                totalKennelCount = allKennels.length;
-			}
+				var occupiedKennels = sortedKennels.filter((kennel) => kennel.occupant);
+
+                kennels = await Kennel.find({
+									_id: { $in: occupiedKennels },
+								})
+                    .populate("occupant")
+                    .skip((page - 1) * itemsPerPage)
+                    .limit(itemsPerPage);
+                
+                totalKennelCount = kennels.length;
+            }
 
 			const kennelsPageCount = Math.ceil(totalKennelCount / itemsPerPage);
 			const employeesPageCount = Math.ceil(totalEmployeeCount / itemsPerPage);
@@ -84,7 +93,7 @@ module.exports.index =
 				dogServices,
                 catServices,
 				allEmployees,
-				allKennels,
+				kennels,
 				activeAdminTab,
 				occupiedOnly,
 				page,

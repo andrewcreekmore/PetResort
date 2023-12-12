@@ -128,6 +128,11 @@ VisitSchema.virtual("current").get(function () {
 	return (this.checkedIn && !this.checkedOut)
 });
 
+// returns whether visit is in the future
+VisitSchema.virtual("upcoming").get(function () {
+	return (isFuture(this.startDate))
+});
+
 // returns whether all services have been rendered
 VisitSchema.virtual("allServicesRendered").get(function () {
 	return this.services.length === this.servicesRendered.length;

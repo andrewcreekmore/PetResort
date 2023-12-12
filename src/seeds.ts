@@ -31,6 +31,10 @@ const seedEmployees = [
 			state: "Pennsylvania",
 			zip: 18201,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702405621/PetResort/glados_p9pops.png",
+			filename: "glados_p9pops.png",
+		},
 	},
 	{
 		firstName: "Heather",
@@ -46,6 +50,10 @@ const seedEmployees = [
 			city: "Silent Hill",
 			state: "Pennsylvania",
 			zip: 18640,
+		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702404969/PetResort/heather_cmt8dr.jpg",
+			filename: "heather_cmt8dr.jpg",
 		},
 	},
 	{
@@ -63,6 +71,10 @@ const seedEmployees = [
 			state: "Texas",
 			zip: 75150,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702405026/PetResort/blazko_v1pjdm.jpg",
+			filename: "blazko_v1pjdm.jpg",
+		},
 	},
 	{
 		firstName: "Chloe",
@@ -78,6 +90,10 @@ const seedEmployees = [
 			city: "Oakland",
 			state: "California",
 			zip: 94612,
+		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702405102/PetResort/chloe_rq1n4t.png",
+			filename: "chloe_rq1n4t.png",
 		},
 	},
 	{
@@ -96,6 +112,10 @@ const seedEmployees = [
 			state: "New York",
 			zip: 11227,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702405249/PetResort/alex_ok81s2.png",
+			filename: "alex_ok81s2.png",
+		},
 	},
 	{
 		firstName: "Flynn",
@@ -112,6 +132,10 @@ const seedEmployees = [
 			state: "Minnesota",
 			zip: 55431,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702405513/PetResort/doomguy_v83jo7.png",
+			filename: "doomguy_v83jo7.png",
+		},
 	},
 	{
 		firstName: "Seb",
@@ -127,6 +151,10 @@ const seedEmployees = [
 			city: "Krimson City",
 			state: "Ohio",
 			zip: 43085,
+		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702405556/PetResort/seb_wxnuoa.png",
+			filename: "seb_wxnuoa.png",
 		},
 	},
 
@@ -195,8 +223,8 @@ const seedGuests = [
 		name: "Dogmeat",
 		type: "dog",
 		breed: "German Shepherd",
-		ownerFirstName: "J.C.",
-		ownerLastName: "Denton",
+		ownerFirstName: "Lone",
+		ownerLastName: "Wanderer",
 		age: 5,
 		weight: 67,
 		image: {
@@ -223,8 +251,8 @@ const seedGuests = [
 		name: "Sweet Shalquoir",
 		type: "cat",
 		breed: "Norwegian Forest Cat",
-		ownerFirstName: "Adam",
-		ownerLastName: "Jensen",
+		ownerFirstName: "Emerald",
+		ownerLastName: "Herald",
 		age: 6,
 		weight: 11,
 		image: {
@@ -318,6 +346,10 @@ const seedClients = [
 			state: "Mississippi",
 			zip: 13882,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702403822/PetResort/andrew_obxc85.jpg",
+			filename: "andrew.jpg",
+		},
 	},
 	{
 		firstName: "Knight",
@@ -331,17 +363,25 @@ const seedClients = [
 			state: "Oklahoma",
 			zip: 37921,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702403992/PetResort/artorias_b8npc4.jpg",
+			filename: "artorias.jpg",
+		},
 	},
 	{
-		firstName: "J.C.",
-		lastName: "Denton",
+		firstName: "Lone",
+		lastName: "Wanderer",
 		phoneNumber: 2025550167,
-		email: "unatco29@email.com",
+		email: "101@vault-tec.com",
 		address: {
 			streetAddress: "781 Terry Fwy",
 			city: "Domenicoshire",
 			state: "Minnesota",
 			zip: 44250,
+		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702404070/PetResort/loneWanderer_hckmt6.png",
+			filename: "loneWanderer_hckmt6.png",
 		},
 	},
 	{
@@ -355,18 +395,26 @@ const seedClients = [
 			state: "Washington",
 			zip: 88860,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702403723/PetResort/raiden_pkitpc.jpg",
+			filename: "raiden_pkitpc.jpg",
+		},
 	},
 	{
-		firstName: "Adam",
-		lastName: "Jensen",
+		firstName: "Emerald",
+		lastName: "Herald",
 		phoneNumber: 7015550158,
-		email: "adam.jensen@si.det.usa",
+		email: "bearseek@lest.com",
 		address: {
 			streetAddress: "468 Front St",
 			apartment: "5375",
 			city: "Detroit",
 			state: "Michigan",
 			zip: 48226,
+		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702401493/PetResort/emerald_nikejz.png",
+			filename: "emerald_nikejz.png",
 		},
 	},
 	{
@@ -381,6 +429,10 @@ const seedClients = [
 			state: "Missouri",
 			zip: 63052,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702404151/PetResort/jill_amtvpw.jpg",
+			filename: "jill_amtvpw.jpg",
+		},
 	},
 	{
 		firstName: "Ellie",
@@ -393,6 +445,10 @@ const seedClients = [
 			city: "Jackson",
 			state: "Wyoming",
 			zip: 83001,
+		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702404316/PetResort/ellie_la9hlo.jpg",
+			filename: "ellie_la9hlo.jpg",
 		},
 	},
 	{
@@ -407,6 +463,10 @@ const seedClients = [
 			state: "New York",
 			zip: 10031,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702404378/PetResort/wesker_qpdu9o.png",
+			filename: "wesker_qpdu9o.png",
+		},
 	},
 	{
 		firstName: "Henry",
@@ -420,6 +480,10 @@ const seedClients = [
 			state: "Pennsylvania",
 			zip: 18640,
 		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702404459/PetResort/henry_mwhe2e.png",
+			filename: "henry_mwhe2e.png",
+		},
 	},
 	{
 		firstName: "Liara",
@@ -432,6 +496,10 @@ const seedClients = [
 			city: "Batavia",
 			state: "New York",
 			zip: 14020,
+		},
+		image: {
+			url: "https://res.cloudinary.com/doawnm5zz/image/upload/v1702404624/PetResort/liara_lgxsht.png",
+			filename: "liara_lgxsht.png",
 		},
 	},
 ];
@@ -561,7 +629,7 @@ const seedServices = [
 	{
 		petType: "cat",
 		name: "Luxury",
-		price: 10,
+		price: 15,
 		description:
 			"Deluxe service PLUS luxury shampoo, conditioner & spritz, paw & nose balm and premium face wash.",
 		serviceType: "add-on",
@@ -570,7 +638,7 @@ const seedServices = [
 	{
 		petType: "dog",
 		name: "Luxury",
-		price: 10,
+		price: 15,
 		description:
 			"Deluxe service PLUS luxury shampoo, conditioner & spritz, paw & nose balm and premium face wash.",
 		serviceType: "add-on",
@@ -593,6 +661,7 @@ const seedDB = async () => {
 			phoneNumber: seedEmployees[i].phoneNumber,
 			email: seedEmployees[i].email,
 			address: seedEmployees[i].address,
+			image: seedEmployees[i].image,
 		});
 
 		// hash + salt password & save, via register func
@@ -612,6 +681,7 @@ const seedDB = async () => {
 			phoneNumber: seedClients[i].phoneNumber,
 			email: seedClients[i].email,
 			address: seedClients[i].address,
+			image: seedClients[i].image,
 		});
 		await client.save();
 	}
@@ -1191,10 +1261,34 @@ const visitServicesSeed = [
 			[{ petType: "cat", name: "Full Service" }],
 		],
 		servicesRendered: [
-			[{ petType: "cat", name: "Nail Trim" }],
+			[
+				{ petType: "cat", name: "Nail Trim" },
+				{ petType: "cat", name: "Bath & Brush" },
+			],
 			[],
-			[]
+			[],
 		],
+	},
+	{
+		guest: "Eleanor Rigby",
+		visits: [{ number: 4 }, { number: 3 }, { number: 2 }, { number: 1 }],
+		services: [
+			[{ petType: "cat", name: "Full Service" }],
+			[
+				{ petType: "cat", name: "Ear Cleaning" },
+				{ petType: "cat", name: "Haircut" },
+				{ petType: "cat", name: "Bath & Brush" },
+			],
+			[
+				{ petType: "cat", name: "Full Service" },
+				{ petType: "cat", name: "Deluxe" },
+			],
+			[
+				{ petType: "cat", name: "Nail Trim" },
+				{ petType: "cat", name: "Bath & Brush" },
+			],
+		],
+		servicesRendered: [[], [], [], []],
 	},
 	{
 		guest: "Blade Wolf",
@@ -1213,11 +1307,154 @@ const visitServicesSeed = [
 				{ petType: "dog", name: "Bath & Brush" },
 			],
 		],
-		servicesRendered: [
-			[{ petType: "dog", name: "Ear Cleaning" }],
-			[],
-			[]
+		servicesRendered: [[{ petType: "dog", name: "Ear Cleaning" }], [], []],
+	},
+	{
+		guest: "Sif",
+		visits: [{ number: 4 }, { number: 3 }, { number: 2 }, { number: 1 }],
+		services: [
+			[
+				{ petType: "dog", name: "Nail Buff & Trim" },
+				{ petType: "dog", name: "Bath & Brush" },
+			],
+			[
+				{ petType: "dog", name: "Full Service" },
+				{ petType: "dog", name: "Deluxe" },
+			],
+			[
+				{ petType: "dog", name: "Haircut" },
+				{ petType: "dog", name: "Bath & Brush" },
+			],
+			[{ petType: "dog", name: "Haircut" }],
 		],
+		servicesRendered: [
+			[
+				{ petType: "dog", name: "Nail Buff & Trim" },
+				{ petType: "dog", name: "Bath & Brush" },
+			],
+			[],
+			[],
+			[],
+		],
+	},
+	{
+		guest: "Dogmeat",
+		visits: [{ number: 3 }, { number: 2 }, { number: 1 }],
+		services: [
+			[{ petType: "dog", name: "Bath & Brush" }],
+			[
+				{ petType: "dog", name: "Ear Cleaning" },
+				{ petType: "dog", name: "Haircut" },
+			],
+			[
+				{ petType: "dog", name: "Nail Buff & Trim" },
+				{ petType: "dog", name: "Bath & Brush" },
+			],
+		],
+		servicesRendered: [[{ petType: "dog", name: "Bath & Brush" }], [], []],
+	},
+	{
+		guest: "Sweet Shalquoir",
+		visits: [{ number: 3 }, { number: 2 }, { number: 1 }],
+		services: [
+			[
+				{ petType: "cat", name: "Full Service" },
+				{ petType: "cat", name: "Luxury" },
+			],
+			[
+				{ petType: "cat", name: "Full Service" },
+				{ petType: "cat", name: "Luxury" },
+			],
+			[
+				{ petType: "cat", name: "Ear Cleaning" },
+				{ petType: "cat", name: "Nail Trim" },
+				{ petType: "cat", name: "Bath & Brush" },
+			],
+		],
+		servicesRendered: [[], [], []],
+	},
+	{
+		guest: "Cerebus",
+		visits: [{ number: 2 }, { number: 1 }],
+		services: [
+			[{ petType: "dog", name: "Bath & Brush" }],
+			[
+				{ petType: "dog", name: "Nail Buff & Trim" },
+				{ petType: "dog", name: "Bath & Brush" },
+				{ petType: "dog", name: "Ear Cleaning" },
+			],
+		],
+		servicesRendered: [[], []],
+	},
+	{
+		guest: "KEI-9",
+		visits: [{ number: 4 }, { number: 3 }, { number: 2 }, { number: 1 }],
+		services: [
+			[
+				{ petType: "dog", name: "Nail Buff & Trim" },
+				{ petType: "dog", name: "Bath & Brush" },
+				{ petType: "dog", name: "Ear Cleaning" },
+			],
+			[
+				{ petType: "dog", name: "Full Service" },
+				{ petType: "dog", name: "Deluxe" },
+			],
+			[
+				{ petType: "dog", name: "Haircut" },
+				{ petType: "dog", name: "Bath & Brush" },
+			],
+			[{ petType: "dog", name: "Full Service" }],
+		],
+		servicesRendered: [[{ petType: "dog", name: "Ear Cleaning" }], [], [], []],
+	},
+	{
+		guest: "Nemesis",
+		visits: [{ number: 4 }, { number: 3 }, { number: 2 }, { number: 1 }],
+		services: [
+			[
+				{ petType: "dog", name: "Haircut" },
+				{ petType: "dog", name: "Ear Cleaning" },
+			],
+			[
+				{ petType: "dog", name: "Full Service" },
+				{ petType: "dog", name: "Deluxe" },
+			],
+			[
+				{ petType: "dog", name: "Haircut" },
+				{ petType: "dog", name: "Bath & Brush" },
+			],
+			[{ petType: "dog", name: "Full Service" }],
+		],
+		servicesRendered: [[{ petType: "dog", name: "Haircut" }], [], [], []],
+	},
+	{
+		guest: "Alice",
+		visits: [{ number: 4 }, { number: 3 }, { number: 2 }, { number: 1 }],
+		services: [
+			[{ petType: "dog", name: "Bath & Brush" }],
+			[
+				{ petType: "dog", name: "Full Service" },
+				{ petType: "dog", name: "Deluxe" },
+			],
+			[
+				{ petType: "dog", name: "Full Service" },
+				{ petType: "dog", name: "Luxury" },
+			],
+			[{ petType: "dog", name: "Haircut" }],
+		],
+		servicesRendered: [[], [], [], []],
+	},
+	{
+		guest: "Sniffer",
+		visits: [{ number: 2 }, { number: 1 }],
+		services: [
+			[{ petType: "dog", name: "Haircut" }],
+			[
+				{ petType: "dog", name: "Bath & Brush" },
+				{ petType: "dog", name: "Ear Cleaning" },
+			],
+		],
+		servicesRendered: [[], []],
 	},
 ];
 
@@ -1305,8 +1542,8 @@ require("dotenv").config();
 
 async function connect() {
 	if (process.env.DB_URL) {
-		var dbUrl: string = "mongodb://127.0.0.1:27017/petResort"; // dev
-		//var dbUrl: string = process.env.DB_URL; // production
+		//var dbUrl: string = "mongodb://127.0.0.1:27017/petResort"; // dev
+		var dbUrl: string = process.env.DB_URL; // production
 
 		await mongoose.connect(dbUrl);
 		const db = mongoose.connection;

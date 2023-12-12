@@ -21,19 +21,15 @@
         <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="fw-light">Occupancy</div>
             <span class="badge bg-primary" style="margin-top: 0.25em;">
-                <%= visits.length %> / 30
+                <%= occupancy %> / 30
             </span>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-start">
 
             <div class="fw-light">Pending Services</div>
-            <% var incompleteServiceCount = 0 %>
-            <% for (visit of visits) { %>
-                <% incompleteServiceCount += (visit.services.length - visit.servicesRendered.length) %>
-                <% } %>
 
-            <% var badgeStyle = incompleteServiceCount === 0 ? 'bg-success' : 'bg-danger' %>
-            <span class="badge <%= badgeStyle %>" style="margin-top: 0.25em;"><%= incompleteServiceCount %></span>
+            <% var badgeStyle = pendingServiceCount === 0 ? 'bg-success' : 'bg-danger' %>
+            <span class="badge <%= badgeStyle %>" style="margin-top: 0.25em;"><%= pendingServiceCount %></span>
             
         </li>
     </ul>

@@ -50,6 +50,17 @@ const EmployeeSchema = new mongoose.Schema({
 	resetPasswordExpires: {
 		type: Date,
 	},
+	image: {
+		url: {
+			type: String,
+			default:
+				"https://res.cloudinary.com/doawnm5zz/image/upload/v1702403502/PetResort/user_okivqa.png",
+		},
+		filename: {
+			type: String,
+			default: "user.png",
+		},
+	},
 });
 
 // adds req. username, hash, and salt fields to schema, additional methods, etc
@@ -68,6 +79,7 @@ interface IEmployee {
 	salt: string;
 	resetPasswordToken?: string;
 	resetPasswordExpires?: Date;
+	image?: object;
 }
 
 interface IEmployeeDoc extends IEmployee, mongoose.PassportLocalDocument, Document {}
