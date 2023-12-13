@@ -117,7 +117,7 @@
         <div class="row mb-3"></div>
 
         <div class="mx-auto mt-1 text-center">
-            <button type="submit" class="btn btn-primary" onclick="beforeSubmit()">Submit</button> 
+            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button> 
             <a href="/guest-records/<%=guest._id%>" class="btn btn-outline-primary">Back</a>
         </div>
         
@@ -135,6 +135,10 @@
     <%- include('../../../partials/footer-noCommonScripts') %>
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("submitButton").addEventListener("click", beforeSubmit);
+        });
 
         $(document).ready(function() {
             // updating current 'active' navbar link

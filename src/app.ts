@@ -2,15 +2,9 @@ import { Application, Request, Response, NextFunction } from "express";
 import express = require("express");
 import mongoose, { Document, PassportLocalModel } from "mongoose";
 import passport = require('passport');
-//const localStrategy = require("passport-local");
 import AppError = require("./utils/appError");
 import { registerSchemas } from "./models/client.model";
 const Employee = require("./models/employee.model");
-
-const cloudinary = require("cloudinary").v2;
-import allRoutes from "./routes/all.route";
-import allMiddlewares from "./middleware";
-
 
 /*
 ===========================================================================

@@ -1,0 +1,47 @@
+<div class="toast-container position-absolute bottom-0 end-0 p-4">
+
+    <% if (success && success.length) {%>
+    <div class="toast align-items-center" style="background-color: #051b11; border-color: #5f997e; color: white;" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header text-muted" style="background-color: #051b11; border-color: #5f997e; color: white;">
+            <strong class="me-auto">PetResort</strong>
+            <small class="toast-success">now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="d-flex">
+            <div class="toast-body">
+                <%= success %>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    
+<% if (error && error.length) { %>
+    <div class="toast align-items-center" style="background-color: #332701; border-color: #a58b3b; color: white;" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header text-muted" style="background-color: #332701; border-color: #a58b3b; color: white;">
+                <strong class="me-auto">PetResort</strong>
+                <small class="toast-warning">now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+
+        <div class="d-flex">
+            <div class="toast-body">
+                <%= error %>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+
+</div>
+
+
+
+<script>
+    window.onload = (event) => {
+    let myAlert = document.querySelectorAll('.toast')[0];
+    if (myAlert) {
+        let bsAlert = new bootstrap.Toast(myAlert);
+        bsAlert.show();
+    }
+    };
+</script>

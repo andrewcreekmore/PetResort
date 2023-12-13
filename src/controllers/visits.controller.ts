@@ -161,7 +161,6 @@ module.exports.renderEditForm =
             
 			var recordName = "Visit #" + visit.number;
 			var breadcrumbs = req.session.breadcrumbs;
-
             var data = { title, user, visit, unoccupiedKennels, recordName, breadcrumbs };
             res.render(visitRecordsDir + "/edit", { ...data });
         }
@@ -194,7 +193,6 @@ module.exports.updateVisit =
 									occupant: visit.guest._id,
 								});
                 visit.checkedInBy = res.locals.currentUser.username;
-                console.log(visit.checkedInBy);
                 await visit.save();
             }
 
@@ -204,18 +202,15 @@ module.exports.updateVisit =
 									occupant: null,
 								});
                 visit.checkedOutBy = res.locals.currentUser.username;
-                console.log(visit.checkedOutBy)
 				await visit.save();
             }
-
-
 
             req.flash("success", "Successfully updated visit.");
             res.redirect(`/visit-records/${visit._id}`);
         }
     };
 
-// visit records: add service to record - form entry
+// visit records: add/remove services on record - form entry
 module.exports.renderAddServiceForm =
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
@@ -246,7 +241,7 @@ module.exports.renderAddServiceForm =
         }
     };
 
-// visit records: add service to single record - edit on server
+// visit records: add/remove services on single record - edit on server
 module.exports.addServiceToVisit =
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
@@ -255,6 +250,7 @@ module.exports.addServiceToVisit =
             new: true,
         });
         if (visit) {
+            req.flash("success", "Visit services updated.");
             res.redirect(`/visit-records/${visit._id}`);
         }
     };
@@ -316,7 +312,7 @@ module.exports.toggleServiceStatus =
                         await populatedUpdatedVisit.save();
                     }       
                 }
-
+            req.flash("success", "Service status updated.");
             res.redirect(`/visit-records/${visit._id}`);
         } else {
             throw new AppError(400);

@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Guest } from "../models/guest.model";
 import { Visit } from "../models/visit.model";
-import 	{ isFuture } from "date-fns";
 
 /*
 ===========================================================================
@@ -102,7 +100,12 @@ module.exports.logoutEmployee =
     (req: Request, res: Response, next: NextFunction) => {
         req.logout(function (err) {
             if (err) return next(err);
+            const redirectUrl = res.locals.returnTo;
             req.flash("success", "Goodbye!");
-            res.redirect("/login");
+            if (redirectUrl === '/') {
+                res.redirect(redirectUrl); 
+            } else {
+                res.redirect("/login");
+            }
         });
     };

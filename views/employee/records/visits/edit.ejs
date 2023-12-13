@@ -18,8 +18,10 @@
 
     <!-- display any flash messages -->
     <div class="w-50 mx-auto text-center mt-3">
-        <%- include('../../../partials/flash') %>
+        <%-// include('../../../partials/flash') %>
     </div>
+    <!-- display any toast notifications -->
+    <%- include('../../../partials/toast') %>
 
         <form class="validated-form align-items-center" action="/visit-records/<%=visit._id%>?_method=PUT" method="POST" novalidate>
 
@@ -132,8 +134,8 @@
             </div> <!-- end of row -->
 
             <div class="mx-auto mt-3 text-center">
-                <button type="submit" class="btn btn-primary" onclick="beforeSubmit()">Submit</button>
-                <button type="button" class="btn btn-outline-primary" onclick="customReset()">Revert Changes</button> 
+                <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+                <button type="button" class="btn btn-outline-primary" id="resetButton">Revert Changes</button> 
                 <a href="/visit-records/<%= visit._id%>" class="btn btn-outline-primary">Back</a>
             </div>
             
@@ -143,6 +145,11 @@
     <%- include('../../../partials/footer-noCommonScripts') %>
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("submitButton").addEventListener("click", beforeSubmit);
+        document.getElementById("resetButton").addEventListener("click", customReset);
+        });
 
         // pulling visit start/end date strings in proper format to set date range picker starting values
         const startOriginalDate = new Date(document.getElementById('visitStartFormInput').value)
@@ -156,7 +163,6 @@
 
         // storing original value of assigned kennel
         var originalAssignedKennelValue = $('#assignedKennelInput').val();
-        console.log(originalAssignedKennelValue)
 
         $(document).ready(function() {
             // updating current 'active' navbar link
@@ -241,8 +247,9 @@
                 $('#kennelUpdatedFlagInput').prop('checked', true).val('true');
                 $('#lastAssignedKennelInput').val(originalAssignedKennelValue);
                 console.log('change detected to kennel; flag set!')
+            } else { // same kennel, but still need to pass that value w/o flag set
+                $('#lastAssignedKennelInput').val(originalAssignedKennelValue);
             }
-
         }
 
     </script>

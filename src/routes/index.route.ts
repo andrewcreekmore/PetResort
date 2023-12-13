@@ -35,6 +35,6 @@ router.route("/login")
 	);
 
 // employee logout
-router.get("/logout", index.logoutEmployee);
+router.get("/logout", storeReturnTo, index.logoutEmployee);
 
 module.exports = { router, path };

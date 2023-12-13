@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import AppError = require("../../utils/appError");
 import { Service } from "../../models/service.model";
 import Employee = require("../../models/employee.model");
 const { IEmployeeDoc } = require("../../models/employee.model");
@@ -241,7 +240,7 @@ module.exports.resetPassword =
                                         "success",
                                         "Your password has been successfully updated."
                                     );
-                                    res.redirect("/employee");
+                                    res.redirect("/dashboard");
                                 }
                             );
                         }
@@ -317,7 +316,7 @@ module.exports.directResetPassword =
                                 "success",
                                 employee.fullName + "'s password has been successfully updated."
                             );
-                            res.redirect("/employee");
+                            res.redirect("/admin");
                         });
                     }
                 });

@@ -52,3 +52,15 @@ thead {
     padding-top: 0.35em;
     margin-top: 0;
 }
+
+.toast-success {
+  background-color: #051b11; 
+  border-color: #5f997e; 
+  color: white;
+}
+
+.toast-error {
+  background-color: #332701; 
+  border-color: #a58b3b; 
+  color: white;
+}

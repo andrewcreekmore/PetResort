@@ -128,18 +128,20 @@
         </div>
     </div> <!-- end of row -->
 
-
-
-            <div class="mx-auto mt-1 text-center">
-                <button type="submit" class="btn btn-primary" onclick="beforeSubmit()">Submit</button> 
-                <a href="/client-records" class="btn btn-outline-primary">Back</a>
-            </div>
-            
-            </form>
+    <div class="mx-auto mt-1 text-center">
+        <button type="submit" class="btn btn-primary" id="submitButton">Submit</button> 
+        <a href="/client-records" class="btn btn-outline-primary">Back</a>
+    </div>
+    
+    </form>
     </div>
 
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("submitButton").addEventListener("click", beforeSubmit);
+        });
 
         // input mask for tel input
         const element = document.getElementById('phoneInput');

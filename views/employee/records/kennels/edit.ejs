@@ -14,13 +14,10 @@
             </div>
         </div> <!-- end of row -->
         
-        <form action="/kennel-records/<%=kennel._id%>?_method=PUT" method="POST" novalidate>
-
-        <div class="row mx-auto">
+        <form class="row align-items-center mt-1 mb-4 text-center" action="/kennel-records/<%=kennel._id%>?_method=PUT" method="POST" novalidate>
 
             <div class="col-4"></div>
-
-            <div class="col-1">
+            <div class="col-2">
                 <label for="kennel_idInput" class="form-label">ID</label>
                 <input class="form-control" type="text" name="kennel[kennel_id]" value="<%= kennel.kennel_id %>" readonly disabled>
 
@@ -28,7 +25,7 @@
                 <input class="form-control" type="text" name="kennel[kennel_id]" value="<%= kennel.kennel_id %>" readonly hidden>
             </div>
 
-                <div class="col-3 mb-3">
+                <div class="col-2">
                     <label for="sizeInput" class="form-label">Size</label>
                     <select class="form-select" aria-label="sizeInput" id="sizeInput" name="kennel[size]" required>
                         <option value="" disabled>Select...</option>
@@ -49,11 +46,7 @@
                         Kennel size is required.
                     </div>
                 </div>
-
-
-
-        </div>  <!--  end of row -->
-
+            </div> 
 
         <!-- horizontal rule / divider -->
         <div class="row">

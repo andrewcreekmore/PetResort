@@ -20,16 +20,21 @@
     <div class="content" style="flex: 1 0 auto; padding-top: 60px;">
 
         <div class="logo-header" >
-            <!-- <h1 class="display-1 text-center text-primary" style="text-shadow: 2px 2px gray;">PetResort</h1>
-            <h2 class="display-6 text-center" style="text-shadow: 2px 2px gray;">boarding & grooming</h2> -->
             <img src="https://res.cloudinary.com/doawnm5zz/image/upload/v1702311294/PetResort/pr_350_x_350_px_orftew.png" class="img-fluid" alt="...">
         </div>
 
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top: -60px;">
                 <main class="px-3 text-center">
-                    <p class="lead mt-3 mb-3" style="text-shadow: 2px 2px gray;"> Employee Portal <br>        
-                    <!-- <a href="/login" class="btn btn-secondary border-white mt-5">Log In</a>  -->
-        
+                    <p class="lead mt-3 mb-3" style="text-shadow: 2px 2px gray;"> Employee Portal <br> 
+                              
+                    <!-- display any flash messages -->
+                    <div class="w-50 mx-auto text-center mt-3">
+                        <%-// include('./partials/flash') %>
+                    </div>
+
+                    <!-- display any toast notifications -->
+                    <%- include('./partials/toast') %>
+     
                 </main>
         </div>
 
