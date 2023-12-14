@@ -1,6 +1,6 @@
 import { Application, Request, Response, NextFunction } from "express";
 import express = require("express");
-import mongoose, { Document, PassportLocalModel } from "mongoose";
+import mongoose from "mongoose";
 import passport = require('passport');
 import AppError = require("./utils/appError");
 import { registerSchemas } from "./models/client.model";
@@ -11,8 +11,8 @@ const Employee = require("./models/employee.model");
 app.ts
 - wrapper class for Express server Application. on construct:
 -- creates Express instance on passed port
--- initializes middleware & routes
--- sets static resource folders (public, views) and templating engine (ejs)
+-- initializes passed middleware & routes
+-- inits static assets, templating engine, & database
 ===========================================================================
 */
 

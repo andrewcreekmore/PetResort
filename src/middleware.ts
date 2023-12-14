@@ -8,12 +8,12 @@ import mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 import MongoStore = require("connect-mongo");
 const { IEmployeeDoc } = require("./models/employee.model");
-import { Guest, IGuestDoc } from "./models/guest.model";
 
 /*
 ===========================================================================
 middleware.ts
-- 
+- defines custom & inits third-party middlewares 
+- bundles + exports allMiddlewares array for server use
 ===========================================================================
 */
 
@@ -119,11 +119,9 @@ const getBreadcrumbs = (req: Request, res: Response, next: NextFunction) => {
 // setting up mongoStore for session
 // + session options config
 //=====================
-var dbUrl: string = process.env.DB_URL || "mongodb://127.0.0.1:27017/petResort";
-// if (process.env.NODE_ENV === "production" && process.env.DB_URL) {
-// 	dbUrl = process.env.DB_URL;
-// }
 
+// production || dev
+var dbUrl: string = process.env.DB_URL || "mongodb://127.0.0.1:27017/petResort";
 const sessionSecret = process.env.SESSION_SECRET || 'tempSecret';
 
 const sessionStore = MongoStore.create({
@@ -168,10 +166,6 @@ const styleSrcUrls = [
 	"https://stackpath.bootstrapcdn.com/",
 ];
 
-const connectSrcUrls = [
-
-];
-
 const contentSecurityPolicyConfig = {
 	directives: {
 		defaultSrc: ["'self'"],
@@ -191,7 +185,7 @@ const contentSecurityPolicyConfig = {
 	},
 };
 
-// all middlewares to be run on every request
+// all middlewares that are to be run on every request
 const allMiddlewares = [
 	bodyParser.json(),
 	bodyParser.urlencoded({ extended: true }),

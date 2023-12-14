@@ -1,25 +1,27 @@
 import { Request, Response, NextFunction } from "express";
 import AppError = require("../utils/appError");
-import { Client, IClientDoc } from "../models/client.model";
+import { Client } from "../models/client.model";
+import { Guest } from "../models/guest.model";
 import { stateInfo } from "../utils/staticData";
 import escapeRegex = require("../utils/escapeRegex");
-import { Guest, IGuestDoc } from "../models/guest.model";
 
 /*
 ===========================================================================
 clients.controller.ts
 - methods containing route logic for export
+- coverage: all client-model CRUD
 ===========================================================================
 */
 
 // client route constants
 const clientRecordsDir = "employee/records/clients";
 const title = "PetResort · Client Records";
-const user = "employee";
 
 // client records: view all / index
 module.exports.index = 
     async (req: Request, res: Response, next: NextFunction) => {
+
+        // params
         const currentOnly: boolean = Boolean(req.query.current) || false;
         const isSearch: boolean = Boolean(req.query.search) || false;
 
@@ -62,7 +64,17 @@ module.exports.index =
                 .limit(clientsPerPage);
         } else { // current only
             var allClients = await Client.find({}).populate(populatePets);
-            const filteredClients = allClients.filter((client) => client.mostRecentPet.current);
+            // filter for having *any* pet currently checked-in
+            const filteredClients = allClients.filter(
+                function (client) {
+                    for (var pet of client.pets) {
+                                        if (pet.current) {
+                                            return true;
+                                        }
+                                    }
+                    return false;
+                    } 
+                );
             clients = await Client.find({
                 _id: { $in: filteredClients },
                 })
@@ -77,11 +89,9 @@ module.exports.index =
         var allGuests = await Guest.find({}).populate('visits')
         var currentGuests = allGuests.filter((guest) => guest.current);
         
-        //clients = sortedClients;
         var pageCount = Math.ceil(totalClientCount / clientsPerPage);
         var data = {
             title,
-            user,
             clients,
             page,
             pageCount,
@@ -96,7 +106,7 @@ module.exports.index =
 module.exports.renderNewForm = 
     (req: Request, res: Response) => {
         var breadcrumbs = req.session.breadcrumbs;
-        var data = { title, user, stateInfo, breadcrumbs };
+        var data = { title, stateInfo, breadcrumbs };
         res.render(clientRecordsDir + "/new", { ...data });
     };
 
@@ -138,7 +148,7 @@ module.exports.showDetails =
         } else {
             var recordName = singleClient.firstName + ' ' + singleClient.lastName;
             var breadcrumbs = req.session.breadcrumbs;
-            var data = { title, user, singleClient, stateInfo, recordName, breadcrumbs };
+            var data = { title, singleClient, stateInfo, recordName, breadcrumbs };
             res.render(clientRecordsDir + "/details", { ...data });
         }
     };
@@ -168,7 +178,7 @@ module.exports.renderEditForm =
         } else {
             var recordName = singleClient.firstName + ' ' + singleClient.lastName;
             var breadcrumbs = req.session.breadcrumbs;
-            var data = { title, user, singleClient, stateInfo, recordName, breadcrumbs };
+            var data = { title, singleClient, stateInfo, recordName, breadcrumbs };
             res.render(clientRecordsDir + "/edit", { ...data });
         }
     };

@@ -1,6 +1,8 @@
 <%- include('../../../partials/header') %>
-
 <%- include('../../../partials/breadcrumbs') %>
+
+<!-- display any toast notifications -->
+<%- include('../../../partials/toast') %>
 
 <script src="https://unpkg.com/imask"></script>
 
@@ -15,11 +17,6 @@
     </div> <!-- end of row -->
 
 <div class="container">
-
-    <!-- display any flash messages -->
-    <div class="w-50 mx-auto text-center mt-3">
-        <%- include('../../../partials/flash') %>
-    </div>
 
     <form action="/employee-records" method="POST" novalidate class="validated-form">
 
@@ -139,7 +136,7 @@
                 <!-- <label for="apartmentInput" class="form-label">Address 2 </label> -->
                 <input type="text" class="form-control" name="employee[address][apartment]" id="apartmentInput" placeholder="Apt, suite, or floor" aria-label="apartment">
             </div>
-            </div> <!--end of row -->
+        </div> <!--end of row -->
 
         <div class="row">
             <!-- ADDRESS: city, state, zip -->
@@ -179,10 +176,6 @@
 
         </div> <!-- end of row-->
 
-        <!-- <h4 class="display-12 text-center mt-3 mb-3">Login Credentials</h4> -->
-
-        <!-- <p class="lead">Login Credentials</p> -->
-
         <!-- horizontal rule / divider -->
         <div class="row">
             <div class="col-5"></div>
@@ -202,25 +195,25 @@
 
 </div> <!-- end of container-->
 
-    <script>
+<script>
 
-        document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById("submitButton").addEventListener("click", beforeSubmit);
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("submitButton").addEventListener("click", beforeSubmit);
+    });
 
-        // input mask for tel input
-        const element = document.getElementById('phoneInput');
-        const maskOptions = {
-            mask: '(000) 000-0000'
-        };
+    // input mask for tel input
+    const element = document.getElementById('phoneInput');
+    const maskOptions = {
+        mask: '(000) 000-0000'
+    };
 
-        const phoneMask = IMask(element, maskOptions);
+    const phoneMask = IMask(element, maskOptions);
 
-        beforeSubmit = function(){
-            // unmask phoneInput
-            document.getElementById('phoneInput').value = phoneMask.unmaskedValue;
-        }
+    beforeSubmit = function(){
+        // unmask phoneInput
+        document.getElementById('phoneInput').value = phoneMask.unmaskedValue;
+    }
 
-    </script>
+</script>
 
 <%- include('../../../partials/footer') %>

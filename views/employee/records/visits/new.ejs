@@ -1,192 +1,168 @@
 <%- include('../../../partials/header') %>
-
 <%- include('../../../partials/breadcrumbs') %>
 
 <h2 class="display-6 mb-3 text-center">Add new Visit</h2>
 
-    <div class="row mb-3"></div> 
+<div class="row mb-3"></div> 
 
-    <div class="container">
+<div class="container">
 
-        <!-- horizontal rule / divider -->
-        <div class="row">
-            <div class="col-5"></div>
-            <div class="col-2">
-                <hr class="mt-0">
-            </div>
-        </div> <!-- end of row -->
+    <!-- horizontal rule / divider -->
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-0">
+        </div>
+    </div> <!-- end of row -->
 
-        <!-- <h4 class="display-9 mt-3 mb-3">&emsp; Details</h4> -->
-        
-        <form action="/visit-records" method="POST" novalidate class="validated-form" >
+    <form action="/visit-records" method="POST" novalidate class="validated-form" >
 
-            <!-- HIDDEN FORM INPUTS (guest, visitNum, start/end dates) -->
-            <select class="form-select" aria-label="Guest" id="guestInput" name="visit[guest]" hidden>
-                <option value="<%=guest._id%>" selected><%= guest.name %></option>
-            </select>
+        <!-- HIDDEN FORM INPUTS (guest, visitNum, start/end dates) -->
+        <select class="form-select" aria-label="Guest" id="guestInput" name="visit[guest]" hidden>
+            <option value="<%=guest._id%>" selected><%= guest.name %></option>
+        </select>
 
-                <% var newVisitNumber = mostRecentVisitNumber + 1 %>
+        <% var newVisitNumber = mostRecentVisitNumber + 1 %>
 
-                <input type="text" class="form-control" name="visit[number]" id="visitNumHidden" value="<%= newVisitNumber %>" hidden>
+        <input type="text" class="form-control" name="visit[number]" id="visitNumHidden" value="<%= newVisitNumber %>" hidden>
 
-            <input type="text"  class="form-control" id="visitStartFormInput" name="visit[startDate]" hidden>
-            <input type="text" class="form-control" id="visitEndFormInput" name="visit[endDate]" hidden>
+        <input type="text"  class="form-control" id="visitStartFormInput" name="visit[startDate]" hidden>
+        <input type="text" class="form-control" id="visitEndFormInput" name="visit[endDate]" hidden>
 
-        
-        <div class="row">
-            <div class="col-2"></div>
-
-             <div class="col-4 mb-3">
-                <label for="guestName" class="form-label">Guest</label>
-        
-                <input type="text" class="form-control" id="guestName" value="<%= guest.fullName %>" disabled readonly>
-             </div>
-
-             <!-- <div class="col-1"></div> -->
-
-            <!-- <div class="col-1 mb-3"> -->
-                <label for="visitNum" class="form-label" hidden>Visit #</label>
-                <input type="text" class="form-control" name="visit[number]" id="visitNum" value="<%= newVisitNumber %>" disabled readonly hidden>  
-            <!-- </div> -->
+    
+    <div class="row">
+        <div class="col-2"></div>
 
             <div class="col-4 mb-3">
-                <label for="daterange" class="form-label">Check-in / out dates</label>
-                    <input type="text" class="form-control" id="daterange">
+            <label for="guestName" class="form-label">Guest</label>
+    
+            <input type="text" class="form-control" id="guestName" value="<%= guest.fullName %>" disabled readonly>
             </div>
-                
 
-        </div> <!--  end of row -->
+            <label for="visitNum" class="form-label" hidden>Visit #</label>
+            <input type="text" class="form-control" name="visit[number]" id="visitNum" value="<%= newVisitNumber %>" disabled readonly hidden>  
 
-        <div class="row">
-
-            <div class="col-3"></div>
-
-                <div class="col-3 mb-1">
-                    <label for="assignedKennelInput" class="form-label">Kennel</label>
-                    <select class="form-select" aria-label="assignedKennel" id="assignedKennelInput" name="visit[assignedKennel]" required>
-                    <option selected value="" disabled>Select...</option>
-                    <% for (kennel of unoccupiedKennels) { %>
-                        <option value="<%= kennel._id %>"><%= kennel.formatted_id %></option>
-                        <% } %>
-                    </select>
-                    <div id="assignedKennelInputFeedback" class="invalid-feedback">
-                        Kennel assignment is required. If no kennels are available, reschedule with the client.
-                    </div>
-                </div>
-
-                <!-- <div class="col-1"></div> -->
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                <div class="col-3">
-                    <label for="checkedInRadios" class="form-label">Check guest in?</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="visit[checkedIn]" id="checkedInTrue" value="true" required>
-                        <label class="form-check-label" for="guestTypeCat">yes</label>   
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="visit[checkedIn]" id="checkedInFalse" value="false" required checked>
-                        <label class="form-check-label" for="guestTypeDog">no</label>   
-                    </div>
-                </div>
-
-        <!-- <div class="col-8 mb-3">
-            <label for="notesInput" class="form-label">Notes</label>
-            <textarea class="form-control" id="notesInput" name="visit[notes]" rows="2"></textarea>
-        </div> -->
-
-        </div>  <!--  end of row -->
-
-                <div class="row">
-                    <div class="col-3"></div>
-                    <div class="col-3">
-                        <span>
-                            <p class="text-muted">&nbsp;<i>weight: <%= guest.weight %> lbs</i></p>
-                        </span>
-                    </div>
-                </div> <!-- end of row-->
-
-        <!-- horizontal rule / divider -->
-        <div class="row">
-            <div class="col-5"></div>
-            <div class="col-2">
-                <hr class="mt-3">
-            </div>
-        </div> <!-- end of row -->
-
-
-        <div class="row mb-3"></div>
-
-        <div class="mx-auto mt-1 text-center">
-            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button> 
-            <a href="/guest-records/<%=guest._id%>" class="btn btn-outline-primary">Back</a>
+        <div class="col-4 mb-3">
+            <label for="daterange" class="form-label">Check-in / out dates</label>
+                <input type="text" class="form-control" id="daterange">
         </div>
-        
-        </form>
+    </div> <!--  end of row -->
 
-    </div> <!--  end of container -->
+    <div class="row">
 
+        <div class="col-3"></div>
 
-    <!-- back (return to index) button -->
-    <!-- <div class="mx-auto mt-3">
-        <a href="/guest-records/<%=guest._id%>" class="btn btn-outline-primary"><- Guest Record</a>
-    </div> -->
+            <div class="col-3 mb-1">
+                <label for="assignedKennelInput" class="form-label">Kennel</label>
+                <select class="form-select" aria-label="assignedKennel" id="assignedKennelInput" name="visit[assignedKennel]" required>
+                <option selected value="" disabled>Select...</option>
+                <% for (kennel of unoccupiedKennels) { %>
+                    <option value="<%= kennel._id %>"><%= kennel.formatted_id %></option>
+                    <% } %>
+                </select>
+                <div id="assignedKennelInputFeedback" class="invalid-feedback">
+                    Kennel assignment is required. If no kennels are available, reschedule with the client.
+                </div>
+            </div>
 
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-    <%- include('../../../partials/footer-noCommonScripts') %>
+            <div class="col-3">
+                <label for="checkedInRadios" class="form-label">Check guest in?</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="visit[checkedIn]" id="checkedInTrue" value="true" required>
+                    <label class="form-check-label" for="guestTypeCat">yes</label>   
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="visit[checkedIn]" id="checkedInFalse" value="false" required checked>
+                    <label class="form-check-label" for="guestTypeDog">no</label>   
+                </div>
+            </div>
+    </div>  <!--  end of row -->
 
-    <script>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-3">
+            <span>
+                <p class="text-muted">&nbsp;<i>weight: <%= guest.weight %> lbs</i></p>
+            </span>
+        </div>
+    </div> <!-- end of row-->
 
-        document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById("submitButton").addEventListener("click", beforeSubmit);
+    <!-- horizontal rule / divider -->
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <hr class="mt-3">
+        </div>
+    </div> <!-- end of row -->
+
+    <div class="row mb-3"></div>
+
+    <div class="mx-auto mt-1 text-center">
+        <button type="submit" class="btn btn-primary" id="submitButton">Submit</button> 
+        <a href="/guest-records/<%=guest._id%>" class="btn btn-outline-primary">Back</a>
+    </div>
+    
+    </form>
+
+</div> <!--  end of container -->
+
+<%- include('../../../partials/footer-noCommonScripts') %>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("submitButton").addEventListener("click", beforeSubmit);
+    });
+
+    $(document).ready(function() {
+        // updating current 'active' navbar link
+        var currentPageRoute = ('guest-records');
+        $('.navbar li.active').removeClass('active');
+        $('#navbar_' + currentPageRoute).addClass('active');
+
+        // init date range picker 
+        $('#daterange').daterangepicker({
+            opens: 'center',
+            minDate: new Date(),
         });
 
-        $(document).ready(function() {
-            // updating current 'active' navbar link
-            var currentPageRoute = ('guest-records');
-            $('.navbar li.active').removeClass('active');
-            $('#navbar_' + currentPageRoute).addClass('active');
+        // update start/end date vars on date range picker apply event
+        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+        
+                // update hidden date form field values with stored vars from date range picker
+                document.getElementById('visitStartFormInput').value = picker.startDate;;
+                document.getElementById('visitEndFormInput').value = picker.endDate;;
 
-            // init date range picker 
-            $('#daterange').daterangepicker({
-                opens: 'center',
-                minDate: new Date(),
             });
+    
+    });
 
-            // update start/end date vars on date range picker apply event
-            $('#daterange').on('apply.daterangepicker', function(ev, picker) {
-            
-                    // update hidden date form field values with stored vars from date range picker
-                    document.getElementById('visitStartFormInput').value = picker.startDate;;
-                    document.getElementById('visitEndFormInput').value = picker.endDate;;
+    // disabling form submission if there are invalid fields
+    (function () {
+    'use strict'
 
-                });
-        
-        });
+    // fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.validated-form')
 
-        // disabling form submission if there are invalid fields
-        (function () {
-        'use strict'
-
-        // fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.querySelectorAll('.validated-form')
-
-        // loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
-        
-            })
-        })()
+    // loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    
+        })
+    })()
 
 
-        beforeSubmit = function(){
-        }
-        
+    beforeSubmit = function(){
+    }
+    
 
-    </script>
+</script>

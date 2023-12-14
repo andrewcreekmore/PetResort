@@ -5,6 +5,7 @@ import { Visit } from "../models/visit.model";
 ===========================================================================
 index.controller.ts
 - methods containing route logic for export
+- coverage: home page, employee dashboard, login/out + auth
 ===========================================================================
 */
 

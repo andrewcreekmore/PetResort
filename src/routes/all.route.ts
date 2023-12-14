@@ -10,7 +10,7 @@ const kennelRoutes = require("./admin/kennels.route");
 /*
 ===========================================================================
 all.route.ts
-- 
+- bundles + exports all routes, for server use
 ===========================================================================
 */
 

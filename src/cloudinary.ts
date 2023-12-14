@@ -4,7 +4,7 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary")
 /*
 ===========================================================================
 cloudinary.ts
-- 
+- inits + exports cloudinary storage for images
 ===========================================================================
 */
 

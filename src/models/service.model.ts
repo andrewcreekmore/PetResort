@@ -1,5 +1,4 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
-import { Visit, IVisitDoc } from "./visit.model";
+import mongoose, { Schema, Document } from "mongoose";
 
 /*
 ===========================================================================

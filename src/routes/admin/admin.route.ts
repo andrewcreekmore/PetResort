@@ -1,20 +1,14 @@
 
 import express = require("express");
-import { Request, Response, NextFunction } from "express";
-import AppError = require("../../utils/appError");
-import Employee  = require('../../models/employee.model')
-const { Service } = require("../../models/service.model");
-const { IEmployeeDoc } = require('../../models/employee.model')
 const admin = require("../../controllers/admin/admin.controller");
 import catchAsync = require("../../utils/catchAsync");
-import nodemailer = require('nodemailer');
-import crypto = require('crypto');
-const { isLoggedIn, isAdmin }  = require("../../middleware");
+const { isLoggedIn }  = require("../../middleware");
 
 /*
 ===========================================================================
 admin.route.ts
-- 
+- admin index routes - admin tools page, ajax setting of activeTab
+- also includes password reset (by user and directly by admin) func routes
 ===========================================================================
 */
 

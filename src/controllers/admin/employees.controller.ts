@@ -7,19 +7,19 @@ import Employee  = require("../../models/employee.model");
 ===========================================================================
 employees.controller.ts
 - methods containing route logic for export
+- coverage: employee-model CUD; R is a tab on index @ admin.controller
 ===========================================================================
 */
 
 // employee records route constants
 const employeesDir = "employee/records/employees";
-var user = "employee";
+const title = "PetResort · Employee Records";
 
 // registration of new employees - form entry
 module.exports.renderNewForm = 
     (req: Request, res: Response) => {
-        const title = "PetResort · Admin";
         var breadcrumbs = req.session.breadcrumbs;
-        var data = { title, user, breadcrumbs };
+        var data = { title, breadcrumbs };
         req.session.activeAdminTab = "employees";
         res.render(employeesDir + "/new", { ...data, stateInfo });
     };
@@ -44,8 +44,6 @@ module.exports.createEmployee =
 // employee records: view single record details
 module.exports.showDetails =
     async (req: Request, res: Response, next: NextFunction) => {
-		const title = "PetResort · Employee Records";
-		var user = "employee";
         req.session.activeAdminTab = "employees";
 		const { id } = req.params;
 		const employee = await Employee.findById(id)
@@ -56,7 +54,7 @@ module.exports.showDetails =
 		} else {
             var recordName = employee.firstName + ' ' + employee.lastName;
             var breadcrumbs = req.session.breadcrumbs;
-			var data = { title, user, employee, stateInfo, recordName, breadcrumbs };
+			var data = { title, employee, stateInfo, recordName, breadcrumbs };
 			res.render(employeesDir + "/details", { ...data });
 		}
 	};
@@ -65,18 +63,16 @@ module.exports.showDetails =
 module.exports.renderEditForm =
     async (req: Request, res: Response, next: NextFunction) => {
         const title = "PetResort · Employee Records";
-        var user = "employee";
         req.session.activeAdminTab = "employees";
         const { id } = req.params;
         const employee = await Employee.findById(id)
         if (!employee) {
             req.flash("error", `Couldn't find that employee.`);
-            
             return res.redirect("/admin");
         } else {
             var recordName = employee.firstName + " " + employee.lastName;
             var breadcrumbs = req.session.breadcrumbs;
-            var data = { title, user, employee, stateInfo, recordName, breadcrumbs };
+            var data = { title, employee, stateInfo, recordName, breadcrumbs };
             res.render(employeesDir + "/edit", { ...data });
         }
     };

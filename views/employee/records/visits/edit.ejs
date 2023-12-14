@@ -1,12 +1,14 @@
 <%- include('../../../partials/header') %>
-
 <%- include('../../../partials/breadcrumbs') %>
+
+<!-- display any toast notifications -->
+<%- include('../../../partials/toast') %>
 
 <h2 class="display-6 mb-3 text-center">Update Visit Record</h2>
 
-    <div class="row mb-0"></div>
+<div class="row mb-0"></div>
 
-    <div class="container">
+<div class="container">
 
     <!-- horizontal rule / divider -->
     <div class="row">
@@ -16,240 +18,228 @@
         </div>
     </div> <!-- end of row -->
 
-    <!-- display any flash messages -->
-    <div class="w-50 mx-auto text-center mt-3">
-        <%-// include('../../../partials/flash') %>
-    </div>
-    <!-- display any toast notifications -->
-    <%- include('../../../partials/toast') %>
+    <form class="validated-form align-items-center" action="/visit-records/<%=visit._id%>?_method=PUT" method="POST" novalidate>
 
-        <form class="validated-form align-items-center" action="/visit-records/<%=visit._id%>?_method=PUT" method="POST" novalidate>
+        <!-- HIDDEN FORM INPUTS (guest, visitNum, start/end dates) -->
+        <select class="form-select" aria-label="Guest" id="guestInput" name="visit[guest]" hidden>
+            <option value="<%=visit.guest._id%>" selected><%= visit.guest.name %></option>
+        </select>
 
-            <!-- HIDDEN FORM INPUTS (guest, visitNum, start/end dates) -->
-            <select class="form-select" aria-label="Guest" id="guestInput" name="visit[guest]" hidden>
-                <option value="<%=visit.guest._id%>" selected><%= visit.guest.name %></option>
-            </select>
+            <input type="text" class="form-control" name="visit[number]" id="visitNumHidden" value="<%=visit.number %>" hidden>
 
-                <input type="text" class="form-control" name="visit[number]" id="visitNumHidden" value="<%=visit.number %>" hidden>
+        <input type="text"  class="form-control" id="visitStartFormInput" name="visit[startDate]" value="<%= visit.startDate %>" hidden>
+        <input type="text" class="form-control" id="visitEndFormInput" name="visit[endDate]" value ="<%= visit.endDate %>" hidden>
+        
+        <div class="row">
+            <div class="col-2"></div>
 
-            <input type="text"  class="form-control" id="visitStartFormInput" name="visit[startDate]" value="<%= visit.startDate %>" hidden>
-            <input type="text" class="form-control" id="visitEndFormInput" name="visit[endDate]" value ="<%= visit.endDate %>" hidden>
-            
-            <div class="row">
-                <div class="col-2"></div>
+            <div class="col-4 mb-3">
+                <label for="guestName" class="form-label">Guest</label>
+        
+                <input type="text" class="form-control" id="guestName" value="<%= visit.guest.fullName %>" disabled readonly>
+            </div>
 
-                <div class="col-4 mb-3">
-                    <label for="guestName" class="form-label">Guest</label>
-            
-                    <input type="text" class="form-control" id="guestName" value="<%= visit.guest.fullName %>" disabled readonly>
-                </div>
+                <label for="visitNum" class="form-label" hidden>Visit #</label>
+                <input type="text" class="form-control" name="visit[number]" id="visitNum" 
+                value="<%= visit.number %>" disabled readonly hidden>  
 
-                <!-- <div class="col-1 mb-3"> -->
-                    <label for="visitNum" class="form-label" hidden>Visit #</label>
-                    <input type="text" class="form-control" name="visit[number]" id="visitNum" 
-                    value="<%= visit.number %>" disabled readonly hidden>  
-                <!-- </div> -->
-
-                <div class="col-4 mb-3">
-                    <label for="daterange" class="form-label">Check-in / out dates</label>
-                        <input type="text" class="form-control" id="daterange">
-                </div>
-                
-            </div> <!--  end of row -->
-
-            <div class="row">
-            <div class="col-3"></div>
-                <div class="col-4 mb-3 form-check">
-                    <input class="form-check-input" type="checkbox" name="visit[checkedIn]" id="checkedIn"
-                        <% if (visit.checkedIn) { %> checked
-                            <% } %>
-                           <% if (visit.checkedOut) { %>
-                                disabled
-                            <% } %>
-                            >
-                    <label class="form-check-label" for="checkedIn">
-                        Checked-in
-                    </label>
-                    </div>
-                    <div class="col-4 mb-3 form-check">
-                    <input class="form-check-input" type="checkbox" name="visit[checkedOut]" id="checkedOut"
-                        <% if (visit.checkedOut) { %> checked
-                            <% } %>
-                            <% if (!visit.checkedIn) { %>
-                                disabled
-                            <% } %>
-                            >
-                    <label class="form-check-label" for="checkedOut">
-                        Checked-out
-                    </label>
-                </div>
-
-            </div> <!--  end of row -->
-
-            <div class="row">
-                <!-- <div class="col-4"></div> -->
-                
-                <div class="col-3 mx-auto mb-1">
-                    <!-- <label for="notesInput" class="form-label">Notes</label>
-                    <textarea class="form-control" id="notesInput" name="visit[notes]" rows="2" value="<%= visit.notes %>"></textarea> -->
-
-                    <label for="assignedKennelInput" class="form-label">Kennel</label>
-                    <select class="form-select" aria-label="assignedKennel" id="assignedKennelInput" name="visit[assignedKennel]" required>
-                    <option selected disabled>Select...</option>
-                    <% for (kennel of unoccupiedKennels) { %>
-                        <option <% if (visit.assignedKennel && visit.assignedKennel.formatted_id === kennel.formatted_id) { %>
-                            selected
-                            <% } %>
-                            
-                            value="<%= kennel._id %>"><%= kennel.formatted_id %></option>
-                        <% } %>
-                    </select>
-                    <div id="assignedKennelInputFeedback" class="invalid-feedback">
-                        Kennel assignment is required. If no kennels are available, reschedule with the client.
-                    </div>
-                </div>
-
-                <div class="row">
-                    <span class="text-center">
-                        <p class="text-muted">&emsp;<i>weight: <%= visit.guest.weight %> lbs</i></p>
-                    </span>
-                </div> <!-- end of row-->
-
-                <!-- hidden kennelUpdatedFlag field -->
-                <input class="form-check-input" type="checkbox" name="visit[kennelUpdatedFlag]" id="kennelUpdatedFlagInput" value="true" hidden>
-                <!-- hidden lastAssignedKennel field -->
-                <input class="form-check-input" type="text" name="visit[lastAssignedKennel]" id="lastAssignedKennelInput" value=" <% if (visit.assignedKennel) { %>
-                    <%= visit.assignedKennel._id %>
-                    <% } %>
-                    " hidden>
-
-            </div>  <!--  end of row -->
-
-            <!-- horizontal rule / divider -->
-            <div class="row">
-                <div class="col-5"></div>
-                <div class="col-2">
-                    <hr class="mt-">
-                </div>
-            </div> <!-- end of row -->
-
-            <div class="mx-auto mt-3 text-center">
-                <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
-                <button type="button" class="btn btn-outline-primary" id="resetButton">Revert Changes</button> 
-                <a href="/visit-records/<%= visit._id%>" class="btn btn-outline-primary">Back</a>
+            <div class="col-4 mb-3">
+                <label for="daterange" class="form-label">Check-in / out dates</label>
+                    <input type="text" class="form-control" id="daterange">
             </div>
             
-    </div>
-    </div>
-    
-    <%- include('../../../partials/footer-noCommonScripts') %>
+        </div> <!--  end of row -->
 
-    <script>
+        <div class="row">
+        <div class="col-3"></div>
+            <div class="col-4 mb-3 form-check">
+                <input class="form-check-input" type="checkbox" name="visit[checkedIn]" id="checkedIn"
+                    <% if (visit.checkedIn) { %> checked
+                        <% } %>
+                        <% if (visit.checkedOut) { %>
+                            disabled
+                        <% } %>
+                        >
+                <label class="form-check-label" for="checkedIn">
+                    Checked-in
+                </label>
+                </div>
+                <div class="col-4 mb-3 form-check">
+                <input class="form-check-input" type="checkbox" name="visit[checkedOut]" id="checkedOut"
+                    <% if (visit.checkedOut) { %> checked
+                        <% } %>
+                        <% if (!visit.checkedIn) { %>
+                            disabled
+                        <% } %>
+                        >
+                <label class="form-check-label" for="checkedOut">
+                    Checked-out
+                </label>
+            </div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById("submitButton").addEventListener("click", beforeSubmit);
-        document.getElementById("resetButton").addEventListener("click", customReset);
-        });
+        </div> <!--  end of row -->
 
-        // pulling visit start/end date strings in proper format to set date range picker starting values
-        const startOriginalDate = new Date(document.getElementById('visitStartFormInput').value)
-        const startOriginalDateStr = `${String(startOriginalDate.getMonth() + 1)}/${String(startOriginalDate.getDate())}/${String(startOriginalDate.getFullYear())}`
-        const endOriginalDate = new Date(document.getElementById('visitEndFormInput').value)
-        const endOriginalDateStr = `${String(endOriginalDate.getMonth() + 1)}/${String(endOriginalDate.getDate())}/${String(endOriginalDate.getFullYear())}`
-
-        // storing original values of checked-in/out
-        var originalCheckedInValue = $("#checkedIn").is(':checked');
-        var originalCheckedOutValue = $("#checkedOut").is(':checked');
-
-        // storing original value of assigned kennel
-        var originalAssignedKennelValue = $('#assignedKennelInput').val();
-
-        $(document).ready(function() {
-            // updating current 'active' navbar link
-            var currentPageRoute = ('guest-records');
-            $('.navbar li.active').removeClass('active');
-            $('#navbar_' + currentPageRoute).addClass('active');
-
-            // init date range picker 
-            $('#daterange').daterangepicker({
-                opens: 'center',
-            });
-
-            // setting date range picker values to stored start/end dates
-            $('#daterange').data('daterangepicker').setStartDate(startOriginalDateStr);
-            $('#daterange').data('daterangepicker').setEndDate(endOriginalDateStr)
-
-
-            // update start/end date vars on date range picker apply event
-            $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+        <div class="row">
             
-                    // update hidden date form field values with stored vars from date range picker
-                    document.getElementById('visitStartFormInput').value = picker.startDate;;
-                    document.getElementById('visitEndFormInput').value = picker.endDate;;
+            <div class="col-3 mx-auto mb-1">
 
-                });
+                <label for="assignedKennelInput" class="form-label">Kennel</label>
+                <select class="form-select" aria-label="assignedKennel" id="assignedKennelInput" name="visit[assignedKennel]" required>
+                <option selected disabled>Select...</option>
+                <% for (kennel of unoccupiedKennels) { %>
+                    <option <% if (visit.assignedKennel && visit.assignedKennel.formatted_id === kennel.formatted_id) { %>
+                        selected
+                        <% } %>
+                        
+                        value="<%= kennel._id %>"><%= kennel.formatted_id %></option>
+                    <% } %>
+                </select>
+                <div id="assignedKennelInputFeedback" class="invalid-feedback">
+                    Kennel assignment is required. If no kennels are available, reschedule with the client.
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="text-center">
+                    <p class="text-muted">&emsp;<i>weight: <%= visit.guest.weight %> lbs</i></p>
+                </span>
+            </div> <!-- end of row-->
+
+            <!-- hidden kennelUpdatedFlag field -->
+            <input class="form-check-input" type="checkbox" name="visit[kennelUpdatedFlag]" id="kennelUpdatedFlagInput" value="true" hidden>
+            <!-- hidden lastAssignedKennel field -->
+            <input class="form-check-input" type="text" name="visit[lastAssignedKennel]" id="lastAssignedKennelInput" value=" <% if (visit.assignedKennel) { %>
+                <%= visit.assignedKennel._id %>
+                <% } %>
+                " hidden>
+
+        </div>  <!--  end of row -->
+
+        <!-- horizontal rule / divider -->
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-">
+            </div>
+        </div> <!-- end of row -->
+
+        <div class="mx-auto mt-1 text-center">
+            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+            <button type="button" class="btn btn-outline-primary" id="resetButton">Revert Changes</button> 
+            <a href="/visit-records/<%= visit._id%>" class="btn btn-outline-primary">Back</a>
+        </div>
         
+</div>
+</div>
+    
+<%- include('../../../partials/footer-noCommonScripts') %>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("submitButton").addEventListener("click", beforeSubmit);
+    document.getElementById("resetButton").addEventListener("click", customReset);
+    });
+
+    // pulling visit start/end date strings in proper format to set date range picker starting values
+    const startOriginalDate = new Date(document.getElementById('visitStartFormInput').value)
+    const startOriginalDateStr = `${String(startOriginalDate.getMonth() + 1)}/${String(startOriginalDate.getDate())}/${String(startOriginalDate.getFullYear())}`
+    const endOriginalDate = new Date(document.getElementById('visitEndFormInput').value)
+    const endOriginalDateStr = `${String(endOriginalDate.getMonth() + 1)}/${String(endOriginalDate.getDate())}/${String(endOriginalDate.getFullYear())}`
+
+    // storing original values of checked-in/out
+    var originalCheckedInValue = $("#checkedIn").is(':checked');
+    var originalCheckedOutValue = $("#checkedOut").is(':checked');
+
+    // storing original value of assigned kennel
+    var originalAssignedKennelValue = $('#assignedKennelInput').val();
+
+    $(document).ready(function() {
+        // updating current 'active' navbar link
+        var currentPageRoute = ('guest-records');
+        $('.navbar li.active').removeClass('active');
+        $('#navbar_' + currentPageRoute).addClass('active');
+
+        // init date range picker 
+        $('#daterange').daterangepicker({
+            opens: 'center',
         });
 
-        // disabling form submission if there are invalid fields
-        (function () {
-        'use strict'
+        // setting date range picker values to stored start/end dates
+        $('#daterange').data('daterangepicker').setStartDate(startOriginalDateStr);
+        $('#daterange').data('daterangepicker').setEndDate(endOriginalDateStr)
 
-        // fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.querySelectorAll('.validated-form')
 
-        // loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
+        // update start/end date vars on date range picker apply event
+        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
         
-            })
-        })()
+                // update hidden date form field values with stored vars from date range picker
+                document.getElementById('visitStartFormInput').value = picker.startDate;;
+                document.getElementById('visitEndFormInput').value = picker.endDate;;
 
-        // storing original (on load) form values for custom reset function
-        //var visitNotesInputField = document.getElementById('notesInput');    
-        //var originalVisitNotesValue = visitNotesInputField.value;
+            });
+    
+    });
 
-        // custom form reset
-        customReset = function() {
-            // notes field
-            //visitNotesInputField.value = originalVisitNotesValue;
+    // disabling form submission if there are invalid fields
+    (function () {
+    'use strict'
 
-            // date range
-            $('#daterange').data('daterangepicker').setStartDate(startOriginalDateStr);
-            $('#daterange').data('daterangepicker').setEndDate(endOriginalDateStr)
+    // fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.validated-form')
 
-            // checked-in/out
-            $("#checkedIn").prop('checked', originalCheckedInValue);
-            $("#checkedOut").prop('checked', originalCheckedOutValue);
-
-            // assigned kennel
-            $('#assignedKennelInput').val(originalAssignedKennelValue);
-        };
-
-        //
-        beforeSubmit = function() {
-
-            // setting checked in/out checkbox values, so will submit as false when unchecked
-            var valueToAssign = !$("#checkedIn").is(':checked') ? 'false' : 'true'
-            $("#checkedIn").prop('checked', true).val(valueToAssign);
-            valueToAssign = !$("#checkedOut").is(':checked') ? 'false' : 'true'
-            $("#checkedOut").prop('checked', true).val(valueToAssign);  
-
-            // setting hidden input flag based on change detected in assignedKennel
-            if ($('#assignedKennelInput').val() !== originalAssignedKennelValue) {
-                $('#kennelUpdatedFlagInput').prop('checked', true).val('true');
-                $('#lastAssignedKennelInput').val(originalAssignedKennelValue);
-                console.log('change detected to kennel; flag set!')
-            } else { // same kennel, but still need to pass that value w/o flag set
-                $('#lastAssignedKennelInput').val(originalAssignedKennelValue);
+    // loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
             }
-        }
+            form.classList.add('was-validated')
+        }, false)
+    
+        })
+    })()
 
-    </script>
+    // storing original (on load) form values for custom reset function
+    //var visitNotesInputField = document.getElementById('notesInput');    
+    //var originalVisitNotesValue = visitNotesInputField.value;
+
+    // custom form reset
+    customReset = function() {
+        // notes field
+        //visitNotesInputField.value = originalVisitNotesValue;
+
+        // date range
+        $('#daterange').data('daterangepicker').setStartDate(startOriginalDateStr);
+        $('#daterange').data('daterangepicker').setEndDate(endOriginalDateStr)
+
+        // checked-in/out
+        $("#checkedIn").prop('checked', originalCheckedInValue);
+        $("#checkedOut").prop('checked', originalCheckedOutValue);
+
+        // assigned kennel
+        $('#assignedKennelInput').val(originalAssignedKennelValue);
+    };
+
+    //
+    beforeSubmit = function() {
+
+        // setting checked in/out checkbox values, so will submit as false when unchecked
+        var valueToAssign = !$("#checkedIn").is(':checked') ? 'false' : 'true'
+        $("#checkedIn").prop('checked', true).val(valueToAssign);
+        valueToAssign = !$("#checkedOut").is(':checked') ? 'false' : 'true'
+        $("#checkedOut").prop('checked', true).val(valueToAssign);  
+
+        // setting hidden input flag based on change detected in assignedKennel
+        if ($('#assignedKennelInput').val() !== originalAssignedKennelValue) {
+            $('#kennelUpdatedFlagInput').prop('checked', true).val('true');
+            $('#lastAssignedKennelInput').val(originalAssignedKennelValue);
+            console.log('change detected to kennel; flag set!')
+        } else { // same kennel, but still need to pass that value w/o flag set
+            $('#lastAssignedKennelInput').val(originalAssignedKennelValue);
+        }
+    }
+
+</script>

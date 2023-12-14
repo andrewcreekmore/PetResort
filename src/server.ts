@@ -7,7 +7,7 @@ import allMiddlewares from './middleware';
 ===========================================================================
 server.ts
 - main entry-point
--- creates instance of App as server, passing port from .env
+-- creates instance of App, passing port, routes, & middlewares
 -- calls App's listen function, starting server
 ===========================================================================
 */

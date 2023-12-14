@@ -1,6 +1,14 @@
 import mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
+/*
+===========================================================================
+employee.model.ts
+- schema, model, interface for Employees
+===========================================================================
+*/
+
+// create schema: employee
 const EmployeeSchema = new mongoose.Schema({
 	firstName: {
 		type: String,
@@ -109,17 +117,10 @@ EmployeeSchema.virtual("formattedAddress").get(function () {
 	}
 });
 
-// setup indices
-// EmployeeSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
-// Employee.createIndexes();
-
-
 const Employee = mongoose.model<IEmployeeDoc>("Employee", EmployeeSchema);
 
+// setup indices
+EmployeeSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
+Employee.createIndexes();
+
 export = Employee;
-
-
-//module.exports.Employee = mongoose.model<IEmployeeDoc>("Employee", EmployeeSchema);
-
-
-

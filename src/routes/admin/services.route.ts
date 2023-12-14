@@ -10,7 +10,7 @@ const { isLoggedIn, isAdmin } = require("../../middleware");
 /*
 ===========================================================================
 service.route.ts
-- 
+- service record CRUD routes; admin-access only
 ===========================================================================
 */
 

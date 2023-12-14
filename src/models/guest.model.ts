@@ -1,7 +1,6 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
-import { Client, IClientDoc } from "./client.model";
+import { IClientDoc } from "./client.model";
 import { IVisitDoc } from "./visit.model";
-import { isFuture } from "date-fns";
 
 /*
 ===========================================================================
@@ -89,9 +88,7 @@ GuestSchema.virtual('mostRecentVisit').get(function () {
 			sortedVisitsArr[sortedVisitsArr.length - 1].endDate;
 		return mostRecentEndDate;
 	} else {
-		// TEMP/DEV - UNTIL ALL SEEDS DATE UPDATED
-		const tempStaticDate = new Date('1996-01-01')
-		return tempStaticDate;
+		return undefined;
 	}
 })
 

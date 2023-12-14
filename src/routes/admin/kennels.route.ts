@@ -1,13 +1,12 @@
 import express = require("express");
 import catchAsync = require("../../utils/catchAsync");
-import { validateKennel } from "../../validationFunctions";
 const kennels = require("../../controllers/admin/kennels.controller");
 const { isLoggedIn, isAdmin } = require("../../middleware");
 
 /*
 ===========================================================================
 kennels.route.ts
-- kennel record routes; admin-access only
+- kennel record CRUD routes; admin-access only
 ===========================================================================
 */
 

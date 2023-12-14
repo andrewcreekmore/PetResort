@@ -7,7 +7,7 @@ const { isLoggedIn, isAdmin } = require("../../middleware");
 /*
 ===========================================================================
 employee.route.ts
-- employee *records* routes; admin-access only
+- employee record CRUD routes; admin-access only
 ===========================================================================
 */
 

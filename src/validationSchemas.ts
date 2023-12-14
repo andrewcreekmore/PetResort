@@ -4,7 +4,7 @@ import sanitizeHTML = require('sanitize-html');
 /*
 ===========================================================================
 validationSchemas.ts
-- contains Joi schemas for each Mongoose schema
+- defines + exports Joi schemas for each Mongoose schema
 - for verifying new/edit input data w/ Joi prior to sending to Mongoose
 ===========================================================================
 */

@@ -1,171 +1,163 @@
 <%- include('../../../partials/header') %>
-
 <%- include('../../../partials/breadcrumbs') %>
+<!-- display any toast notifications -->
+<%- include('../../../partials/toast') %>
 
 <h2 class="display-6 mb-0 text-center">Edit Guest Record</h2>
 
-    <!-- horizontal rule / divider -->
-    <div class="row">
-        <div class="col-5"></div>
-        <div class="col-2">
-            <hr class="mt-3">
-        </div>
-    </div> <!-- end of row -->
-
-    <!-- display any flash messages -->
-    <div class="w-50 mx-auto text-center mt-0">
-        <%- include('../../../partials/flash') %>
+<!-- horizontal rule / divider -->
+<div class="row">
+    <div class="col-5"></div>
+    <div class="col-2">
+        <hr class="mt-3">
     </div>
+</div> <!-- end of row -->
 
+<div class="container">
+    
     <div class="row mb-3"></div>
 
-    <div class="container">
+    <form class="validated-form align-items-center" action="/guest-records/<%=guest._id%>?_method=PUT" method="POST" novalidate enctype="multipart/form-data">
 
-        <form class="validated-form align-items-center" action="/guest-records/<%=guest._id%>?_method=PUT" method="POST" novalidate enctype="multipart/form-data">
+        <!-- NAME and TYPE -->
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <label for="nameInput" class="form-label">Name</label>
+                <input type="text" class="form-control" name="guest[name]" placeholder="Name" aria-label="Name" value="<%= guest.name %>" required>
+            </div>
 
-            <!-- NAME and TYPE -->
-            <div class="row">
-                <div class="col-2"></div>
-                <div class="col-4">
-                    <label for="nameInput" class="form-label">Name</label>
-                    <input type="text" class="form-control" name="guest[name]" placeholder="Name" aria-label="Name" value="<%= guest.name %>" required>
-                </div>
+            <div class="col-1"></div>
 
-                <div class="col-1"></div>
-
-                <div class="col-4 mb-3">
-                    <label for="guestType" class="form-label">Type</label>
-                    <div class="form-check">
-                    <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption1" value="cat" 
-                        <% if (guest.type === 'cat') {  %>
+            <div class="col-4 mb-3">
+                <label for="guestType" class="form-label">Type</label>
+                <div class="form-check">
+                <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption1" value="cat" 
+                    <% if (guest.type === 'cat') {  %>
+                        checked
+                    <% } %> required>
+                <label class="form-check-label" for="guestTypeCat">cat</label>
+                </div>   
+            
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption1" value="dog"
+                        <% if (guest.type === 'dog') {  %>
                             checked
                         <% } %> required>
-                    <label class="form-check-label" for="guestTypeCat">cat</label>
-                    </div>   
-                
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption1" value="dog"
-                            <% if (guest.type === 'dog') {  %>
-                                checked
-                            <% } %> required>
-                        <label class="form-check-label" for="guestTypeDog">dog</label>    
-                        <div id="validationServerTypeFeedback" class="invalid-feedback">
-                            Guest type is required.
-                        </div>
+                    <label class="form-check-label" for="guestTypeDog">dog</label>    
+                    <div id="validationServerTypeFeedback" class="invalid-feedback">
+                        Guest type is required.
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="row mb-3">
-                <!-- BREED and AGE -->
-                <div class="col-2"></div>
-                <div class="col-4">
-                    <label for="breedInput" class="form-label">Breed</label>
-                    <input type="text" class="form-control" id="breedInput" name="guest[breed]" placeholder="Domestic Shorthair" aria-label="Breed" value="<%= guest.breed %>" required>
-                    <div id="validationServerBreedFeedback" class="invalid-feedback">
-                        Guest breed is required.
-                    </div>
+        <div class="row mb-3">
+            <!-- BREED and AGE -->
+            <div class="col-2"></div>
+            <div class="col-4">
+                <label for="breedInput" class="form-label">Breed</label>
+                <input type="text" class="form-control" id="breedInput" name="guest[breed]" placeholder="Domestic Shorthair" aria-label="Breed" value="<%= guest.breed %>" required>
+                <div id="validationServerBreedFeedback" class="invalid-feedback">
+                    Guest breed is required.
                 </div>
-
-                <div class="col-1"></div>
-
-                <div class="col-3">
-                    <label for="ageInput" class="form-label">Age</label>
-                    <input type="number" class="form-control" id="ageInput" name="guest[age]" placeholder="0" aria-label="Age" value="<%= guest.age %>">
-                </div>
-
             </div>
 
-            <div class="row mb-3">
-                <!-- OWNER and WEIGHT -->
-                <div class="col-2"></div>
-                <div class="col-4">
-                    <label for="ownerInput" class="form-label">Owner</label>
+            <div class="col-1"></div>
 
-                    <select class="form-select" aria-label="Owner" id="ownerInput" name="guest[owner]" required>
-                        <option disabled value="">Select existing client...</option>
-                            <% for (i = 0; i < allClients.length; i++) { %>
-                                <!-- option for each Client in db; 'selected' if matches existing record owner-->
-                                <option 
-                                <% if (guest.owner.fullName === allClients[i].fullName) { %> 
-                                    selected
-                                <% } %>
-                                value="<%=allClients[i]._id%>"><%= allClients[i].fullName %></option>
+            <div class="col-3">
+                <label for="ageInput" class="form-label">Age</label>
+                <input type="number" class="form-control" id="ageInput" name="guest[age]" placeholder="0" aria-label="Age" value="<%= guest.age %>">
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+            <!-- OWNER and WEIGHT -->
+            <div class="col-2"></div>
+            <div class="col-4">
+                <label for="ownerInput" class="form-label">Owner</label>
+
+                <select class="form-select" aria-label="Owner" id="ownerInput" name="guest[owner]" required>
+                    <option disabled value="">Select existing client...</option>
+                        <% for (i = 0; i < allClients.length; i++) { %>
+                            <!-- option for each Client in db; 'selected' if matches existing record owner-->
+                            <option 
+                            <% if (guest.owner.fullName === allClients[i].fullName) { %> 
+                                selected
                             <% } %>
-                    </select>
-                    <div id="ownerInputFeedback" class="invalid-feedback">
-                        Guest's owner is required. If the guest's owner is not listed, please add a new Client record for them before adding this guest.
-                    </div>
-                </div>
-
-                <div class="col-1"></div>
-
-                <div class="col-3">
-                    <label for="weightInput" class="form-label">Weight (lbs)</label>
-                    <input type="number" class="form-control" id="weightInput" name="guest[weight]" placeholder="0" aria-label="Weight" value="<%= guest.weight %>">
-                </div>
-
-            </div>
-
-            <div class="row mb-3">
-                <!-- NOTES text area -->
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <label for="notesInput" class="form-label">Notes</label>
-                        <textarea class="form-control" id="notesInput" name="guest[notes]" placeholder="[Optional] Relevant dietary, medical or behavioral info..." aria-label="Notes" value="<%= guest.notes %>"></textarea>
-                    </div>
+                            value="<%=allClients[i]._id%>"><%= allClients[i].fullName %></option>
+                        <% } %>
+                </select>
+                <div id="ownerInputFeedback" class="invalid-feedback">
+                    Guest's owner is required. If the guest's owner is not listed, please add a new Client record for them before adding this guest.
                 </div>
             </div>
-            
-            <div class="row mb-3">
-                <!-- IMAGE SELECT / UPLOAD -->
+
+            <div class="col-1"></div>
+
+            <div class="col-3">
+                <label for="weightInput" class="form-label">Weight (lbs)</label>
+                <input type="number" class="form-control" id="weightInput" name="guest[weight]" placeholder="0" aria-label="Weight" value="<%= guest.weight %>">
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+            <!-- NOTES text area -->
                 <div class="col-2"></div>
                 <div class="col-8">
-                    <label for="imageFileInput" class="form-label">Photo</label>
-                    <div class="input-group">
-                        <input type="file" class="form-control" name="imageFileInput" id="imageFileInput" aria-describedby="imageFileInput" aria-label="imageFileInput">
-                    </div>
-
-
+                    <label for="notesInput" class="form-label">Notes</label>
+                    <textarea class="form-control" id="notesInput" name="guest[notes]" placeholder="[Optional] Relevant dietary, medical or behavioral info..." aria-label="Notes" value="<%= guest.notes %>"></textarea>
                 </div>
             </div>
-
-            <!-- preview of existing image on record (tooltip hover)-->
-            <% if (guest.image && guest.image.filename !== 'pawPrint.png') { %>
-                <div class="row mb-3 text-center text-muted">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                    
-                        <label for="imageFileInput" class="form-label">
-                            <i>Current photo: &nbsp; </i>                        
-                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="<img crossorigin='anonymous' src='<%= guest.image.url %>' width='350px'>">Preview</button> 
-                        </label>
-
-                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#removePhotoModal"> Remove</button>
-                        <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#removePhotoModal">Remove</a> -->
-                    
+        </div>
+        
+        <div class="row mb-3">
+            <!-- IMAGE SELECT / UPLOAD -->
+            <div class="col-2"></div>
+            <div class="col-8">
+                <label for="imageFileInput" class="form-label">Photo</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="imageFileInput" id="imageFileInput" aria-describedby="imageFileInput" aria-label="imageFileInput">
                 </div>
-                <% } %>
-
-            <!-- horizontal rule / divider -->
-            <div class="row">
-                <div class="col-5"></div>
-                <div class="col-2">
-                    <hr class="mt-3">
-                </div>
-            </div> <!-- end of row -->
-
-            <!-- SUBMIT, REVERT, BACK buttons -->
-            <div class="mx-auto mt-3 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-outline-primary">Revert Changes</button> 
-                <a href="/guest-records/<%= guest._id%>" class="btn btn-outline-primary">Back</a>
             </div>
-        </form>
+        </div> <!-- end of row -->
 
-  
+        <!-- preview of existing image on record (tooltip hover)-->
+        <% if (guest.image && guest.image.filename !== 'pawPrint.png') { %>
+            <div class="row mb-3 text-center text-muted">
+                <div class="col-2"></div>
+                <div class="col-8">
+                
+                    <label for="imageFileInput" class="form-label">
+                        <i>Current photo: &nbsp; </i>                        
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="<img crossorigin='anonymous' src='<%= guest.image.url %>' width='350px'>">Preview</button> 
+                    </label>
 
- <!-- remove photo record Modal pop-up -->
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#removePhotoModal"> Remove</button>
+                    <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#removePhotoModal">Remove</a> -->
+                
+            </div>
+            <% } %>
+
+        <!-- horizontal rule / divider -->
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-3">
+            </div>
+        </div> <!-- end of row -->
+
+        <!-- SUBMIT, REVERT, BACK buttons -->
+        <div class="mx-auto mt-3 text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-outline-primary">Revert Changes</button> 
+            <a href="/guest-records/<%= guest._id%>" class="btn btn-outline-primary">Back</a>
+        </div>
+    </form>
+
+    <!-- remove photo record Modal pop-up -->
     <div class="modal fade" id="removePhotoModal" tabindex="-1" aria-labelledby="removePhotoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -189,27 +181,27 @@
         </div>
     </div>
 
+    </div>
 </div>
-</div>
 
-    <%- include('../../../partials/footer-noCommonScripts') %>
+<%- include('../../../partials/footer-noCommonScripts') %>
 
-    <script>
+<script>
 
-    $(document).ready(function() {
-        // updating current 'active' navbar link
-        $('.navbar li.active').removeClass('active');
-        $('#navbar_' + 'recordsDropdown').addClass('active');
+$(document).ready(function() {
+    // updating current 'active' navbar link
+    $('.navbar li.active').removeClass('active');
+    $('#navbar_' + 'recordsDropdown').addClass('active');
 
-        $('[data-toggle="tooltip"]').tooltip({
-            html: true,
-            animated: 'fade',
-            placement: 'top',
-        });
-
+    $('[data-toggle="tooltip"]').tooltip({
+        html: true,
+        animated: 'fade',
+        placement: 'top',
     });
 
-    </script>
+});
+
+</script>
 
 
     

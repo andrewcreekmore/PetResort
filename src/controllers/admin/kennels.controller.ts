@@ -1,25 +1,25 @@
 import { Request, Response, NextFunction } from "express";
 import AppError = require("../../utils/appError");
-import { IKennelDoc, Kennel } from "../../models/kennel.model";
+import { Kennel } from "../../models/kennel.model";
 
 /*
 ===========================================================================
 kennels.controller.ts
 - methods containing route logic for export
+- coverage: kennel-model CUD; R is a tab on index @ admin.controller
 ===========================================================================
 */
 
 // kennel records route constants
 const kennelsDir = "employee/records/kennels";
-var user = "employee";
+const title = "PetResort · Kennel Records";
 
 // registration of new employees - form entry
 module.exports.renderNewForm = 
     async (req: Request, res: Response, next: NextFunction) => {
-        const title = "PetResort · Admin";
         const newKennelID = await Kennel.count({}) + 1;
 		var breadcrumbs = req.session.breadcrumbs;
-        var data = { title, user, newKennelID, breadcrumbs };
+        var data = { title, newKennelID, breadcrumbs };
         req.session.activeAdminTab = "kennels";
         res.render(kennelsDir + "/new", { ...data });
     };
@@ -43,8 +43,6 @@ module.exports.createKennel =
 // kennel records: update single record - form entry
 module.exports.renderEditForm =
     async (req: Request, res: Response, next: NextFunction) => {
-		const title = "PetResort · Kennel Records";
-		var user = "employee";
 		const { id } = req.params;
 		const kennel = await Kennel.findById(id);
 		if (!kennel) {
@@ -55,7 +53,7 @@ module.exports.renderEditForm =
 			var breadcrumbs: Array<any> = req.session.breadcrumbs;
 			// kennels have no details page to link to; instead will link to self (edit) 
 			breadcrumbs[1].breadcrumbUrl = null;
-			var data = { title, user, kennel, recordName, breadcrumbs };
+			var data = { title, kennel, recordName, breadcrumbs };
 			req.session.activeAdminTab = 'kennels';
 			res.render(kennelsDir + "/edit", { ...data });
 		}

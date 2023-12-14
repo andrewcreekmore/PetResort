@@ -7,7 +7,7 @@ import catchAsync = require("../utils/catchAsync");
 /*
 ===========================================================================
 index.route.ts
-- 
+- '/' routes - home, employee dashboard, login/out + auth
 ===========================================================================
 */
 

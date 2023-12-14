@@ -1,6 +1,11 @@
 import { Session } from "express-session";
 
-// merging custom defined types with Session
+/*
+===========================================================================
+types/index.ts
+- merges custom defined types with Session
+===========================================================================
+*/
 
 declare module "express-session" {
 	interface Session {

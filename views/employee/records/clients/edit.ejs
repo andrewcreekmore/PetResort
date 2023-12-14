@@ -1,10 +1,145 @@
 <%- include('../../../partials/header') %>
-
 <%- include('../../../partials/breadcrumbs') %>
+
+<!-- display any toast notifications -->
+<%- include('../../../partials/toast') %>
 
 <script src="https://unpkg.com/imask"></script>
 
 <h2 class="display-6 mb-0 text-center">Edit client record</h2>
+
+<!-- horizontal rule / divider -->
+<div class="row">
+    <div class="col-5"></div>
+    <div class="col-2">
+        <hr class="mt-3">
+    </div>
+</div> <!-- end of row -->
+
+<div class="row mb-3"></div>
+
+<div class="container">
+
+    <form class="validated-form align-items-center" action="/client-records/<%=singleClient._id%>?_method=PUT" method="POST" novalidate>
+
+        <!-- FIRST and LAST NAME -->
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4 mb-3">
+                <label for="firstNameInput" class="form-label">First Name</label>
+                <input type="text" class="form-control" name="client[firstName]" id="firstNameInput" value="<%= singleClient.firstName %>" aria-label="firstName" required>
+                <div id="validationFirstNameFeedback" class="invalid-feedback">
+                    First name is required.
+                </div>
+            </div>
+
+            <div class="col-4 mb-3">
+                <label for="lastNameInput" class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="client[lastName]" id="lastNameInput" value="<%= singleClient.lastName %>" aria-label="lastName" required>
+                <div id="validationLastNameFeedback" class="invalid-feedback">
+                    Last name is required.
+                </div>
+            </div>
+        </div> <!--end of row -->
+
+        <div class="row">
+            <!-- PHONE and EMAIL -->
+            <div class="col-2"></div>
+            <div class="col-4 mb-3">
+                <label for="phoneInput" class="form-label">Phone Number</label>
+        
+                <input type="text" class="form-control" name="client[phoneNumber]" id="phoneInput" placeholder="(214) 555-9999" value="<%= singleClient.phoneNumber %>" aria-label="phone" required>
+        
+                <div id="validationPhoneFeedback" class="invalid-feedback">
+                    Phone number is required.
+                </div>
+            </div>
+
+            <div class="col-4 mb-3">
+                <label for="emailInput" class="form-label">Email Address</label>
+                <input type="text" class="form-control" name="client[email]" id="emailInput" placeholder="user@email.com"  aria-label="email" <% if (singleClient.email) { %>
+                    value="<%= singleClient.email %>"
+                    <% } %>
+                    >
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- ADDRESS: street address -->
+            <div class="col-2"></div>
+            
+            <div class="col-8 mb-3">
+                <label for="streetAddressInput" class="form-label">Address</label>
+                <input type="text" class="form-control" name="client[address][streetAddress]" id="streetAddressInput" placeholder="123 Boydstun St" aria-label="streetAddress" <% if (singleClient.address.streetAddress) { %>
+                    value="<%= singleClient.address.streetAddress %>"
+                    <% } %>
+                required>
+                <div id="validationAddress1Feedback" class="invalid-feedback">
+                    Street address is required.
+                </div>
+            </div>
+        </div> <!--end of row -->
+
+        <div class="row">
+            <!-- ADDRESS 2:  Apt? -->
+            <div class="col-2"></div>
+
+            <div class="col-8 mb-3">
+                <label for="apartmentInput" class="form-label">Address 2 </label>
+                <input type="text" class="form-control" name="client[address][apartment]" id="apartmentInput" placeholder="Apt, suite, or floor" aria-label="apartment" <% if (singleClient.address.apartment) { %>
+                    value="<%= singleClient.address.apartment %>"
+                    <% } %>
+                >
+            </div>
+        </div> <!--end of row -->
+
+        <div class="row">
+            <!-- ADDRESS: city, state, zip -->
+            <div class="col-2"></div>
+            
+            <div class="col-4 mb-3">
+                <label for="cityInput" class="form-label">City</label>
+                <input type="text" class="form-control" name="client[address][city]" id="cityInput" placeholder="Rockwall" aria-label="city" <% if (singleClient.address.city) { %>
+                    value="<%= singleClient.address.city %>"
+                    <% } %>
+                required>
+                <div id="validationCityFeedback" class="invalid-feedback">
+                    City is required.
+                </div>
+            </div>
+
+            <div class="col-2 mb-3">
+                <label for="stateInput" class="form-label">State</label>
+                <select class="form-select" id="stateInput" name="client[address][state]" required>
+
+                    <option selected disabled value="">Choose...</option>
+                    <% for (i = 0; i < stateInfo.length; i++) { %>
+                        <option <% if (singleClient.address.state === stateInfo[i].name) { %>
+                            selected
+                            <% } %>
+                        value="<%= stateInfo[i].name %>"><%= stateInfo[i].abbreviation %></option>
+                        <% } %>
+                    
+                </select>
+                <div id="validationStateFeedback" class="invalid-feedback">
+                    State is required.
+                </div>
+            </div>
+
+            <div class="col-2 mb-3">
+                <label for="zipInput" class="form-label">Zip</label>
+                <input type="text" class="form-control" name="client[address][zip]" id="zipInput" placeholder="75087" aria-label="zip" <% if (singleClient.address.zip) { %>
+                    value="<%= singleClient.address.zip %>"
+                    <% } %>
+                required>
+                <div id="validationZipFeedback" class="invalid-feedback">
+                    Zip code is required.
+                </div>
+            </div>
+
+        </div> <!--end of row -->
+
+    </div> <!--  end of container -->
 
     <!-- horizontal rule / divider -->
     <div class="row">
@@ -13,221 +148,77 @@
             <hr class="mt-3">
         </div>
     </div> <!-- end of row -->
-
+    
+    <!-- SUBMIT/REVERT/BACK BUTTONS -->
     <div class="row mb-3"></div>
 
-    <!-- display any flash messages -->
-    <div class="w-50 mx-auto text-center mt-0">
-        <%- include('../../../partials/flash') %>
+    <div class="mx-auto mt-3 text-center">
+        <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
+        <button type="button" id="resetButton" class="btn btn-outline-primary">Revert Changes</button> 
+        <a href="/client-records/<%= singleClient._id%>" class="btn btn-outline-primary">Back</a>
     </div>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("submitButton").addEventListener("click", beforeSubmit);
+    document.getElementById("resetButton").addEventListener("click", customReset);
+    });
 
-    <div class="container">
+    // input mask for tel input
+    const element = document.getElementById('phoneInput');
+    const maskOptions = {
+        mask: '(000) 000-0000'
+    };
 
-        <form class="validated-form align-items-center" action="/client-records/<%=singleClient._id%>?_method=PUT" method="POST" novalidate>
+    const phoneMask = IMask(element, maskOptions);
+    
+    // unmask phoneInput prior to form submission
+    beforeSubmit = function(){
+        document.getElementById('phoneInput').value = phoneMask.unmaskedValue;
 
-          <!-- FIRST and LAST NAME -->
-            <div class="row">
-                <div class="col-2"></div>
-                <div class="col-4 mb-3">
-                    <label for="firstNameInput" class="form-label">First Name</label>
-                    <input type="text" class="form-control" name="client[firstName]" id="firstNameInput" value="<%= singleClient.firstName %>" aria-label="firstName" required>
-                    <div id="validationFirstNameFeedback" class="invalid-feedback">
-                        First name is required.
-                    </div>
+    }
 
-                </div>
-
-                <div class="col-4 mb-3">
-                    <label for="lastNameInput" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" name="client[lastName]" id="lastNameInput" value="<%= singleClient.lastName %>" aria-label="lastName" required>
-                    <div id="validationLastNameFeedback" class="invalid-feedback">
-                        Last name is required.
-                    </div>
-                </div>
-            </div> <!--end of row -->
-
-            <div class="row">
-                <!-- PHONE and EMAIL -->
-                <div class="col-2"></div>
-                <div class="col-4 mb-3">
-   
-
-                    <label for="phoneInput" class="form-label">Phone Number</label>
-         
-                    <input type="text" class="form-control" name="client[phoneNumber]" id="phoneInput" placeholder="(214) 555-9999" value="<%= singleClient.phoneNumber %>" aria-label="phone" required>
-            
-                    <div id="validationPhoneFeedback" class="invalid-feedback">
-                        Phone number is required.
-                    </div>
-
-                </div>
-
-                <div class="col-4 mb-3">
-                    <label for="emailInput" class="form-label">Email Address</label>
-                    <input type="text" class="form-control" name="client[email]" id="emailInput" placeholder="user@email.com"  aria-label="email" <% if (singleClient.email) { %>
-                        value="<%= singleClient.email %>"
-                        <% } %>
-                        >
-
-                </div>
-            </div>
-
-           <div class="row">
-                <!-- ADDRESS: street address -->
-                <div class="col-2"></div>
-                
-                <div class="col-8 mb-3">
-                    <label for="streetAddressInput" class="form-label">Address</label>
-                    <input type="text" class="form-control" name="client[address][streetAddress]" id="streetAddressInput" placeholder="123 Boydstun St" aria-label="streetAddress" <% if (singleClient.address.streetAddress) { %>
-                        value="<%= singleClient.address.streetAddress %>"
-                        <% } %>
-                    required>
-                    <div id="validationAddress1Feedback" class="invalid-feedback">
-                        Street address is required.
-                    </div>
-                </div>
-
-             </div> <!--end of row -->
-
-            <div class="row">
-                <!-- ADDRESS 2:  Apt? -->
-                <div class="col-2"></div>
-
-                <div class="col-8 mb-3">
-                    <label for="apartmentInput" class="form-label">Address 2 </label>
-                    <input type="text" class="form-control" name="client[address][apartment]" id="apartmentInput" placeholder="Apt, suite, or floor" aria-label="apartment" <% if (singleClient.address.apartment) { %>
-                        value="<%= singleClient.address.apartment %>"
-                        <% } %>
-                    >
-                </div>
-             </div> <!--end of row -->
-
-            <div class="row">
-                <!-- ADDRESS: city, state, zip -->
-                <div class="col-2"></div>
-                
-                <div class="col-4 mb-3">
-                    <label for="cityInput" class="form-label">City</label>
-                    <input type="text" class="form-control" name="client[address][city]" id="cityInput" placeholder="Rockwall" aria-label="city" <% if (singleClient.address.city) { %>
-                        value="<%= singleClient.address.city %>"
-                        <% } %>
-                    required>
-                    <div id="validationCityFeedback" class="invalid-feedback">
-                        City is required.
-                    </div>
-                </div>
-
-                <div class="col-2 mb-3">
-                    <label for="stateInput" class="form-label">State</label>
-                    <select class="form-select" id="stateInput" name="client[address][state]" required>
-
-                        <option selected disabled value="">Choose...</option>
-                        <% for (i = 0; i < stateInfo.length; i++) { %>
-                            <option <% if (singleClient.address.state === stateInfo[i].name) { %>
-                                selected
-                                <% } %>
-                            value="<%= stateInfo[i].name %>"><%= stateInfo[i].abbreviation %></option>
-                            <% } %>
-                        
-                    </select>
-                    <div id="validationStateFeedback" class="invalid-feedback">
-                        State is required.
-                    </div>
-                </div>
-
-                <div class="col-2 mb-3">
-                    <label for="zipInput" class="form-label">Zip</label>
-                    <input type="text" class="form-control" name="client[address][zip]" id="zipInput" placeholder="75087" aria-label="zip" <% if (singleClient.address.zip) { %>
-                        value="<%= singleClient.address.zip %>"
-                        <% } %>
-                    required>
-                    <div id="validationZipFeedback" class="invalid-feedback">
-                        Zip code is required.
-                    </div>
-                </div>
-
-             </div> <!--end of row -->
-
-            </div> <!--  end of container -->
-
-            <!-- horizontal rule / divider -->
-            <div class="row">
-                <div class="col-5"></div>
-                <div class="col-2">
-                    <hr class="mt-3">
-                </div>
-            </div> <!-- end of row -->
-            
-            <!-- SUBMIT/REVERT/BACK BUTTONS -->
-            <div class="row mb-3"></div>
-
-            <div class="mx-auto mt-3 text-center">
-                <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
-                <button type="button" id="resetButton" class="btn btn-outline-primary">Revert Changes</button> 
-                <a href="/client-records/<%= singleClient._id%>" class="btn btn-outline-primary">Back</a>
-            </div>
-        
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById("submitButton").addEventListener("click", beforeSubmit);
-        document.getElementById("resetButton").addEventListener("click", customReset);
-        });
-
-        // input mask for tel input
-        const element = document.getElementById('phoneInput');
-        const maskOptions = {
-            mask: '(000) 000-0000'
-        };
-
-        const phoneMask = IMask(element, maskOptions);
-        
-        // unmask phoneInput prior to form submission
-        beforeSubmit = function(){
-            document.getElementById('phoneInput').value = phoneMask.unmaskedValue;
-
-        }
-
-        // storing original (on load) form values for custom reset function
-        var firstNameInputField = document.getElementById('firstNameInput');    
-        var originalFirstNameValue = firstNameInputField.value;
-        var lastNameInputField = document.getElementById('lastNameInput');
-        var originalLastNameValue = lastNameInputField.value;
-        var phoneInputField = document.getElementById('phoneInput');
-        var originalPhoneValue = phoneInputField.value;
-        var emailInputField = document.getElementById('emailInput');
-        var originalEmailValue = emailInputField.value;
-            // address
-        var streetAddressInputField = document.getElementById('streetAddressInput');
-        var originalStreetAddressValue = streetAddressInputField.value;
-        var apartmentInputField = document.getElementById('apartmentInput');
-        var originalApartmentValue = apartmentInputField.value;
-        var cityInputField = document.getElementById('cityInput');
-        var originalCityValue = cityInputField.value;
-        var stateInputField = document.getElementById('stateInput');
-        var originalStateValue = stateInputField.value;
-        var zipInputField = document.getElementById('zipInput');
-        var originalZipValue = zipInputField.value;
+    // storing original (on load) form values for custom reset function
+    var firstNameInputField = document.getElementById('firstNameInput');    
+    var originalFirstNameValue = firstNameInputField.value;
+    var lastNameInputField = document.getElementById('lastNameInput');
+    var originalLastNameValue = lastNameInputField.value;
+    var phoneInputField = document.getElementById('phoneInput');
+    var originalPhoneValue = phoneInputField.value;
+    var emailInputField = document.getElementById('emailInput');
+    var originalEmailValue = emailInputField.value;
+        // address
+    var streetAddressInputField = document.getElementById('streetAddressInput');
+    var originalStreetAddressValue = streetAddressInputField.value;
+    var apartmentInputField = document.getElementById('apartmentInput');
+    var originalApartmentValue = apartmentInputField.value;
+    var cityInputField = document.getElementById('cityInput');
+    var originalCityValue = cityInputField.value;
+    var stateInputField = document.getElementById('stateInput');
+    var originalStateValue = stateInputField.value;
+    var zipInputField = document.getElementById('zipInput');
+    var originalZipValue = zipInputField.value;
 
 
-        // custom form reset, to allow re-masking of inputs
-        customReset = function() {
+    // custom form reset, to allow re-masking of inputs
+    customReset = function() {
 
-            firstNameInputField.value = originalFirstNameValue;
-            lastNameInputField.value = originalLastNameValue;
-            phoneInputField.value = originalPhoneValue;
-            emailInputField.value = originalEmailValue;
-            // address
-            streetAddressInputField.value = originalStreetAddressValue;
-            apartmentInputField.value = originalApartmentValue;
-            cityInputField.value = originalCityValue;
-            stateInputField.value = originalStateValue;
-            zipInputField.value = originalZipValue;
+        firstNameInputField.value = originalFirstNameValue;
+        lastNameInputField.value = originalLastNameValue;
+        phoneInputField.value = originalPhoneValue;
+        emailInputField.value = originalEmailValue;
+        // address
+        streetAddressInputField.value = originalStreetAddressValue;
+        apartmentInputField.value = originalApartmentValue;
+        cityInputField.value = originalCityValue;
+        stateInputField.value = originalStateValue;
+        zipInputField.value = originalZipValue;
 
-            // input mask (again) for tel input
-            const phoneReMask = IMask(phoneInputField, maskOptions);
-        };
+        // input mask (again) for tel input
+        const phoneReMask = IMask(phoneInputField, maskOptions);
+    };
 
-    </script>
+</script>
 
 
-    <%- include('../../../partials/footer') %>
+<%- include('../../../partials/footer') %>

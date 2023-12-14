@@ -1,143 +1,132 @@
 <%- include('../../../partials/header') %>
-
 <%- include('../../../partials/breadcrumbs') %>
 
 <h2 class="display-6 mb-0 text-center">Add a new guest</h2>
 
-    <!-- horizontal rule / divider -->
-    <div class="row mb-1">
-        <div class="col-5"></div>
-        <div class="col-2">
-            <hr class="mt-3">
+<!-- horizontal rule / divider -->
+<div class="row mb-1">
+    <div class="col-5"></div>
+    <div class="col-2">
+        <hr class="mt-3">
+    </div>
+</div> <!-- end of row -->
+
+<div class="container">
+
+    <form action="/guest-records" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+        <!-- NAME and TYPE -->
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4 mb-3">
+                <label for="nameInput" class="form-label">Name</label>
+                <input type="text" class="form-control" name="guest[name]" id="nameInput" placeholder="Fluffy" aria-label="Name" required>
+                <div id="validationServerNameFeedback" class="invalid-feedback">
+                    Guest name is required.
+                </div>
+
+            </div>
+
+            <div class="col-1"></div>
+
+            <div class="col-4 mb-3">
+                <label for="guestType" class="form-label">Type</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption1" value="cat" required>
+                    <label class="form-check-label" for="guestTypeCat">cat</label>   
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption2" value="dog" required>
+                    <label class="form-check-label" for="guestTypeDog">dog</label>   
+                    <div id="validationServerTypeFeedback" class="invalid-feedback">
+                        Guest type is required.
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div> <!-- end of row -->
 
-    <div class="row mb-3"></div>
-
-    <div class="container">
-
-        <form action="/guest-records" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
-            <!-- NAME and TYPE -->
-            <div class="row">
-                <div class="col-2"></div>
-                <div class="col-4 mb-3">
-                    <label for="nameInput" class="form-label">Name</label>
-                    <input type="text" class="form-control" name="guest[name]" id="nameInput" placeholder="Fluffy" aria-label="Name" required>
-                    <div id="validationServerNameFeedback" class="invalid-feedback">
-                        Guest name is required.
-                    </div>
-
-                </div>
-
-                <div class="col-1"></div>
-
-                <div class="col-4 mb-3">
-                    <label for="guestType" class="form-label">Type</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption1" value="cat" required>
-                        <label class="form-check-label" for="guestTypeCat">cat</label>   
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="guest[type]" id="guestTypeOption2" value="dog" required>
-                        <label class="form-check-label" for="guestTypeDog">dog</label>   
-                        <div id="validationServerTypeFeedback" class="invalid-feedback">
-                            Guest type is required.
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row mb-3">
-                <!-- BREED and AGE -->
-                <div class="col-2"></div>
-                <div class="col-4">
-                    <label for="breedInput" class="form-label">Breed</label>
-                    <input type="text" class="form-control" id="breedInput" name="guest[breed]" placeholder="Domestic Shorthair" aria-label="Breed" required>
-                    <div id="validationServerBreedFeedback" class="invalid-feedback">
-                        Guest breed is required.
-                    </div>
-                </div>
-
-                <div class="col-1"></div>
-
-                <div class="col-3">
-                    <label for="ageInput" class="form-label">Age</label>
-                    <input type="number" class="form-control" id="ageInput" name="guest[age]" placeholder="0" value="0" aria-label="Age">
-                </div>
-
-            </div>
-
-            <div class="row mb-3">
-                <!-- OWNER and WEIGHT -->
-                <div class="col-2"></div>
-                <div class="col-4">
-                    <label for="ownerInput" class="form-label">Owner</label>
-
-                    <select class="form-select" aria-label="Owner" id="ownerInput" name="guest[owner]" required>
-                        <option selected disabled value="">Select existing client...</option>
-                            <% for (i = 0; i < allClients.length; i++) { %>
-                                <option value="<%=allClients[i]._id%>"><%= allClients[i].fullName %></option>
-                            <% } %>
-                    </select>
-                    <div id="ownerInputFeedback" class="invalid-feedback">
-                        Guest's owner is required. If the guest's owner is not listed, please add a new Client record for them before adding this guest.
-                    </div>
-                </div>
-
-                <div class="col-1"></div>
-                
-                <div class="col-3">
-                    <label for="weightInput" class="form-label">Weight (lbs)</label>
-                    <input type="number" class="form-control" id="weightInput" name="guest[weight]" placeholder="0" value="0" aria-label="Weight">
-                </div>
-
-            </div>
-
-            <div class="row mb-3">
-                <!-- NOTES text area -->
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <label for="notesInput" class="form-label">Notes</label>
-                        <textarea class="form-control" id="notesInput" name="guest[notes]" placeholder="[Optional] Relevant dietary, medical or behavioral info..." aria-label="Notes"></textarea>
-                    </div>
+        <div class="row mb-3">
+            <!-- BREED and AGE -->
+            <div class="col-2"></div>
+            <div class="col-4">
+                <label for="breedInput" class="form-label">Breed</label>
+                <input type="text" class="form-control" id="breedInput" name="guest[breed]" placeholder="Domestic Shorthair" aria-label="Breed" required>
+                <div id="validationServerBreedFeedback" class="invalid-feedback">
+                    Guest breed is required.
                 </div>
             </div>
+
+            <div class="col-1"></div>
+
+            <div class="col-3">
+                <label for="ageInput" class="form-label">Age</label>
+                <input type="number" class="form-control" id="ageInput" name="guest[age]" placeholder="0" value="0" aria-label="Age">
+            </div>
+
+        </div> <!-- end of row -->
+
+        <div class="row mb-3">
+            <!-- OWNER and WEIGHT -->
+            <div class="col-2"></div>
+            <div class="col-4">
+                <label for="ownerInput" class="form-label">Owner</label>
+
+                <select class="form-select" aria-label="Owner" id="ownerInput" name="guest[owner]" required>
+                    <option selected disabled value="">Select existing client...</option>
+                        <% for (i = 0; i < allClients.length; i++) { %>
+                            <option value="<%=allClients[i]._id%>"><%= allClients[i].fullName %></option>
+                        <% } %>
+                </select>
+                <div id="ownerInputFeedback" class="invalid-feedback">
+                    Guest's owner is required. If the guest's owner is not listed, please add a new Client record for them before adding this guest.
+                </div>
+            </div>
+
+            <div class="col-1"></div>
             
-            <div class="row mb-3">
-                <!-- IMAGE SELECT / UPLOAD -->
+            <div class="col-3">
+                <label for="weightInput" class="form-label">Weight (lbs)</label>
+                <input type="number" class="form-control" id="weightInput" name="guest[weight]" placeholder="0" value="0" aria-label="Weight">
+            </div>
+
+        </div> <!-- end of row -->
+
+        <div class="row mb-3">
+            <!-- NOTES text area -->
                 <div class="col-2"></div>
                 <div class="col-8">
-                    <label for="inputGroupFile" class="form-label">Photo</label>
-                    <div class="input-group">
-                        <input type="file" class="form-control" name="imageFileInput" id="imageFileInput" aria-describedby="imageFileInput" aria-label="imageFileInput">
-                    </div>
+                    <label for="notesInput" class="form-label">Notes</label>
+                    <textarea class="form-control" id="notesInput" name="guest[notes]" placeholder="[Optional] Relevant dietary, medical or behavioral info..." aria-label="Notes"></textarea>
                 </div>
             </div>
-
-            <div class="row mb-3"></div>
-
-            <!-- horizontal rule / divider -->
-            <div class="row mb-0">
-                <div class="col-5"></div>
-                <div class="col-2">
-                    <hr class="mt-3">
+        </div>
+        
+        <div class="row mb-3">
+            <!-- IMAGE SELECT / UPLOAD -->
+            <div class="col-2"></div>
+            <div class="col-8">
+                <label for="inputGroupFile" class="form-label">Photo</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="imageFileInput" id="imageFileInput" aria-describedby="imageFileInput" aria-label="imageFileInput">
                 </div>
-            </div> <!-- end of row -->
-
-            <div class="mx-auto mt-1 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button> 
-                <a href="/guest-records" class="btn btn-outline-primary">Back</a>
             </div>
-            
+        </div> <!-- end of row -->
 
-    </div>
+        <div class="row mb-3"></div>
 
-    <!-- <div class="mx-auto mt-3 text-center">
-        <a href="/guest-records" class="btn btn-primary">Back</a>
-    </div> -->
+        <!-- horizontal rule / divider -->
+        <div class="row mb-0">
+            <div class="col-5"></div>
+            <div class="col-2">
+                <hr class="mt-3">
+            </div>
+        </div> <!-- end of row -->
 
+        <div class="mx-auto mt-1 text-center">
+            <button type="submit" class="btn btn-primary">Submit</button> 
+            <a href="/guest-records" class="btn btn-outline-primary">Back</a>
+        </div>
+        
+</div>
 
-
-
-    <%- include('../../../partials/footer') %>
+<%- include('../../../partials/footer') %>

@@ -13,7 +13,7 @@ import Joi = require("joi");
 /*
 ===========================================================================
 validationFunctions.ts
-- contains funcs for each Mongoose schema
+- creates + exports funcs for each Mongoose schema
 - for verifying new/edit input data w/ Joi prior to sending to Mongoose
 ===========================================================================
 */

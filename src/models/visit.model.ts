@@ -1,16 +1,13 @@
 import mongoose, { Schema, Document, Types, Date } from "mongoose";
-import { Guest, IGuestDoc, GuestSchema } from "./guest.model";
-import { Kennel, IKennelDoc } from "./kennel.model";
-import { Service, IServiceDoc } from "./service.model";
+import { IGuestDoc } from "./guest.model";
+import { IKennelDoc } from "./kennel.model";
+import { IServiceDoc } from "./service.model";
 import {
 	formatDuration,
 	intervalToDuration,
 	differenceInDays,
-	isPast,
 	isFuture,
 } from "date-fns";
-import { boolean } from "joi";
-
 
 /*
 ===========================================================================

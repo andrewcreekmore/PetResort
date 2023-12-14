@@ -1,17 +1,18 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 import { Guest, IGuestDoc, GuestSchema } from "./guest.model";
-import { Visit, IVisitDoc, VisitSchema } from "./visit.model";
+import { IVisitDoc, VisitSchema } from "./visit.model";
 import { IServiceDoc, ServiceSchema } from "./service.model";
 import { IKennelDoc, KennelSchema } from "./kennel.model";
 
 /*
 ===========================================================================
 client.model.ts
-- schema, model, interface for Client
+- schema, model, interface for Clients (customers/pet owners)
+- also exports registerSchemas() for all models (arbitrary)
 ===========================================================================
 */
 
-// create schema: client (pet owners)
+// create schema: client
 const ClientSchema: Schema = new Schema({
 	firstName: {
 		type: String,
@@ -81,7 +82,6 @@ interface IClient {
 	email?: string;
 	address?: object;
 	pets: Types.DocumentArray<IGuestDoc>;
-	mostRecentPet: IGuestDoc;
 	image?: object;
 }
 
@@ -102,7 +102,6 @@ ClientSchema.virtual('formattedPhone').get(function () {
 // formatted street address (for card display) virtual method
 ClientSchema.virtual('formattedAddress').get(function () {
 	if (this.address.streetAddress) {
-		var aptStr = ''
 		if (this.address.apartment) {
 			return `${this.address.streetAddress} Apt. ${this.address.apartment}`;
 		} else {
@@ -113,15 +112,6 @@ ClientSchema.virtual('formattedAddress').get(function () {
 		return "";
 	}
 })
-
-ClientSchema.virtual('mostRecentPet').get(function() {
-	if (this.pets.length < 2) {
-		return this.pets[0];
-	} else {
-		return this.pets[0]
-	}
-})
-
 
 // setup query middleware: delete owned pets (guests) when deleting client
 ClientSchema.post('findOneAndDelete', async function (deletedClient) {

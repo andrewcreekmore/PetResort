@@ -8,17 +8,19 @@ import { Client } from "../models/client.model";
 ===========================================================================
 guests.controller.ts
 - methods containing route logic for export
+- coverage: all guest-model CRUD
 ===========================================================================
 */
 
 // guest route constants
 const guestRecordsDir = "employee/records/guests";
 const title = "PetResort · Guest Records";
-const user = "employee";
 
 // guest records: view all / index
 module.exports.index = 
 	async (req: Request, res: Response, next: NextFunction) => {
+
+        // params
         const currentOnly: boolean = Boolean(req.query.current) || false;
         const isSearch: boolean = Boolean(req.query.search) || false;
 
@@ -68,7 +70,7 @@ module.exports.index =
         }
 
         const pageCount = Math.ceil(totalGuestCount / guestsPerPage);
-        var data = { title, user, guests, page, pageCount, currentOnly, isSearch };
+        var data = { title, guests, page, pageCount, currentOnly, isSearch };
         res.render(guestRecordsDir + "/index", { ...data });
 	};
 
@@ -78,7 +80,7 @@ module.exports.renderNewForm =
         var allClients = await Client.find({});
         if (allClients) {
             var breadcrumbs = req.session.breadcrumbs;
-            var data = { title, user, allClients, breadcrumbs };
+            var data = { title, allClients, breadcrumbs };
             res.render(guestRecordsDir + "/new", { ...data });
         } else {
             throw new AppError(400);
@@ -144,7 +146,7 @@ module.exports.showDetails =
             var recordName = guest.name;
             var breadcrumbs = req.session.breadcrumbs;
             var bUseAltImgPath = false;
-            var data = { title, user, guest, bUseAltImgPath, recordName, breadcrumbs };
+            var data = { title, guest, bUseAltImgPath, recordName, breadcrumbs };
             res.render(guestRecordsDir + "/details", { ...data });
         }
     };
@@ -161,7 +163,7 @@ module.exports.renderEditForm =
         } else {
             var recordName = guest.name;
             var breadcrumbs = req.session.breadcrumbs;
-            var data = { title, user, guest, allClients, recordName, breadcrumbs };
+            var data = { title, guest, allClients, recordName, breadcrumbs };
             res.render(guestRecordsDir + "/edit", { ...data });
         }
     };

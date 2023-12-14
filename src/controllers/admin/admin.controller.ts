@@ -10,12 +10,12 @@ import crypto = require("crypto");
 ===========================================================================
 admin.controller.ts
 - methods containing route logic for export
+- coverage: admin tools index + password reset functions (employee, admin direct)
 ===========================================================================
 */
 
 // admin route constants
 const adminDir = "employee/admin";
-var user = "employee";
 
 // for ajax setting of activeAdminTab
 module.exports.setActiveTab =
@@ -88,7 +88,6 @@ module.exports.index =
 
 			var data = {
 				title,
-				user,
 				dogServices,
                 catServices,
 				allEmployees,
@@ -108,7 +107,7 @@ module.exports.index =
 module.exports.renderForgotForm = 
     (req: Request, res: Response) => {
         const title = "PetResort · Reset Password";
-        var data = { title, user };
+        var data = { title };
         res.render(adminDir + "/forgot", { ...data });
     };
 
@@ -181,7 +180,7 @@ module.exports.renderResetPasswordForm =
         }
         const title = "PetResort · Reset Password";
         var token = req.params.token;
-        var data = { title, user, token };
+        var data = { title, token };
         res.render(adminDir + "/reset", { ...data });
     };
 
@@ -252,7 +251,6 @@ module.exports.resetPassword =
             }
     }
 
-
 // admin reset emp password DIRECTLY (from admin tools emp record) - form entry
 module.exports.renderDirectResetPasswordForm =
     async (req: Request, res: Response, next: NextFunction) => {
@@ -269,7 +267,7 @@ module.exports.renderDirectResetPasswordForm =
                 var data = { title, employee, breadcrumbs, recordName };
                 res.render(adminDir + "/resetDirect", { ...data });
             }
-    };
+};
 
 // admin reset emp password DIRECTLY (from admin tools emp record) - edit on server
 module.exports.directResetPassword =

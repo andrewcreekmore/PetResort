@@ -7,7 +7,7 @@ const { isLoggedIn } = require("../middleware");
 /*
 ===========================================================================
 visits.route.ts
-- 
+- visit record CRUD routes
 ===========================================================================
 */
 
@@ -46,7 +46,5 @@ router.route("/:id")
 
 // visit records: update single record - form entry
 router.get("/:id/edit", catchAsync(visits.renderEditForm));
-
-
 
 module.exports = { router, path };
