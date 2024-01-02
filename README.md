@@ -1,6 +1,7 @@
-# Pet Resort
+# PetResort
 
-Employee portal for a fictional pet boarding & grooming business.  
+Employee portal for a pet boarding & grooming business.  
+Allows users to create and manage relevant business data.
 Full-stack web application built with Typescript, EJS, Bootstrap, Express, MongoDB, NodeJS.  
 
 ## Overview  
@@ -11,4 +12,5 @@ Features user authentication and authorization, including forgotten password res
 Features both client and server-based validation for CRUD operations. Joi is used for schema validation.
 
 ## Usage
-For demo usage, log in with "admin" as both your username and password.
+For demo usage, log in with `admin` as both your username and password.
+ [pet-resort.andrewcreekmore.com](https://pet-resort.andrewcreekmore.com)
