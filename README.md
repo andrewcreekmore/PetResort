@@ -11,7 +11,7 @@ Full-stack web application built with TypeScript, EJS, Bootstrap, Express, Mongo
 ## Overview  
 Features a dashboard overview (current/upcoming Visits, operations metadata), dedicated Guest (pet) and Client (customer/owner) CRUD views, and an Admin section with managed access: basic model table views are readable by any logged-in user, but detail/edit views of models in this section require elevated user permissions. These models include Employees, Kennels, and cat/dog Services.
 
-Features user authentication and authorization, including forgotten password reset functionality utilizing an emailed token. Utilizes both client and server-based validation for CRUD operations. Joi is used for schema validation. Includes pagination, breadcrumb navigation, and toast notifications.
+Features user authentication and authorization, including forgotten password reset functionality via an emailed token. Utilizes both client-side (forms) and server-side (schema) validation for CRUD operations. Includes pagination, input masking, HTML sanitization, image upload, breadcrumb navigation, and toast notifications.
 
 ## Usage
 For demo usage, log in with `admin` as both your username and password.  
