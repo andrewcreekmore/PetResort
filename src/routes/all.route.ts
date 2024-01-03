@@ -15,14 +15,14 @@ all.route.ts
 */
 
 const allRoutes = [ 
-    indexRoutes, 
-    guestRoutes, 
-    clientRoutes, 
-    visitRoutes, 
-    adminRoutes, 
-    employeeRoutes, 
-    serviceRoutes, 
-    kennelRoutes
+	indexRoutes, 
+	guestRoutes, 
+	clientRoutes, 
+	visitRoutes, 
+	adminRoutes, 
+	employeeRoutes, 
+	serviceRoutes, 
+	kennelRoutes
 ]
 
 export default allRoutes;

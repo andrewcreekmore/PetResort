@@ -31,13 +31,13 @@ router.route("/forgot")
 router.route("/reset/:token")
 	// reset emp password - form entry (input new pw)
 	.get(catchAsync(admin.renderResetPasswordForm))
-    // reset emp password - edit on server
-    .post(catchAsync(admin.resetPassword)); 				
+	// reset emp password - edit on server
+	.post(catchAsync(admin.resetPassword)); 				
 
 router.route("/resetDirect/:id")
-    // admin reset emp password DIRECTLY (from admin tools emp record) - form entry
-    .get(catchAsync(admin.renderDirectResetPasswordForm))
-    // admin reset emp password DIRECTLY (from admin tools emp record) - edit on server
-    .post(catchAsync(admin.directResetPassword));
+	// admin reset emp password DIRECTLY (from admin tools emp record) - form entry
+	.get(catchAsync(admin.renderDirectResetPasswordForm))
+	// admin reset emp password DIRECTLY (from admin tools emp record) - edit on server
+	.post(catchAsync(admin.directResetPassword));
 
 module.exports = { router, path };

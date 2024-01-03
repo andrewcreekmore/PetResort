@@ -16,32 +16,32 @@ const title = "PetResort · Service Records";
 
 // add new service - form entry
 module.exports.renderNewForm = 
-    (req: Request, res: Response) => {
-        const petType = JSON.parse(JSON.stringify(req.query.petType));
+	(req: Request, res: Response) => {
+		const petType = JSON.parse(JSON.stringify(req.query.petType));
 		var breadcrumbs = req.session.breadcrumbs;
-        var data = { title, petType, breadcrumbs };
-        req.session.activeAdminTab = petType === 'cat' ? "catServices" : "dogServices";
-        res.render(servicesDir + "/new", { ...data });
-    };
+		var data = { title, petType, breadcrumbs };
+		req.session.activeAdminTab = petType === 'cat' ? "catServices" : "dogServices";
+		res.render(servicesDir + "/new", { ...data });
+	};
 
 // service records: create new record - add on server
 module.exports.createService = 
-    async (req: Request, res: Response, next: NextFunction) => {
-            const newService = new Service(req.body.service);
-            if (newService) {
-                await newService.save();
-                req.flash("success", "Successfully added new Service.");
-                req.session.activeAdminTab =
-                    newService.petType === "cat" ? "catServices" : "dogServices";
-                res.redirect(`/admin`);
-            } else {
-                throw new AppError(400);
-            }
-        };
+	async (req: Request, res: Response, next: NextFunction) => {
+			const newService = new Service(req.body.service);
+			if (newService) {
+				await newService.save();
+				req.flash("success", "Successfully added new Service.");
+				req.session.activeAdminTab =
+					newService.petType === "cat" ? "catServices" : "dogServices";
+				res.redirect(`/admin`);
+			} else {
+				throw new AppError(400);
+			}
+		};
 
 // service records: update single record - form entry
 module.exports.renderEditForm =
-    async (req: Request, res: Response, next: NextFunction) => {
+	async (req: Request, res: Response, next: NextFunction) => {
 		const { id } = req.params;
 		const service = await Service.findById(id);
 		if (!service) {
@@ -59,7 +59,7 @@ module.exports.renderEditForm =
 
 // service records: update single record - edit on server
 module.exports.updateService =
-    async (req: Request, res: Response, next: NextFunction) => {
+	async (req: Request, res: Response, next: NextFunction) => {
 		const { id } = req.params;
 		const service = await Service.findByIdAndUpdate(id, req.body.service, {
 			runValidators: true,
@@ -75,7 +75,7 @@ module.exports.updateService =
 
 // service records: delete single record
 module.exports.deleteService =
-    async (req: Request, res: Response, next: NextFunction) => {
+	async (req: Request, res: Response, next: NextFunction) => {
 		const { id } = req.params;
 		const deletedService = await Service.findByIdAndDelete(id);
 		if (!deletedService) {

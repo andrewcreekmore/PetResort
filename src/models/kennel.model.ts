@@ -23,7 +23,7 @@ const KennelSchema = new Schema({
 	occupant: {
 		type: Schema.Types.ObjectId,
 		ref: "Guest",
-	    default: null,
+		default: null,
 	},
 });
 
@@ -48,7 +48,7 @@ KennelSchema.virtual("formattedSize").get(function() {
 })
 
 KennelSchema.virtual("formatted_id").get(function () {
-    return `${this.kennel_id}-${this.size.toUpperCase()}`
+	return `${this.kennel_id}-${this.size.toUpperCase()}`
 });
 
 const Kennel = mongoose.model<IKennelDoc>("Kennel", KennelSchema);

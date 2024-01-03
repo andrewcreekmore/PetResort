@@ -20,15 +20,15 @@ const title = "PetResort · Guest Records";
 module.exports.index = 
 	async (req: Request, res: Response, next: NextFunction) => {
 
-        // params
-        const currentOnly: boolean = Boolean(req.query.current) || false;
-        const isSearch: boolean = Boolean(req.query.search) || false;
+		// params
+		const currentOnly: boolean = Boolean(req.query.current) || false;
+		const isSearch: boolean = Boolean(req.query.search) || false;
 
-        // pagination
-        const page = Number(req.query.p) || 1;
-        const guestsPerPage = 8;
-        // for use in both query types
-        const populateVisits = [
+		// pagination
+		const page = Number(req.query.p) || 1;
+		const guestsPerPage = 8;
+		// for use in both query types
+		const populateVisits = [
 					{
 						path: "visits",
 						populate: [
@@ -40,168 +40,168 @@ module.exports.index =
 					},
 				];
 
-        // find by searched guest name
-        if (isSearch) {
-            const regex = new RegExp(escapeRegex(String(req.query.search)), 'gi');
-            var totalGuestCount = await Guest.count({ name: regex });
+		// find by searched guest name
+		if (isSearch) {
+			const regex = new RegExp(escapeRegex(String(req.query.search)), 'gi');
+			var totalGuestCount = await Guest.count({ name: regex });
 			var guests = await Guest.find({ name: regex })
 				.populate("owner")
 				.populate(populateVisits);
 		} else if (!currentOnly) { // find all
-            var totalGuestCount = await Guest.count({});
-            var guests = await Guest.find({})
-                .populate("owner")
-                .populate(populateVisits)
-                .skip((page - 1) * guestsPerPage)
-                .limit(guestsPerPage);
-        } else { // current only
-            var allGuests = await Guest.find({})
-                .populate("owner")
-                .populate(populateVisits)
-            const filteredGuests = allGuests.filter((guest) => guest.current);
-            guests = await Guest.find({
+			var totalGuestCount = await Guest.count({});
+			var guests = await Guest.find({})
+				.populate("owner")
+				.populate(populateVisits)
+				.skip((page - 1) * guestsPerPage)
+				.limit(guestsPerPage);
+		} else { // current only
+			var allGuests = await Guest.find({})
+				.populate("owner")
+				.populate(populateVisits)
+			const filteredGuests = allGuests.filter((guest) => guest.current);
+			guests = await Guest.find({
 							_id: { $in: filteredGuests },
 						})
-                .populate("owner")
-                .populate(populateVisits)
-                .skip((page - 1) * guestsPerPage)
-                .limit(guestsPerPage);
-            var totalGuestCount = guests.length;
-        }
+				.populate("owner")
+				.populate(populateVisits)
+				.skip((page - 1) * guestsPerPage)
+				.limit(guestsPerPage);
+			var totalGuestCount = guests.length;
+		}
 
-        const pageCount = Math.ceil(totalGuestCount / guestsPerPage);
-        var data = { title, guests, page, pageCount, currentOnly, isSearch };
-        res.render(guestRecordsDir + "/index", { ...data });
+		const pageCount = Math.ceil(totalGuestCount / guestsPerPage);
+		var data = { title, guests, page, pageCount, currentOnly, isSearch };
+		res.render(guestRecordsDir + "/index", { ...data });
 	};
 
 // guest records: create new record - form entry
 module.exports.renderNewForm = 
-    async (req: Request, res: Response, next: NextFunction) => {
-        var allClients = await Client.find({});
-        if (allClients) {
-            var breadcrumbs = req.session.breadcrumbs;
-            var data = { title, allClients, breadcrumbs };
-            res.render(guestRecordsDir + "/new", { ...data });
-        } else {
-            throw new AppError(400);
-        }
-    };
+	async (req: Request, res: Response, next: NextFunction) => {
+		var allClients = await Client.find({});
+		if (allClients) {
+			var breadcrumbs = req.session.breadcrumbs;
+			var data = { title, allClients, breadcrumbs };
+			res.render(guestRecordsDir + "/new", { ...data });
+		} else {
+			throw new AppError(400);
+		}
+	};
 
 // guest records: create new record - add on server
 module.exports.createGuest =
-    async (req: Request, res: Response, next: NextFunction) => {
-        const newGuest = new Guest(req.body.guest);
-        if (req.file) {
-            const uploadedURL = req.file.path;
-            const uploadedFilename = req.file.filename;
-            newGuest.image = { url: uploadedURL, filename: uploadedFilename };
-        }
-        await newGuest.save();
-        const populatedGuest = await Guest.findOne(newGuest._id).populate("owner");
-        if (populatedGuest) {
-            const owner = await Client.findOne(
-                { firstName: populatedGuest.owner.firstName },
-                { lastName: populatedGuest.owner.lastName }
-            ).populate("pets");
-            if (owner) {
-                owner.pets.push(populatedGuest);
-                await owner.save();
-            } else {
-                throw new AppError(400);
-            }
-        }
-        req.flash("success", "Successfully added new guest.");
-        res.redirect(`/guest-records/${newGuest._id}`);
-    };
+	async (req: Request, res: Response, next: NextFunction) => {
+		const newGuest = new Guest(req.body.guest);
+		if (req.file) {
+			const uploadedURL = req.file.path;
+			const uploadedFilename = req.file.filename;
+			newGuest.image = { url: uploadedURL, filename: uploadedFilename };
+		}
+		await newGuest.save();
+		const populatedGuest = await Guest.findOne(newGuest._id).populate("owner");
+		if (populatedGuest) {
+			const owner = await Client.findOne(
+				{ firstName: populatedGuest.owner.firstName },
+				{ lastName: populatedGuest.owner.lastName }
+			).populate("pets");
+			if (owner) {
+				owner.pets.push(populatedGuest);
+				await owner.save();
+			} else {
+				throw new AppError(400);
+			}
+		}
+		req.flash("success", "Successfully added new guest.");
+		res.redirect(`/guest-records/${newGuest._id}`);
+	};
 
 // guest records: view single record details
 module.exports.showDetails = 
-    async (req: Request, res: Response, next: NextFunction) => {
-        const { id } = req.params;
-        const guest = await Guest.findById(id)
-            .populate("owner")
-            .populate([
-                {
-                    path: "visits",
-                    populate: [
-                        {
-                            path: "services",
-                            model: "Service",
-                        },
-                        {
-                            path: "servicesRendered",
-                            model: "Service",
-                        },
-                        {
-                            path: "assignedKennel",
-                            model: 'Kennel',
-                        },
-                    ],
-                },
-            ]);
-        if (!guest) {
-            req.flash("error", `Couldn't find that guest.`);
-            return res.redirect("/guest-records");
-        } else {
-            var recordName = guest.name;
-            var breadcrumbs = req.session.breadcrumbs;
-            var bUseAltImgPath = false;
-            var data = { title, guest, bUseAltImgPath, recordName, breadcrumbs };
-            res.render(guestRecordsDir + "/details", { ...data });
-        }
-    };
+	async (req: Request, res: Response, next: NextFunction) => {
+		const { id } = req.params;
+		const guest = await Guest.findById(id)
+			.populate("owner")
+			.populate([
+				{
+					path: "visits",
+					populate: [
+						{
+							path: "services",
+							model: "Service",
+						},
+						{
+							path: "servicesRendered",
+							model: "Service",
+						},
+						{
+							path: "assignedKennel",
+							model: 'Kennel',
+						},
+					],
+				},
+			]);
+		if (!guest) {
+			req.flash("error", `Couldn't find that guest.`);
+			return res.redirect("/guest-records");
+		} else {
+			var recordName = guest.name;
+			var breadcrumbs = req.session.breadcrumbs;
+			var bUseAltImgPath = false;
+			var data = { title, guest, bUseAltImgPath, recordName, breadcrumbs };
+			res.render(guestRecordsDir + "/details", { ...data });
+		}
+	};
 
 // guest records: update single record - form entry
 module.exports.renderEditForm = 
-    async (req: Request, res: Response, next: NextFunction) => {
-        const { id } = req.params;
-        const guest = await Guest.findById(id).populate("owner");
-        var allClients = await Client.find({});
-        if (!guest) {
-            req.flash("error", `Couldn't find that guest.`);
-            return res.redirect("/guest-records");
-        } else {
-            var recordName = guest.name;
-            var breadcrumbs = req.session.breadcrumbs;
-            var data = { title, guest, allClients, recordName, breadcrumbs };
-            res.render(guestRecordsDir + "/edit", { ...data });
-        }
-    };
+	async (req: Request, res: Response, next: NextFunction) => {
+		const { id } = req.params;
+		const guest = await Guest.findById(id).populate("owner");
+		var allClients = await Client.find({});
+		if (!guest) {
+			req.flash("error", `Couldn't find that guest.`);
+			return res.redirect("/guest-records");
+		} else {
+			var recordName = guest.name;
+			var breadcrumbs = req.session.breadcrumbs;
+			var data = { title, guest, allClients, recordName, breadcrumbs };
+			res.render(guestRecordsDir + "/edit", { ...data });
+		}
+	};
 
 // guest records: update single record - edit on server
 module.exports.updateGuest =
-    async (req: Request, res: Response, next: NextFunction) => {
-        const { id } = req.params;
-        const guest = await Guest.findByIdAndUpdate(id, req.body.guest,  {
-            runValidators: true,
-            new: true,
-        });
-        if (guest) {
-            if (req.file) {
-                guest.image = { url: req.file.path, filename: req.file.filename };
-                await guest.save();
-            }
-            req.flash('success', 'Successfully updated guest.')
-            res.redirect(`/guest-records/${guest._id}`);
-        }
-    };
+	async (req: Request, res: Response, next: NextFunction) => {
+		const { id } = req.params;
+		const guest = await Guest.findByIdAndUpdate(id, req.body.guest,  {
+			runValidators: true,
+			new: true,
+		});
+		if (guest) {
+			if (req.file) {
+				guest.image = { url: req.file.path, filename: req.file.filename };
+				await guest.save();
+			}
+			req.flash('success', 'Successfully updated guest.')
+			res.redirect(`/guest-records/${guest._id}`);
+		}
+	};
 
 // guest records: delete single record
 module.exports.deleteGuest =
-    async (req: Request, res: Response, next: NextFunction) => {
-        const { id } = req.params;
-        const deletedGuest = await Guest.findByIdAndDelete(id);
-        if (!deletedGuest) {
-            throw new AppError(404);
-        } else {
-            req.flash("success", "Successfully deleted guest.");
-            res.redirect("/guest-records");
-        }
-    };
+	async (req: Request, res: Response, next: NextFunction) => {
+		const { id } = req.params;
+		const deletedGuest = await Guest.findByIdAndDelete(id);
+		if (!deletedGuest) {
+			throw new AppError(404);
+		} else {
+			req.flash("success", "Successfully deleted guest.");
+			res.redirect("/guest-records");
+		}
+	};
 
 // guest records: remove photo (reset to placeholder)
 module.exports.removePhoto =
-    async (req: Request, res: Response, next: NextFunction) => {
+	async (req: Request, res: Response, next: NextFunction) => {
 		const { id } = req.params;
 		const guest = await Guest.findById(id);
 

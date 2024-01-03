@@ -9,14 +9,14 @@ appError.ts
 
 class AppError extends Error {
 	statusCode: Number;
-    template: String;
+	template: String;
 	longMessage: String;
 
 	constructor(statusCode: number, message?: string) {
 		super();
 		
 		this.statusCode = statusCode;
-        this.template = 'error';
+		this.template = 'error';
 
 		// defaults
 		var msg = 'Error';

@@ -19,10 +19,10 @@ const path = '/client-records'
 router.all('*', isLoggedIn)
 
 router.route("/")
-    // client records: view all / index
-    .get(catchAsync(clients.index))
-    // client records: create new record - add on server
-    .post(validateClient, catchAsync(clients.createClient));
+	// client records: view all / index
+	.get(catchAsync(clients.index))
+	// client records: create new record - add on server
+	.post(validateClient, catchAsync(clients.createClient));
 
 // client records: create new record - form entry
 router.get("/new", clients.renderNewForm);
@@ -32,8 +32,8 @@ router.route("/:id")
 	.get(catchAsync(clients.showDetails))
 	// client records: update single record - edit on server
 	.put(validateClient, catchAsync(clients.updateClient))
-    // client records: delete single record
-    .delete(catchAsync(clients.deleteClient))
+	// client records: delete single record
+	.delete(catchAsync(clients.deleteClient))
 
 // client records: update single record - form entry
 router.get("/:id/edit", catchAsync(clients.renderEditForm));

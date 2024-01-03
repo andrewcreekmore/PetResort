@@ -21,26 +21,26 @@ middleware.ts
 //=====================
 
 module.exports.isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
-    if (!req.isAuthenticated()) {
-        req.session.returnTo = req.originalUrl;
-        req.flash('error', 'You must be signed in to access this page.');
-        return res.redirect('/login');
+	if (!req.isAuthenticated()) {
+		req.session.returnTo = req.originalUrl;
+		req.flash('error', 'You must be signed in to access this page.');
+		return res.redirect('/login');
 	}
-    next();
+	next();
 }
 
 module.exports.isAdmin = (req: Request, res: Response, next: NextFunction) => {
 
 	const user: typeof IEmployeeDoc = req.user;
-    if (!user.adminAccess) {
-        req.session.returnTo = req.originalUrl;
-        req.flash(
+	if (!user.adminAccess) {
+		req.session.returnTo = req.originalUrl;
+		req.flash(
 					"error",
 					"You must have administrator privileges to access that page."
 				);
-        return res.redirect('/admin');
+		return res.redirect('/admin');
 	}
-    next();
+	next();
 }
 
 module.exports.storeReturnTo = (req: Request, res: Response, next: NextFunction) => {
@@ -114,7 +114,7 @@ const getBreadcrumbs = (req: Request, res: Response, next: NextFunction) => {
 	})
 
 	next();
-    }
+	}
 
 // setting up mongoStore for session
 // + session options config
@@ -197,9 +197,9 @@ const allMiddlewares = [
 	storeActive,
 	storeFlashMessages,
 	getBreadcrumbs,
-    mongoSanitize(),
-    helmet(),
-    helmet.contentSecurityPolicy(contentSecurityPolicyConfig),
+	mongoSanitize(),
+	helmet(),
+	helmet.contentSecurityPolicy(contentSecurityPolicyConfig),
 ];
 
 export default allMiddlewares;

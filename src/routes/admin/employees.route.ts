@@ -28,8 +28,8 @@ router.route("/:id")
 	.get(isAdmin, catchAsync(employees.showDetails))
 	// employee records: update single record - edit on server
 	.put(isAdmin, validateEmployee, catchAsync(employees.updateEmployee))
-    // employee records: delete single record
-    .delete(isAdmin, catchAsync(employees.deleteEmployee));
+	// employee records: delete single record
+	.delete(isAdmin, catchAsync(employees.deleteEmployee));
 
 // employee records: update single record - form entry
 router.get("/:id/edit", isAdmin, catchAsync(employees.renderEditForm));
