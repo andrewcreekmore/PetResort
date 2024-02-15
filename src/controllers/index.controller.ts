@@ -57,14 +57,14 @@ module.exports.empDashboard =
 			// current only (default)
 			var visits = await Visit.find({ checkedIn: true, checkedOut: false })
 				.populate(populateParams)
-				.sort({ endDate: -1 })
+				.sort({ endDate: 1 })
 				.skip((page - 1) * visitsPerPage)
 				.limit(visitsPerPage);
 				} else { // upcoming only
 					var today = new Date();
 					var visits = await Visit.find({ startDate: { $gt: today } })
 						.populate(populateParams)
-						.sort({ endDate: -1 })
+						.sort({ startDate: 1 })
 						.skip((page - 1) * visitsPerPage)
 						.limit(visitsPerPage);
 			}

@@ -6,3 +6,4 @@
 .flaskenv*
 !.env.project
 !.env.vault
+updateSeedDates.ts
