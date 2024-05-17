@@ -75,8 +75,8 @@ const guestVisitsSeed = [
 			},
 			// CURRENT
 			{
-				startDate: "2023-12-9",
-				endDate: "2023-12-23",
+				startDate: "2024-3-4",
+				endDate: "2023-3-18",
 				assignedKennel: "6",
 				paid: true,
 				checkedIn: true,
@@ -157,8 +157,8 @@ const guestVisitsSeed = [
 			},
 			// CURRENT
 			{
-				startDate: "2023-12-11",
-				endDate: "2023-12-29",
+				startDate: "2024-3-4",
+				endDate: "2024-3-19",
 				assignedKennel: "21",
 				paid: false,
 				checkedIn: true,
@@ -229,8 +229,8 @@ const guestVisitsSeed = [
 			},
 			// CURRENT
 			{
-				startDate: "2023-12-11",
-				endDate: "2023-12-28",
+				startDate: "2024-3-4",
+				endDate: "2024-3-21",
 				assignedKennel: "23",
 				paid: true,
 				checkedIn: true,
@@ -265,8 +265,8 @@ const guestVisitsSeed = [
 			},
 			// CURRENT
 			{
-				startDate: "2023-12-9",
-				endDate: "2023-12-29",
+				startDate: "2024-3-4",
+				endDate: "2024-3-23",
 				assignedKennel: "15",
 				paid: false,
 				checkedIn: true,
@@ -301,8 +301,8 @@ const guestVisitsSeed = [
 			},
 			// FUTURE
 			{
-				startDate: "2024-3-11",
-				endDate: "2024-3-16",
+				startDate: "2024-8-11",
+				endDate: "2024-8-16",
 				assignedKennel: "",
 				paid: false,
 				checkedIn: false,
@@ -347,8 +347,8 @@ const guestVisitsSeed = [
 			},
 			// CURRENT
 			{
-				startDate: "2023-12-10",
-				endDate: "2023-12-28",
+				startDate: "2024-3-4",
+				endDate: "2024-3-24",
 				assignedKennel: "20",
 				paid: true,
 				checkedIn: true,
@@ -393,8 +393,8 @@ const guestVisitsSeed = [
 			},
 			// CURRENT
 			{
-				startDate: "2023-12-8",
-				endDate: "2023-12-26",
+				startDate: "2024-3-4",
+				endDate: "2024-3-26",
 				assignedKennel: "22",
 				paid: false,
 				checkedIn: true,

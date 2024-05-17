@@ -54,7 +54,7 @@ module.exports.index =
 				.limit(itemsPerPage);
 
 			if (!occupiedOnly) {
-				var totalKennelCount = await Kennel.count({});
+				var totalKennelCount: number = await Kennel.count({});
 				var kennels = await Kennel.find({})
 					.populate("occupant")
 					.skip((page - 1) * itemsPerPage)
@@ -128,17 +128,17 @@ module.exports.emailResetToken =
 			await employee.save();
 
 			var smtpTransport = nodemailer.createTransport({
-						host: "smtp.zoho.com",
+						host: "smtp.zeptomail.com",
 						port: 465,
 						secure: true,
 						auth: {
-							user: "petresort@zohomail.com",
-							pass: process.env.ZOHO_PW
+							user: "emailapikey",
+							pass: process.env.EMAIL_AUTH_KEY
 						},
 					});
 			var mailOptions = {
 				to: employee.email,
-				from: "petresort@zohomail.com",
+				from: "petresort@andrewcreekmore.com",
 				subject: "PetResort Employee Password Reset",
 				text:
 					"You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
@@ -208,17 +208,17 @@ module.exports.resetPassword =
 
 					// send email confirmation of pw change
 					var smtpTransport = nodemailer.createTransport({
-						host: "smtp.zoho.com",
+						host: "smtp.zeptomail.com",
 						port: 465,
 						secure: true,
 						auth: {
-							user: "petresort@zohomail.com",
-							pass: process.env.ZOHO_PW,
+							user: "emailapikey",
+							pass: process.env.EMAIL_AUTH_KEY,
 						},
 					});
 					var mailOptions = {
 						to: employee.email,
-						from: "petresort@zohomail.com",
+						from: "petresort@andrewcreekmore.com",
 						subject: "Your password has been updated",
 						text:
 							"Hello,\n\n" +
@@ -285,17 +285,17 @@ module.exports.directResetPassword =
 				employee.save();
 				// send email confirmation of pw change
 				var smtpTransport = nodemailer.createTransport({
-					host: "smtp.zoho.com",
+					host: "smtp.zeptomail.com",
 					port: 465,
 					secure: true,
 					auth: {
-						user: "petresort@zohomail.com",
-						pass: process.env.ZOHO_PW,
+						user: "emailapikey",
+						pass: process.env.EMAIL_AUTH_KEY,
 					},
 				});
 				var mailOptions = {
 					to: employee.email,
-					from: "petresort@zohomail.com",
+					from: "petresort@andrewcreekmore.com",
 					subject: "Your password has been updated",
 					text:
 						"Hello,\n\n" +
